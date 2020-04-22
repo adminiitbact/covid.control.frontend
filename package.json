@@ -1,0 +1,83 @@
+{
+  "name": "covid-control",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "immutable": "^4.0.0-rc.12",
+    "lodash": "^4.17.15",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-immutablejs": "^0.0.8",
+    "redux-thunk": "^2.3.0",
+    "superagent": "^5.2.2",
+    "superagent-defaults": "^0.1.14"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "parser": "babel-eslint",
+    "globals": {
+      "window": false
+    },
+    "rules": {
+      "comma-dangle": [
+        1,
+        "never"
+      ],
+      "jsx-quotes": [
+        2,
+        "prefer-single"
+      ]
+    },
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+      }
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "paths": [
+            "src"
+          ]
+        }
+      }
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "babel-loader": "^8.0.6",
+    "babel-plugin-import": "^1.12.2",
+    "customize-cra": "^0.8.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "node-sass": "^4.12.0",
+    "react-app-rewired": "^2.1.3"
+  }
+}
