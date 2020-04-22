@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import UserService from 'services/user-service';
 import Login from 'modules/login';
-import Dashboard from 'modules/dashboard';
+import DashboardBase from 'modules/dashboard-base';
 
 import PrivateHOC from './privateHOC';
 
@@ -11,7 +11,7 @@ const Routes = function () {
   return (
     <Switch>
       <Route name='login' exact path='/login' component={Login} />
-      <PrivateRoute name='dashboard' path='/' component={Dashboard} />
+      <PrivateRoute name='dashboard' path='/' component={DashboardBase} />
     </Switch>
   );
 };
