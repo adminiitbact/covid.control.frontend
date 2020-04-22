@@ -1,3 +1,7 @@
 import { combineReducers } from 'redux-immutablejs';
 
-export default combineReducers({});
+import user from 'base/privateHOC/privateHOC-reducer.js';
+
+export default combineReducers({
+  user
+});

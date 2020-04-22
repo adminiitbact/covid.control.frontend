@@ -48,15 +48,6 @@
         "jsx": true,
         "modules": true
       }
-    },
-    "settings": {
-      "import/resolver": {
-        "node": {
-          "paths": [
-            "src"
-          ]
-        }
-      }
     }
   },
   "browserslist": {
