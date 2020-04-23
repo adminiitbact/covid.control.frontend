@@ -17,8 +17,8 @@ const Routes = function () {
 };
 
 function PrivateRoute({ component: Component, ...rest }) {
-  // const isUserAvailable = UserService.isUserAvailable();
-  const isUserAvailable = true;
+  const isUserAvailable = UserService.isUserAvailable();
+  // const isUserAvailable = true;
 
   return (
     <Route

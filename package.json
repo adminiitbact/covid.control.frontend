@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.1.4",
+    "firebase": "^7.14.1",
     "formik": "^2.1.4",
     "formik-antd": "^2.0.1",
     "immutable": "^4.0.0-rc.12",

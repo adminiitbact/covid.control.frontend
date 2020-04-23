@@ -1,4 +1,4 @@
-const sessionKey = 'cov-admin-user-token';
+const sessionKey = 'cov-control-user-firebase-token';
 
 const userService = {
   isUserAvailable: function() {
@@ -15,13 +15,13 @@ const userService = {
     localStorage.removeItem(sessionKey);
   },
   setUser: function(user) {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('cov-control-user', JSON.stringify(user));
   },
   getUser: function() {
-    return JSON.parse(localStorage.getItem('user'));
+    return JSON.parse(localStorage.getItem('cov-control-user'));
   },
   deleteUser: function() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('cov-control-user');
   },
   logoutUser: function() {
     this.deleteUser();
