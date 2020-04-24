@@ -1,0 +1,24 @@
+name: Dev CI
+
+on:
+  push:
+    branches: [ master, piyush/cicd ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Write File
+      uses: DamianReeves/write-file-action@v1.0
+      with:
+        path: ".env.local"
+        contents: "REACT_APP_API_ENDPOINT=http://api.staging.cov2.in/cc/api/"
+        write-mode: "overwrite"
+    
+    - name: Read file
+      uses: juliangruber/read-file-action@v1.0.0
+      with:
+        path: ".env.local"
