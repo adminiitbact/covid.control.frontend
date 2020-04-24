@@ -19,6 +19,4 @@ jobs:
         write-mode: "overwrite"
     
     - name: Read file
-      uses: juliangruber/read-file-action@v1.0.0
-      with:
-        path: ".env.local"
+      run: cat .env.local
