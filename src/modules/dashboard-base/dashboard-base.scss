@@ -10,16 +10,31 @@
   color: #1890ff;
 }
 
-.logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
-
 .site-layout .site-layout-background {
   background: #fff;
 }
 
+.custom-sider {
+  box-shadow: 1px 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
 .main-layout {
   height: 100%;
+  .logo {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 64px;
+    font-family: Lato;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.8);
+    // margin-bottom: 10px;
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.03);
+    .main {
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      color: #007aff;
+    }
+  }
 }

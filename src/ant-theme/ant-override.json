@@ -1,3 +1,8 @@
 {
-  "@primary-color": "#5dbc6d"
+  "@primary-color": "#007aff",
+  "@font-family": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Lato, 'Helvetica Neue', Arial,'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+  "@text-color": "fade(@black, 80%)",
+  "@border-radius-base": "0px",
+  "@height-base": "48px",
+  "@box-shadow-base": "0 1px 5px 0 rgba(0, 0, 0, 0.15)"
 }
