@@ -32,5 +32,8 @@ jobs:
     - name: npm run build
       run: npm run build
     
+    - name: Log npm errors
+      run: cat /home/runner/.npm/_logs/2020-04-24*
+    
     - name: List build directory
       run: ls -R build/
