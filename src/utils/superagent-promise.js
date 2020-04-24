@@ -17,7 +17,7 @@ function wrap(superagent, Promise, interceptor) {
   /** Send request and get a promise that `end` was emitted */
   PromiseRequest.prototype.end = function end(cb) {
     const _end = superagent.Request.prototype.end;
-    const self = this;
+    const self = this;  
 
     return new Promise((accept, reject) => {
       _end.call(self, (err, response) => {
@@ -109,7 +109,6 @@ function wrap(superagent, Promise, interceptor) {
    */
   PromiseRequest.prototype.getCachedRequest = function getCachedRequest() {
     const resp = new superagent.Response(this);
-    const self = this;
     if (resp.body && resp.xhr && resp.xhr.readyState === 4) {
       const FakeRequest = Object.assign({}, this);
       FakeRequest.then = function then(resolve, rej) {

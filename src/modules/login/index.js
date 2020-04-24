@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { Button, notification } from 'antd';
+import { Button } from 'antd';
 
 import { loginUser } from './login-action';
 import * as Yup from 'yup';
