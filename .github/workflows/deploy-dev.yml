@@ -20,3 +20,8 @@ jobs:
     
     - name: Read file
       run: cat .env.local
+    
+    - name: Install Dependencies
+      uses: CultureHQ/actions-yarn@v1.0.1
+      with:
+        args: install
