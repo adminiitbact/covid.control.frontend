@@ -24,21 +24,24 @@ jobs:
     - name: list files
       run: ls -l
     
-    - name: Install Dependencies
-      uses: CultureHQ/actions-yarn@v1.0.1
-      with:
-        args: install
+    #- name: Install Dependencies
+    #  uses: CultureHQ/actions-yarn@v1.0.1
+    #  with:
+    #    args: install
+    #
+    #- name: npm run build
+    #  run: npm run build
+    #  continue-on-error: true
+    #
+    #- name: Log npm errors
+    #  run: cat /home/runner/.npm/*
+    #  continue-on-error: true
+    #
+    #- name: List build directory
+    #  run: ls -R build/
     
-    - name: npm run build
-      run: npm run build
-      continue-on-error: true
-    
-    - name: Log npm errors
-      run: cat /home/runner/.npm/*
-      continue-on-error: true
-    
-    - name: List build directory
-      run: ls -R build/
+    - name: List src
+      run: ls -R src/
     
     - name: Upload to S3
       uses: shallwefootball/upload-s3-action@v1.0.0
@@ -46,4 +49,4 @@ jobs:
         aws_key_id: ${{ secrets.aws_secret_key }}
         aws_secret_access-key: ${{ secrets.aws_access_key }}
         aws_bucket: control.covid-dev
-        source_dir: build/
+        source_dir: src/
