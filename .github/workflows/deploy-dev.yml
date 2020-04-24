@@ -29,8 +29,8 @@ jobs:
       with:
         args: install
     
-    - name: npm run install
-      run: npm run install
+    - name: npm run build
+      run: npm run build
     
     - name: List build directory
       run: ls -R build/
