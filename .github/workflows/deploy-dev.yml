@@ -46,7 +46,7 @@ jobs:
     - name: count chars
       run: echo ${{ secrets.aws_access_key }} | wc -c
 
-    - name: count chars
+    - name: count chars2
       run: echo ${{ secrets.aws_secret_access }} | wc -c
     
     - name: Upload to S3
