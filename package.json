@@ -33,29 +33,6 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app",
-    "parser": "babel-eslint",
-    "globals": {
-      "window": false
-    },
-    "rules": {
-      "comma-dangle": [
-        1,
-        "never"
-      ],
-      "jsx-quotes": [
-        2,
-        "prefer-single"
-      ]
-    },
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true,
-        "modules": true
-      }
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -72,6 +49,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-import": "^1.12.2",
     "customize-cra": "^0.8.0",
+    "eslint-plugin-react": "^7.19.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "node-sass": "^4.12.0",

@@ -1,4 +1,4 @@
-/* globals localStorage, window, rg4js */
+/* globals, window, rg4js */
 
 // import * as Sentry from '@sentry/browser';
 import UserService from 'services/user-service';
@@ -7,7 +7,7 @@ export default function setUserInfo() {
   if (UserService.isUserAvailable()) {
     const user = UserService.getUser();
     const { id } = user || {};
-    const { email, name, phone_number, user_type } = user.attributes || {};
+    // const { email, name, phone_number, user_type } = user.attributes || {};
 
     // Sentry.configureScope(scope => {
     //   scope.setUser({
