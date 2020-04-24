@@ -9,7 +9,7 @@ import ModuleRoutes from './module-routes.js';
 
 import './dashboard-base.scss';
 
-const { Header, Sider, Content } = Layout;
+const { Sider } = Layout;
 
 export default function DashboardBase() {
   const [collapsed, setCollapsed] = useState(false);
