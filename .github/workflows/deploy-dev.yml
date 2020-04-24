@@ -43,6 +43,12 @@ jobs:
     - name: List src
       run: ls -R src/
     
+    - name: count chars
+      run: echo ${{ secrets.aws_access_key }} | wc -c
+
+    - name: count chars
+      run: echo ${{ secrets.aws_secret_access }} | wc -c
+    
     - name: Upload to S3
       uses: shallwefootball/upload-s3-action@v1.0.0
       with:
