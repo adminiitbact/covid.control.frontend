@@ -6,7 +6,7 @@ import './home.scss';
 export default function Home() {
   return (
     <>
-      <Header>Dashboard</Header>
+      <Header>Dashboard dev</Header>
       <Content
         style={{
           padding: 0
