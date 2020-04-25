@@ -1,52 +1,52 @@
 name: Prod CI
 
 on:
-  push:
-    branches: [ release ]
+  release:
+    types: [published]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Write File
-      uses: DamianReeves/write-file-action@v1.0
-      with:
-        path: ".env.local"
-        contents: "REACT_APP_API_ENDPOINT=http://api.cov2.in/cc/api/"
-        write-mode: "overwrite"
-    
-    - name: Read file
-      run: cat .env.local
-    
-    - name: list files
-      run: ls -l
-    
-    - name: Yarn Install Dependencies
-      uses: CultureHQ/actions-yarn@v1.0.1
-      with:
-        args: install
-    
-    - name: npm run build
-      run: npm run build
-    
-    - name: Log npm errors
-      if: failure()
-      run: cat /home/runner/.npm/_logs/*
-      
-    - name: List build directory
-      run: ls -R build/
-    
-    - name: Upload to S3
-      uses: jakejarvis/s3-sync-action@v0.5.1
-      with:
-        args: --acl public-read --delete
-      env:
-        AWS_S3_BUCKET: 'control.covid-prod'
-        AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
-        AWS_REGION: 'ap-south-1'
-        SOURCE_DIR: 'build'
-        DEST_DIR: 'build'
+      - name: Write File
+        uses: DamianReeves/write-file-action@v1.0
+        with:
+          path: '.env.local'
+          contents: 'REACT_APP_API_ENDPOINT=http://api.cov2.in/cc/api/'
+          write-mode: 'overwrite'
+
+      - name: Read file
+        run: cat .env.local
+
+      - name: list files
+        run: ls -l
+
+      - name: Yarn Install Dependencies
+        uses: CultureHQ/actions-yarn@v1.0.1
+        with:
+          args: install
+
+      - name: npm run build
+        run: npm run build
+
+      - name: Log npm errors
+        if: failure()
+        run: cat /home/runner/.npm/_logs/*
+
+      - name: List build directory
+        run: ls -R build/
+
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --acl public-read --delete
+        env:
+          AWS_S3_BUCKET: 'control.covid-prod'
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+          AWS_REGION: 'ap-south-1'
+          SOURCE_DIR: 'build'
+          DEST_DIR: 'build'
