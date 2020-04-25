@@ -55,4 +55,4 @@ jobs:
         aws_key_id: ${{ secrets.aws_access_key }}
         aws_secret_access-key: ${{ secrets.aws_secret_key }}
         aws_bucket: control.covid-dev
-        source_dir: src/
+        source_dir: src
