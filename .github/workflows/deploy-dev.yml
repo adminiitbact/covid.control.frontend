@@ -29,8 +29,10 @@ jobs:
       with:
         args: install
     
-    - name: npm run buildx
-      run: npm run build
+    - name: npm run build
+      run: npm run buildx
+    
+    - name: Log npm errors
       if: failure()
       run: cat /home/runner/.npm/*
       
@@ -46,4 +48,4 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
         AWS_REGION: 'ap-south-1'
-        SOURCE_DIR: 'build'
+        SOURCE_DIR: 'src'
