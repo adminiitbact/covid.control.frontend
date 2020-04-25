@@ -4,5 +4,11 @@
   "@text-color": "fade(@black, 80%)",
   "@border-radius-base": "0px",
   "@height-base": "48px",
-  "@box-shadow-base": "0 1px 5px 0 rgba(0, 0, 0, 0.15)"
+  "@height-lg": "52px",
+  "@height-sm": "44px",
+  "@btn-primary-shadow": "0 1px 5px 0 rgba(0, 0, 0, 0.15)",
+  "@box-shadow-base": "0 1px 5px 0 rgba(0, 0, 0, 0.15)",
+  "@btn-font-size-lg": "@font-size-base",
+  "@btn-font-size-sm": "@font-size-base",
+  "@btn-font-weight": "500"
 }
