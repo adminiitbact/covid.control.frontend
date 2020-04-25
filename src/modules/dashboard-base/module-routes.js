@@ -1,6 +1,7 @@
 import { VideoCameraOutlined } from '@ant-design/icons';
 
 import Home from 'modules/home';
+import FacilityAdd from 'modules/facility-add';
 
 export default [
   {
@@ -14,10 +15,10 @@ export default [
     icon: VideoCameraOutlined,
     children: [
       {
-        label: 'Add',
+        label: 'New',
         path: '/facilities/add',
         icon: VideoCameraOutlined,
-        component: Home
+        component: FacilityAdd
       }
     ]
   }
