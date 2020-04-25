@@ -1,8 +1,8 @@
-name: Dev CI
+name: Prod CI
 
 on:
   push:
-    branches: [ master, piyush/cicd ]
+    branches: [ release ]
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       uses: DamianReeves/write-file-action@v1.0
       with:
         path: ".env.local"
-        contents: "REACT_APP_API_ENDPOINT=http://api.staging.cov2.in/cc/api/"
+        contents: "REACT_APP_API_ENDPOINT=http://api.cov2.in/cc/api/"
         write-mode: "overwrite"
     
     - name: Read file
@@ -44,7 +44,7 @@ jobs:
       with:
         args: --acl public-read --delete
       env:
-        AWS_S3_BUCKET: 'control.covid-dev'
+        AWS_S3_BUCKET: 'control.covid-prod'
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
         AWS_REGION: 'ap-south-1'
