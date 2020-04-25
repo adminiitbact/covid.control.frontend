@@ -1,0 +1,20 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+  font-family: Lato;
+  color: rgba(0, 0, 0, 0.8);
+  word-break: keep-all;
+  // margin-bottom: 10px;
+  .main {
+    font-weight: 900;
+    color: #007aff;
+  }
+  &.large {
+    font-size: 32px;
+    .main {
+      letter-spacing: 1.6px;
+    }
+  }
+}
