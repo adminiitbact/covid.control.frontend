@@ -3,10 +3,9 @@ import { Layout } from 'antd';
 
 const { Header: HeaderAntd, Content: ContentAntd } = Layout;
 
-
-export function Header({ children, ...rest }) {
+export function Header({ children, fixed, ...rest }) {
   return (
-    <HeaderAntd className='layout-header' {...rest}>
+    <HeaderAntd className={`layout-header ${fixed ? 'fixed' : ''}`} {...rest}>
       {children}
     </HeaderAntd>
   );
