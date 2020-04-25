@@ -34,7 +34,7 @@ jobs:
     
     - name: Log npm errors
       if: failure()
-      run: cat /home/runner/.npm/*
+      run: cat /home/runner/.npm/_logs/*
       
     - name: List build directory
       run: ls -R build/
