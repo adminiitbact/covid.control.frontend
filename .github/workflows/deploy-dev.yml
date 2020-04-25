@@ -2,7 +2,7 @@ name: Dev CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, piyush/cache-invalid ]
 
 jobs:
   build:
@@ -39,10 +39,22 @@ jobs:
     - name: List build directory
       run: ls -R build/
     
-    - name: Upload to S3
+    - name: Upload everything except index.html to S3
       uses: jakejarvis/s3-sync-action@v0.5.1
       with:
-        args: --acl public-read --delete
+        args: --acl public-read --cache-control 'max-age=86400' --exclude build/index.html
+      env:
+        AWS_S3_BUCKET: 'control.covid-dev'
+        AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+        AWS_REGION: 'ap-south-1'
+        SOURCE_DIR: 'build'
+        DEST_DIR: 'build'
+
+    - name: Upload index.html to S3
+      uses: jakejarvis/s3-sync-action@v0.5.1
+      with:
+        args: --acl public-read --cache-control 'no-cache'
       env:
         AWS_S3_BUCKET: 'control.covid-dev'
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
