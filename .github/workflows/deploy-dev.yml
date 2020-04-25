@@ -24,30 +24,18 @@ jobs:
     - name: list files
       run: ls -l
     
-    #- name: Install Dependencies
-    #  uses: CultureHQ/actions-yarn@v1.0.1
-    #  with:
-    #    args: install
-    #
-    #- name: npm run build
-    #  run: npm run build
-    #  continue-on-error: true
-    #
-    #- name: Log npm errors
-    #  run: cat /home/runner/.npm/*
-    #  continue-on-error: true
-    #
-    #- name: List build directory
-    #  run: ls -R build/
+    - name: Install Dependencies
+      uses: CultureHQ/actions-yarn@v1.0.1
+      with:
+        args: install
     
-    - name: List src
-      run: ls -R src/
-    
-    - name: count chars
-      run: echo ${{ secrets.aws_access_key }} | wc -c
-
-    - name: count chars2
-      run: echo ${{ secrets.aws_secret_key }} | wc -c
+    - name: npm run buildx
+      run: npm run build
+      if: failure()
+      run: cat /home/runner/.npm/*
+      
+    - name: List build directory
+      run: ls -R build/
     
     - name: Upload to S3
       uses: jakejarvis/s3-sync-action@v0.5.1
@@ -58,4 +46,4 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
         AWS_REGION: 'ap-south-1'
-        SOURCE_DIR: 'src'
+        SOURCE_DIR: 'build'
