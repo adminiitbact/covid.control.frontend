@@ -4,7 +4,7 @@ import Home from 'modules/home';
 
 // import ICevents from 'assets/icons/ic-events.svg';
 
-import DashboardIcon from 'assets/icons/dashboard.svg';
+// import DashboardIcon from 'assets/icons/dashboard.svg';
 
 export default [
   {
