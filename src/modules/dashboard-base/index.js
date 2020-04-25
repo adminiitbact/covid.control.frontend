@@ -19,14 +19,19 @@ export default function DashboardBase() {
   }
 
   function getRoutes(routes) {
-    let setRoutes = routes.reduce((prev, prop, key) => {
+    let setRoutes = routes.reduce((prev, prop) => {
       if (prop.path) {
         return [
           ...prev,
-          <Route path={prop.path} component={prop.component} key={key} />
+          <Route
+            exact
+            path={prop.path}
+            component={prop.component}
+            key={prop.path}
+          />
         ];
       } else if (prop.children) {
-        return [...prev, getRoutes(prop.children)];
+        return [...prev, ...getRoutes(prop.children)];
       } else {
         return prev;
       }
@@ -50,8 +55,12 @@ export default function DashboardBase() {
       }
       return (
         <Menu.Item key={el.label}>
-          {el.icon && React.createElement(el.icon)}
-          <Link to={el.path}>{el.label}</Link>
+          <Link to={el.path}>
+            <div className='d--f ai--c'>
+              {el.icon && React.createElement(el.icon)}
+              {el.label}
+            </div>
+          </Link>
         </Menu.Item>
       );
     });

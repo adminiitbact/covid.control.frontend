@@ -7,7 +7,11 @@ export default function Home() {
   return (
     <>
       <Header>Dashboard</Header>
-      <Content>
+      <Content
+        style={{
+          padding: 0
+        }}
+      >
         <div className='iframe-container'>
           <iframe
             title='bi'

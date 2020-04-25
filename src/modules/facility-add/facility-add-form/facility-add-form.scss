@@ -1,0 +1,22 @@
+.facility-form {
+  .section-title {
+    text-transform: uppercase;
+    opacity: 0.4;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 24px;
+  }
+  .ant-form-item-label {
+    label {
+      font-family: Lato;
+      font-size: 14px;
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+  .form-section {
+    margin-bottom: 48px;
+  }
+}

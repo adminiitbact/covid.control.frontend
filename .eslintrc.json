@@ -5,8 +5,6 @@
     "window": false
   },
   "rules": {
-    "no-unused-vars": "off",
-    "no-useless-constructor": 0,
     "comma-dangle": [
       1,
       "never"

@@ -30,3 +30,24 @@ html {
 *:after {
   box-sizing: inherit;
 }
+
+
+.site-layout {
+  position: relative;
+  background-color: #f5faff;
+  .layout-header {
+    background: #fff;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.03);
+    height: 116px;
+    padding: 0px 64px;
+    &.fixed {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+    }
+  }
+
+  .layout-content {
+    padding: 48px 64px;
+  }
+}
