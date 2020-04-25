@@ -1,0 +1,31 @@
+.left {
+  padding-top: 48px;
+  padding-right: 90px;
+  box-shadow: 1px 0 10px 0 rgba(0, 0, 0, 0.1);
+
+  .message {
+    position: absolute;
+    font-size: 48px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.8);
+    top: -125px;
+  }
+
+  .img {
+    width: inherit;
+    position: relative;
+    max-width: 900px;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.right {
+  background-color: #f5faff;
+  .welcome {
+    font-size: 36px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
