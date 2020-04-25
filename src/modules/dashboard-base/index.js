@@ -55,8 +55,12 @@ export default function DashboardBase() {
       }
       return (
         <Menu.Item key={el.label}>
-          {el.icon && React.createElement(el.icon)}
-          <Link to={el.path}>{el.label}</Link>
+          <Link to={el.path}>
+            <div className='d--f ai--c'>
+              {el.icon && React.createElement(el.icon)}
+              {el.label}
+            </div>
+          </Link>
         </Menu.Item>
       );
     });
