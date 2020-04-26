@@ -2,7 +2,7 @@ name: Dev CI
 
 on:
   push:
-    branches: [ master, piyush/good-cicd, piyush/test ]
+    branches: [ master ]
 
 jobs:
   build:
