@@ -1,4 +1,3 @@
 export default {
-  baseUrl: 'whateven',
-  apiVersionV1: 'api/v1/'
+  url: process.env.REACT_APP_API_ENDPOINT
 };
