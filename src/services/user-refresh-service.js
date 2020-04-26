@@ -11,6 +11,9 @@ const userRefreshService = {
         UserService.setUser(user);
         callback && callback(user);
       })
+      .catch(err => {
+        console.log(err);
+      })
       .done();
   }
 };

@@ -10,5 +10,8 @@
   "@box-shadow-base": "0 1px 5px 0 rgba(0, 0, 0, 0.15)",
   "@btn-font-size-lg": "@font-size-base",
   "@btn-font-size-sm": "@font-size-base",
-  "@btn-font-weight": "500"
+  "@btn-font-weight": "500",
+  "@table-header-color": "rgba(0, 0, 0, 0.8)",
+  "@table-padding-vertical": "8px",
+  "@table-header-bg": "#fff"
 }

@@ -24,7 +24,7 @@ export default function DashboardBase() {
         return [
           ...prev,
           <Route
-            exact
+            exact={prop.exact}
             path={prop.path}
             component={prop.component}
             key={prop.path}
@@ -36,7 +36,6 @@ export default function DashboardBase() {
         return prev;
       }
     }, []);
-    console.log(setRoutes);
     return setRoutes;
   }
 
@@ -49,21 +48,33 @@ export default function DashboardBase() {
   };
 
   const renderRoutes = routes => {
-    return routes.map(el => {
-      if (el.children && el.children.length > 0) {
-        return renderGrouped(el);
+    const routesSorted = [...routes].sort((a, b) => {
+      if (
+        Object.hasOwnProperty.call(a, 'sidebarIndex') &&
+        Object.hasOwnProperty.call(b, 'sidebarIndex')
+      ) {
+        return a.sidebarIndex - b.sidebarIndex;
       }
-      return (
-        <Menu.Item key={el.label}>
-          <Link to={el.path}>
-            <div className='d--f ai--c'>
-              {el.icon && React.createElement(el.icon)}
-              {el.label}
-            </div>
-          </Link>
-        </Menu.Item>
-      );
+      return 0;
     });
+
+    return routesSorted
+      .filter(el => el.children || el.label)
+      .map(el => {
+        if (el.children && el.children.length > 0) {
+          return renderGrouped(el);
+        }
+        return (
+          <Menu.Item key={el.label}>
+            <Link to={el.path}>
+              <div className='d--f ai--c'>
+                {el.icon && React.createElement(el.icon)}
+                {el.label}
+              </div>
+            </Link>
+          </Menu.Item>
+        );
+      });
   };
 
   return (
