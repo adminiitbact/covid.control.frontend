@@ -1,16 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Header, Content } from 'components/layout';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
+import FacilityList from './facility-list';
 import FacilityAPI from 'api/facility';
 
-import { notification } from 'antd';
+import { Button, notification, Row } from 'antd';
 
 export default function FacilityAdd(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [filterLinkVal, setFilterLinkVal]  = useState('');
   const reqRef = useRef();
-  const history = useHistory();
+  // const history = useHistory();
 
   useEffect(() => {
     setLoading(true);
@@ -42,12 +44,42 @@ export default function FacilityAdd(props) {
     };
   }, []);
 
-  // console.log(data);
+  const filterLink = val => {
+    setFilterLinkVal(val);
+  };
 
+  // console.log(data);
+  const filterData = () => {
+    const filteredData = [];
+    data.map(datum => {
+      if (datum.link.includes(filterLinkVal)) {
+        filteredData.push(datum);
+      }
+    });
+    return filteredData;
+  };
   return (
     <>
       <Header fixed></Header>
-      <Content>Linking</Content>
+      <Content>
+        <Row>
+          FILTER:
+          <Button size='large' onClick={() => filterLink('')} type='primary'>
+            All Link Issues
+          </Button>
+          <Button
+            size='large'
+            onClick={() => filterLink('No Link')}
+            type='primary'
+          >
+            No Link
+          </Button>
+          <Button size='large' onClick={() => filterLink('Link Full')} type='primary'>
+            Link Full
+          </Button>
+        </Row>
+        <FacilityList data={filterData()} loading={loading} />
+      </Content>
     </>
   );
 }

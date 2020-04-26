@@ -4,28 +4,32 @@ const facilityList = [
     type: 'CCC',
     status: 'COVID only',
     jurisdiction: 'PMC',
-    area: 'asdsa'
+    area: 'asdsa',
+    link: 'Link Full'
   },
   {
     name: 'asdad asd',
     type: 'CCC',
     status: 'COVID only',
     jurisdiction: 'PMC',
-    area: 'asdsa'
+    area: 'asdsa',
+    link: 'No Link'
   },
   {
     name: 'asdad asd',
     type: 'CCC',
     status: 'COVID only',
     jurisdiction: 'PMC',
-    area: 'asdsa'
+    area: 'asdsa',
+    link: 'No Link'
   },
   {
     name: 'asdad asd',
     type: 'CCC',
     status: 'COVID only',
     jurisdiction: 'PMC',
-    area: 'asdsa'
+    area: 'asdsa',
+    link: 'No Link'
   }
 ];
 
