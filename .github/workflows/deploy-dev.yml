@@ -2,7 +2,7 @@ name: Dev CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, piyush/good-cicd, piyush/test ]
 
 jobs:
   build:
@@ -50,3 +50,12 @@ jobs:
         AWS_REGION: 'ap-south-1'
         SOURCE_DIR: 'build'
         DEST_DIR: 'build'
+    
+    - name: Invalidate cache
+      uses: chetan/invalidate-cloudfront-action@v1.2
+      env:
+        DISTRIBUTION: ${{ secrets.cloudfront_dist_dev }}
+        PATHS: '*'
+        AWS_REGION: 'ap-south-1'
+        AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
