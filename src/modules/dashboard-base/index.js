@@ -24,7 +24,7 @@ export default function DashboardBase() {
         return [
           ...prev,
           <Route
-            exact
+            exact={prop.exact}
             path={prop.path}
             component={prop.component}
             key={prop.path}
@@ -58,21 +58,23 @@ export default function DashboardBase() {
       return 0;
     });
 
-    return routesSorted.map(el => {
-      if (el.children && el.children.length > 0) {
-        return renderGrouped(el);
-      }
-      return (
-        <Menu.Item key={el.label}>
-          <Link to={el.path}>
-            <div className='d--f ai--c'>
-              {el.icon && React.createElement(el.icon)}
-              {el.label}
-            </div>
-          </Link>
-        </Menu.Item>
-      );
-    });
+    return routesSorted
+      .filter(el => el.children || el.label)
+      .map(el => {
+        if (el.children && el.children.length > 0) {
+          return renderGrouped(el);
+        }
+        return (
+          <Menu.Item key={el.label}>
+            <Link to={el.path}>
+              <div className='d--f ai--c'>
+                {el.icon && React.createElement(el.icon)}
+                {el.label}
+              </div>
+            </Link>
+          </Menu.Item>
+        );
+      });
   };
 
   return (
