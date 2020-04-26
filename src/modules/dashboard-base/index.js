@@ -36,7 +36,6 @@ export default function DashboardBase() {
         return prev;
       }
     }, []);
-    console.log(setRoutes);
     return setRoutes;
   }
 
@@ -49,7 +48,17 @@ export default function DashboardBase() {
   };
 
   const renderRoutes = routes => {
-    return routes.map(el => {
+    const routesSorted = [...routes].sort((a, b) => {
+      if (
+        Object.hasOwnProperty.call(a, 'sidebarIndex') &&
+        Object.hasOwnProperty.call(b, 'sidebarIndex')
+      ) {
+        return a.sidebarIndex - b.sidebarIndex;
+      }
+      return 0;
+    });
+
+    return routesSorted.map(el => {
       if (el.children && el.children.length > 0) {
         return renderGrouped(el);
       }
