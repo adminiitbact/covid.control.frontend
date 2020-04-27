@@ -8,34 +8,34 @@ import Linking from 'modules/linking';
 // import DashboardIcon from 'assets/icons/dashboard.svg';
 
 export default [
-  {
-    sidebarIndex: 1,
-    label: 'Facilities',
-    // icon: VideoCameraOutlined,
-    children: [
-      {
-        label: 'Profiles',
-        path: '/facility/list',
-        exact: true,
-        // icon: VideoCameraOutlined,
-        component: FacilityList
-      },
-      {
-        label: '',
-        path: '/facility/add',
-        exact: true,
-        // icon: VideoCameraOutlined,
-        component: FacilityAdd
-      },
-      {
-        label: 'Linking',
-        path: '/facility/linking',
-        exact: true,
-        // icon: VideoCameraOutlined,
-        component: Linking
-      }
-    ]
-  },
+  // {
+  //   sidebarIndex: 1,
+  //   label: 'Facilities',
+  //   // icon: VideoCameraOutlined,
+  //   children: [
+  //     {
+  //       label: 'Profiles',
+  //       path: '/facility/list',
+  //       exact: true,
+  //       // icon: VideoCameraOutlined,
+  //       component: FacilityList
+  //     },
+  //     {
+  //       label: '',
+  //       path: '/facility/add',
+  //       exact: true,
+  //       // icon: VideoCameraOutlined,
+  //       component: FacilityAdd
+  //     },
+  //     {
+  //       label: 'Linking',
+  //       path: '/facility/linking',
+  //       exact: true,
+  //       // icon: VideoCameraOutlined,
+  //       component: Linking
+  //     }
+  //   ]
+  // },
   {
     sidebarIndex: 0,
     label: 'Dashboard',
