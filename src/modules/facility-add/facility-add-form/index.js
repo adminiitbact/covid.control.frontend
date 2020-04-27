@@ -9,81 +9,100 @@ import ErrorFocus from 'components/error-focus';
 
 import './facility-add-form.scss';
 
-const zoneReg = /^[0-9]+$/;
+// const zoneReg = /^[0-9]+$/;
 const phoneRegExp = /^[0-9]+$/;
 const emailRegExp = /^[A-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const mobRegExp = /^[1-9][0-9]{9}$/;
 
-//     "covidFacilityType": "string",
-//     "facilityId": 0,
-//     "facilityStatus": "string",
-//     "hospitalCategory": "string",
-//     "institutionType": "string",
-//     "isFeverClinicAvailable": 0,
-//     "isSeperateEntryExitAvailable": 0,
-//     "ulbWardName": "string",
-//     "ulbZoneName": "string"
+function supportBackendTransform(obj) {
+  if (!obj) {
+    return null;
+  }
+  let newFacilitySchema = {};
+  if (obj.facility) {
+    newFacilitySchema = Object.assign({}, obj.facility);
+  }
+  if (obj.contactDetails) {
+    const contactDetails = Object.assign({}, obj.contactDetails);
+    contactDetails.contactDetails_name = contactDetails.name;
+    contactDetails.contactDetails_email_id = contactDetails.email;
+    contactDetails.contactDetails_mobile_number = contactDetails.mobile;
+    delete contactDetails.name;
+    delete contactDetails.email;
+    delete contactDetails.mobile;
 
-// zone_number
-// phase_!
-// phase_2
-// email
+    newFacilitySchema = Object.assign(newFacilitySchema, contactDetails);
+  }
+  return newFacilitySchema;
+}
 
 const FacilityFormSchema = Yup.object().shape({
   name: Yup.string().required('Please enter a name for the facility'),
   area: Yup.string().required('Please enter the locality'),
   address: Yup.string().required('Please enter the address'),
-  jurisdiction: Yup.string(),
-  zone_number: Yup.string()
-    .required('Please enter the zone number')
-    .matches(zoneReg, 'please enter a valid zone number'),
-  agreementStatus: Yup.string().required('Please select the status'),
-  governmentHospital: Yup.string().required('Please select the ownsership'),
-  phase_1: Yup.string().required('Please fill the phase number'),
-  phase_2: Yup.string().required('Please fill the phase avaibility'),
+  jurisdiction: Yup.string().required('Please select the jurisdiction'),
+  // zone_number: Yup.string()
+  //   .required('Please enter the zone number')
+  //   .matches(zoneReg, 'please enter a valid zone number'),
+  facilityStatus: Yup.string().required('Please select the status'),
+  governmentHospital: Yup.number().required('Please select the ownsership'),
+  agreementStatus: Yup.string().required('Please select the agreement status'),
+  // phase_1: Yup.string().required('Please fill the phase number'),
+  // phase_2: Yup.string().required('Please fill the phase avaibility'),
   telephone: Yup.string()
     .required('Please enter the phone number')
     .matches(phoneRegExp, 'please enter a valid phone number'),
   email: Yup.string()
     .required('Please enter the email')
     .matches(emailRegExp, 'please enter a valid email address'),
-  pre_name: Yup.string().required('Please select'),
-  f_name: Yup.string().required('Please enter the first name'),
-  l_name: Yup.string().required('Please enter the last name'),
-  mobile_number: Yup.string()
+  contactDetails_name: Yup.string().required('Please enter the name'),
+  contactDetails_mobile_number: Yup.string()
     .required('Please enter the phone number')
     .matches(mobRegExp, 'please enter a valid mobile number'),
-  email_id: Yup.string()
+  contactDetails_email_id: Yup.string()
     .required('Please enter the email')
     .matches(emailRegExp, 'please enter a valid email address')
 });
 
 function FacilityAddForm({ onSubmit, innerRef, facility }) {
+  const onFormSubmit = (values, actions) => {
+    const newValues = {};
+    newValues.facility = Object.assign({}, values);
+    newValues.contactDetails = {
+      name: values.contactDetails_name,
+      email: values.contactDetails_email_id,
+      mobile: values.contactDetails_mobile_number
+    };
+    delete newValues.contactDetails_name;
+    delete newValues.contactDetails_email_id;
+    delete newValues.contactDetails_mobile_number;
+    onSubmit(newValues, actions);
+  };
+
   return (
     <Formik
       initialValues={
-        facility || {
+        supportBackendTransform(facility) || {
           name: '',
           area: '',
           address: '',
           jurisdiction: 'pmc',
-          zone_number: '',
-          agreementStatus: 'unassigned',
+          // zone_number: '',
+          facilityStatus: 'unassigned',
           governmentHospital: undefined,
-          phase_1: '',
-          phase_2: undefined,
+          agreementStatus: undefined,
+          // phase_1: '',
+          // phase_2: undefined,
           telephone: '',
           email: '',
-          pre_name: undefined,
-          f_name: '',
-          l_name: '',
-          mobile_number: '',
-          email_id: ''
+          contactDetails_name: '',
+          contactDetails_mobile_number: '',
+          contactDetails_email_id: ''
         }
       }
       innerRef={innerRef}
       validationSchema={FacilityFormSchema}
-      onSubmit={onSubmit}
+      onSubmit={onFormSubmit}
     >
       {props => {
         return (
@@ -143,7 +162,7 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col span={12}>
+                {/* <Col span={12}>
                   <Form.Item name='zone_number' label='zone_number'>
                     <Input
                       name='zone_number'
@@ -153,7 +172,7 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                       }}
                     />
                   </Form.Item>
-                </Col>
+                </Col> */}
               </Row>
             </div>
             <div className='form-section'>
@@ -166,9 +185,9 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                 }}
               >
                 <Col span={12}>
-                  <Form.Item name='agreementStatus' label='Facility Status'>
+                  <Form.Item name='facilityStatus' label='Facility Status'>
                     <Select
-                      name='agreementStatus'
+                      name='facilityStatus'
                       style={{
                         width: '100%'
                       }}
@@ -195,13 +214,31 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                         width: '100%'
                       }}
                     >
-                      <Select.Option value='1'>Government</Select.Option>
-                      <Select.Option value='0'>Private</Select.Option>
+                      <Select.Option value={1}>Government</Select.Option>
+                      <Select.Option value={0}>Private</Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>
               </Row>
-              <Row
+              <Form.Item name='agreementStatus' label='Agreement Status'>
+                <Select
+                  name='agreementStatus'
+                  placeholder=''
+                  style={{
+                    width: '100%'
+                  }}
+                >
+                  <Select.Option value='signed'>Signed</Select.Option>
+                  <Select.Option value='process_initiated'>
+                    Process Initiated
+                  </Select.Option>
+                  <Select.Option value='process_not_initiated'>
+                    Process Not Initiated
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+
+              {/* <Row
                 gutter={16}
                 style={{
                   width: '100%',
@@ -234,7 +271,7 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                     </Select>
                   </Form.Item>
                 </Col>
-              </Row>
+              </Row> */}
             </div>
             <div className='form-section'>
               <div className='section-title'>Organization details</div>
@@ -261,53 +298,22 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
             </div>
             <div className='form-section'>
               <div className='section-title'>Contact Person Details</div>
-              <Row
-                gutter={16}
-                style={{
-                  width: '100%',
-                  maxWidth: '650px'
-                }}
-              >
-                <Col span={4}>
-                  <Form.Item name='pre_name' label='Name'>
-                    <Select
-                      name='pre_name'
-                      style={{
-                        width: '100%'
-                      }}
-                    >
-                      <Select.Option value='mr'>Mr.</Select.Option>
-                      <Select.Option value='mrs'>Mrs.</Select.Option>
-                      <Select.Option value='dr'>Dr.</Select.Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={10}>
-                  <Form.Item name='f_name' label=' '>
-                    <Input
-                      name='f_name'
-                      placeholder='First name'
-                      style={{
-                        width: '100%'
-                      }}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={10}>
-                  <Form.Item name='l_name' label=' '>
-                    <Input
-                      name='l_name'
-                      placeholder='Last name'
-                      style={{
-                        width: '100%'
-                      }}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Form.Item name='mobile_number' label='Mobile Number'>
+              <Form.Item name='contactDetails_name' label='Name'>
                 <Input
-                  name='mobile_number'
+                  name='contactDetails_name'
+                  placeholder='Full name'
+                  style={{
+                    width: '100%',
+                    maxWidth: '570px'
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                name='contactDetails_mobile_number'
+                label='Mobile Number'
+              >
+                <Input
+                  name='contactDetails_mobile_number'
                   placeholder=''
                   style={{
                     width: '100%',
@@ -315,9 +321,9 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                   }}
                 />
               </Form.Item>
-              <Form.Item name='email_id' label='Email ID'>
+              <Form.Item name='contactDetails_email_id' label='Email ID'>
                 <Input
-                  name='email_id'
+                  name='contactDetails_email_id'
                   placeholder=''
                   style={{
                     width: '100%',

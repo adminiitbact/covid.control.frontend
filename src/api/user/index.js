@@ -12,7 +12,7 @@ const userApi = {
     const payloadWithToken = Object.assign({}, payload, {
       authToken: UserService.getUserSessionId()
     });
-    return agent.get(`${serverURL}${resourcePath}`).query(payloadWithToken);
+    return agent.post(`${serverURL}${resourcePath}`).send(payloadWithToken);
   }
 };
 

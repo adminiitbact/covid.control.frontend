@@ -15,7 +15,7 @@ const userApi = {
       authToken: UserService.getUserSessionId()
     });
     return agent
-      .post(`${serverURL}/${resourcePath}/create`)
+      .post(`${serverURL}${resourcePath}/create`)
       .send(payloadWithToken);
   },
   patch: function (id, payload = {}) {
@@ -23,7 +23,7 @@ const userApi = {
       authToken: UserService.getUserSessionId()
     });
     return agent
-      .post(`${serverURL}/${resourcePath}/${id}/edit`)
+      .post(`${serverURL}${resourcePath}/${id}/edit`)
       .send(payloadWithToken);
   },
   get: function (id, payload = {}) {
@@ -31,17 +31,17 @@ const userApi = {
       authToken: UserService.getUserSessionId()
     });
     return agent
-      .get(`${serverURL}/${resourcePath}/${id}`)
-      .query(payloadWithToken);
+      .post(`${serverURL}${resourcePath}/${id}`)
+      .send(payloadWithToken);
   },
-  getFacilityList: function (payload = {}) {
-    // const payloadWithToken = Object.assign({}, payload, {
-    //   authToken: UserService.getUserSessionId()
-    // });
-    // return agent
-    //   .get(`${serverURL}/${resourcePath}`)
-    //   .query(payloadWithToken);
-    return stubUtil(stubJson.facilityList);
+  getFacilityList: function (pageNo, payload = {}) {
+    const payloadWithToken = Object.assign({}, payload, {
+      authToken: UserService.getUserSessionId()
+    });
+    return agent
+      .post(`${serverURL}${resourcePath}/${pageNo}`)
+      .send(payloadWithToken);
+    // return stubUtil(stubJson.facilityList);
   }
 };
 

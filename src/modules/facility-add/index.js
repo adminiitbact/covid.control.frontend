@@ -26,9 +26,7 @@ export default function FacilityAdd(props) {
   const onSubmit = (values, actions) => {
     setLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.create({
-      facility: values
-    });
+    const req = FacilityAPI.create(values);
     reqRef.current = req;
     req
       .then(res => {
