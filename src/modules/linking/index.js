@@ -10,7 +10,7 @@ import { Button, notification, Row } from 'antd';
 export default function FacilityLinking(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [filterLinkVal, setFilterLinkVal]  = useState('');
+  const [filterLinkVal, setFilterLinkVal] = useState('');
   const reqRef = useRef();
   // const history = useHistory();
 
@@ -51,7 +51,7 @@ export default function FacilityLinking(props) {
   // console.log(data);
   const filterData = () => {
     const filteredData = [];
-    data.map(datum => {
+    data.forEach(datum => {
       if (datum.link.includes(filterLinkVal)) {
         filteredData.push(datum);
       }
@@ -74,7 +74,11 @@ export default function FacilityLinking(props) {
           >
             No Link
           </Button>
-          <Button size='large' onClick={() => filterLink('Link Full')} type='primary'>
+          <Button
+            size='large'
+            onClick={() => filterLink('Link Full')}
+            type='primary'
+          >
             Link Full
           </Button>
         </Row>
