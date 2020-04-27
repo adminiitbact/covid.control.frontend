@@ -25,7 +25,7 @@ const columns = [
   }
 ];
 
-export default function FacilityList({ loading, data }) {
+export default function FacilityTable({ loading, data }) {
   const onRow = (record, rowIndex) => {
     return {
       onClick: event => {

@@ -7,7 +7,7 @@ import FacilityAPI from 'api/facility';
 
 import { Button, notification, Row } from 'antd';
 
-export default function FacilityAdd(props) {
+export default function FacilityLinking(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [filterLinkVal, setFilterLinkVal]  = useState('');
