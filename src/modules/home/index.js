@@ -11,8 +11,10 @@ const antIcon = (
   <LoadingOutlined style={{ fontSize: 52, fontWeight: 500 }} spin />
 );
 
+const BIscreenRatio = 16 / 9;
+
 function getFrameHeightWidth(divHeight, divWidth) {
-  if (divWidth / divHeight > 4 / 3) {
+  if (divWidth / divHeight > BIscreenRatio) {
     return {
       height: divHeight,
       width: (4 / 3) * divHeight
