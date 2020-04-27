@@ -9,6 +9,7 @@ import { Button, notification } from 'antd';
 
 export default function FacilityAdd(props) {
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
   const [data, setData] = useState([]);
   const reqRef = useRef();
   const history = useHistory();
@@ -16,7 +17,7 @@ export default function FacilityAdd(props) {
   useEffect(() => {
     setLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList();
+    const req = FacilityAPI.getFacilityList(page);
     reqRef.current = req;
     req
       .then(
@@ -41,13 +42,11 @@ export default function FacilityAdd(props) {
     return () => {
       reqRef.current && reqRef.current.abort();
     };
-  }, []);
+  }, [page]);
 
   const goToFacilityAdd = () => {
     history.push('/facility/add');
   };
-
-  console.log(data);
 
   return (
     <>

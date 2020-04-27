@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-constructor */
 import Promise from 'promise';
 
 class extendPromise extends Promise {

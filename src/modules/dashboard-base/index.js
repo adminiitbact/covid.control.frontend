@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { Layout, Menu } from 'antd';
 import { Route, Switch, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import {
   MenuUnfoldOutlined,
@@ -20,6 +21,7 @@ const { Sider } = Layout;
 
 function DashboardBase(props) {
   const [collapsed, setCollapsed] = useState(false);
+  const history = useHistory();
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -85,6 +87,7 @@ function DashboardBase(props) {
   };
 
   const handleLogout = () => {
+    history.push('/login');
     userService.logoutUser();
     props.logoutUser();
   };
