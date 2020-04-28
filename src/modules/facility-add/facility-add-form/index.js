@@ -1,18 +1,38 @@
 import React from 'react';
 
-import { Row, Col } from 'antd';
+import { Row, Col, Skeleton } from 'antd';
 import * as Yup from 'yup';
+import { connect } from 'react-redux';
 
 import { Formik } from 'formik';
 import { Form, Input, Select } from 'formik-antd';
 import ErrorFocus from 'components/error-focus';
-
+import { covidFacilityTypes } from 'app-constants';
 import './facility-add-form.scss';
 
 // const zoneReg = /^[0-9]+$/;
 const phoneRegExp = /^[0-9]+$/;
 const emailRegExp = /^[A-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const mobRegExp = /^[1-9][0-9]{9}$/;
+
+const defaultFacilityObj = {
+  name: '',
+  area: '',
+  address: '',
+  covidFacilityType: undefined,
+  jurisdiction: 'pmc',
+  // zone_number: '',
+  facilityStatus: 'unassigned',
+  governmentHospital: undefined,
+  agreementStatus: undefined,
+  // phase_1: '',
+  // phase_2: undefined,
+  telephone: '',
+  email: '',
+  primary_contact_person_name: '',
+  primary_contact_person_mobile: '',
+  primary_contact_person_email: ''
+};
 
 function supportBackendTransform(obj) {
   if (!obj) {
@@ -22,24 +42,26 @@ function supportBackendTransform(obj) {
   if (obj.facilityProfile) {
     newFacilitySchema = Object.assign({}, obj.facilityProfile);
   }
-  if (obj.contactDetails) {
-    const contactDetails = Object.assign({}, obj.contactDetails);
-    contactDetails.contactDetails_name = contactDetails.name;
-    contactDetails.contactDetails_email_id = contactDetails.email;
-    contactDetails.contactDetails_mobile_number = contactDetails.mobile;
-    delete contactDetails.name;
-    delete contactDetails.email;
-    delete contactDetails.mobile;
-
+  if (obj.facilityProfile && obj.facilityProfile.facilityContact) {
+    const contactDetails = Object.assign(
+      {},
+      obj.facilityProfile.facilityContact.data || {
+        primary_contact_person_name: '',
+        primary_contact_person_mobile: '',
+        primary_contact_person_email: ''
+      }
+    );
+    delete newFacilitySchema.facilityContact;
     newFacilitySchema = Object.assign(newFacilitySchema, contactDetails);
   }
-  return newFacilitySchema;
+  return Object.assign({}, defaultFacilityObj, newFacilitySchema);
 }
 
 const FacilityFormSchema = Yup.object().shape({
   name: Yup.string().required('Please enter a name for the facility'),
   area: Yup.string().required('Please enter the locality'),
   address: Yup.string().required('Please enter the address'),
+  covidFacilityType: Yup.string().required('Please select the facility type'),
   jurisdiction: Yup.string().required('Please select the jurisdiction'),
   // zone_number: Yup.string()
   //   .required('Please enter the zone number')
@@ -55,56 +77,58 @@ const FacilityFormSchema = Yup.object().shape({
   email: Yup.string()
     .required('Please enter the email')
     .matches(emailRegExp, 'please enter a valid email address'),
-  contactDetails_name: Yup.string().required('Please enter the name'),
-  contactDetails_mobile_number: Yup.string()
+  primary_contact_person_name: Yup.string().required('Please enter the name'),
+  primary_contact_person_mobile: Yup.string()
     .required('Please enter the phone number')
     .matches(mobRegExp, 'please enter a valid mobile number'),
-  contactDetails_email_id: Yup.string()
+  primary_contact_person_email: Yup.string()
     .required('Please enter the email')
     .matches(emailRegExp, 'please enter a valid email address')
 });
 
-function FacilityAddForm({ onSubmit, innerRef, facility }) {
+function FacilityAddForm({
+  onSubmit,
+  innerRef,
+  facility,
+  loading,
+  areaList,
+  loadingAreaList
+}) {
   const onFormSubmit = (values, actions) => {
     const newValues = {};
-    newValues.facility = Object.assign({}, values);
-    newValues.contactDetails = {
-      name: values.contactDetails_name,
-      email: values.contactDetails_email_id,
-      mobile: values.contactDetails_mobile_number
+    newValues.facilityProfile = Object.assign({}, values);
+    newValues.facilityProfile.facilityContact = {
+      data: {
+        primary_contact_person_name: values.primary_contact_person_name,
+        primary_contact_person_email: values.primary_contact_person_email,
+        primary_contact_person_mobile: values.primary_contact_person_mobile
+      }
     };
-    delete newValues.contactDetails_name;
-    delete newValues.contactDetails_email_id;
-    delete newValues.contactDetails_mobile_number;
+    delete newValues.facilityProfile.primary_contact_person_name;
+    delete newValues.facilityProfile.primary_contact_person_email;
+    delete newValues.facilityProfile.primary_contact_person_mobile;
     onSubmit(newValues, actions);
   };
 
+  const initVals = facility
+    ? supportBackendTransform(facility)
+    : defaultFacilityObj;
+
+  if (loading) {
+    return <Skeleton />;
+  }
+
+  console.count('render');
+
   return (
     <Formik
-      initialValues={
-        supportBackendTransform(facility) || {
-          name: '',
-          area: '',
-          address: '',
-          jurisdiction: 'pmc',
-          // zone_number: '',
-          facilityStatus: 'unassigned',
-          governmentHospital: undefined,
-          agreementStatus: undefined,
-          // phase_1: '',
-          // phase_2: undefined,
-          telephone: '',
-          email: '',
-          contactDetails_name: '',
-          contactDetails_mobile_number: '',
-          contactDetails_email_id: ''
-        }
-      }
+      initialValues={initVals}
       innerRef={innerRef}
       validationSchema={FacilityFormSchema}
       onSubmit={onFormSubmit}
     >
       {props => {
+        console.log(props);
         return (
           <Form layout='vertical' className='facility-form'>
             <div className='form-section'>
@@ -120,14 +144,27 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                 />
               </Form.Item>
               <Form.Item name='area' label='Area/Locality'>
-                <Input
+                <Select
+                  showSearch
                   name='area'
-                  placeholder=''
+                  placeholder='Area'
                   style={{
                     width: '100%',
                     maxWidth: '570px'
                   }}
-                />
+                  loading={loadingAreaList}
+                  filterOption={(input, option) =>
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {areaList.map(el => (
+                    <Select.Option key={el.area} value={el.area}>
+                      {el.area}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
               <Form.Item name='address' label='Address'>
                 <Input.TextArea
@@ -138,6 +175,20 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                     maxWidth: '570px'
                   }}
                 />
+              </Form.Item>
+              <Form.Item name='covidFacilityType' label='Facility Type'>
+                <Select
+                  name='covidFacilityType'
+                  placeholder=''
+                  style={{
+                    width: '100%',
+                    maxWidth: '570px'
+                  }}
+                >
+                  {covidFacilityTypes.map(el => (
+                    <Select.Option value={el.key}>{el.label}</Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
               <Row
                 gutter={16}
@@ -298,9 +349,9 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
             </div>
             <div className='form-section'>
               <div className='section-title'>Contact Person Details</div>
-              <Form.Item name='contactDetails_name' label='Name'>
+              <Form.Item name='primary_contact_person_name' label='Name'>
                 <Input
-                  name='contactDetails_name'
+                  name='primary_contact_person_name'
                   placeholder='Full name'
                   style={{
                     width: '100%',
@@ -309,11 +360,11 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                 />
               </Form.Item>
               <Form.Item
-                name='contactDetails_mobile_number'
+                name='primary_contact_person_mobile'
                 label='Mobile Number'
               >
                 <Input
-                  name='contactDetails_mobile_number'
+                  name='primary_contact_person_mobile'
                   placeholder=''
                   style={{
                     width: '100%',
@@ -321,9 +372,9 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
                   }}
                 />
               </Form.Item>
-              <Form.Item name='contactDetails_email_id' label='Email ID'>
+              <Form.Item name='primary_contact_person_email' label='Email ID'>
                 <Input
-                  name='contactDetails_email_id'
+                  name='primary_contact_person_email'
                   placeholder=''
                   style={{
                     width: '100%',
@@ -340,4 +391,7 @@ function FacilityAddForm({ onSubmit, innerRef, facility }) {
   );
 }
 
-export default FacilityAddForm;
+export default connect(state => ({
+  areaList: state.get('dashboardBase').get('areaList'),
+  loadingAreaList: state.get('dashboardBase').get('loadingAreaList')
+}))(FacilityAddForm);

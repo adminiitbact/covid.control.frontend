@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Layout, Menu } from 'antd';
@@ -11,6 +11,10 @@ import {
   LogoutOutlined
 } from '@ant-design/icons';
 
+import { 
+  fetchAreaList
+} from './dashboard-base-actions.js'
+
 import { logoutUser } from 'modules/login/login-action';
 import ModuleRoutes from './module-routes.js';
 
@@ -22,6 +26,11 @@ const { Sider } = Layout;
 function DashboardBase(props) {
   const [collapsed, setCollapsed] = useState(false);
   const history = useHistory();
+
+  useEffect(() => {
+    props.fetchAreaList()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -148,5 +157,6 @@ function DashboardBase(props) {
 }
 
 export default connect(null, {
-  logoutUser
+  logoutUser,
+  fetchAreaList
 })(DashboardBase);

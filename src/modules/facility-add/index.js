@@ -7,10 +7,12 @@ import FacilityAPI from 'api/facility';
 import { Button, notification } from 'antd';
 
 export default function FacilityAdd(props) {
-  const [loading, setLoading] = useState(false);
-  const [facilityObj, setFacilityObj] = useState();
   const params = useParams();
   const isEdit = params && params.facilityId;
+  const [loading, setLoading] = useState(false);
+  const [facilityObj, setFacilityObj] = useState();
+  const [facilityLoading, setFacilityLoading] = useState(isEdit);
+
   const formRef = useRef();
   const reqRef = useRef();
 
@@ -19,6 +21,27 @@ export default function FacilityAdd(props) {
       reqRef.current && reqRef.current.abort();
     };
   }, []);
+
+  useEffect(() => {
+    if (isEdit) {
+      setFacilityLoading(true);
+      reqRef.current && reqRef.current.abort();
+      const req = FacilityAPI.get(params.facilityId);
+      reqRef.current = req;
+      req
+        .then(res => {
+          setFacilityObj(res.body.data);
+          setFacilityLoading(false);
+        })
+        .catch(err => {
+          notification.error({
+            message: 'Facility',
+            description: 'Something went wrong, please try again later'
+          });
+          setFacilityLoading(false);
+        });
+    }
+  }, [isEdit, params.facilityId]);
 
   const submitForm = () => {
     if (formRef.current) {
@@ -57,28 +80,6 @@ export default function FacilityAdd(props) {
       });
   };
 
-  useEffect(() => {
-    if (isEdit) {
-      setLoading(true);
-      reqRef.current && reqRef.current.abort();
-      const req = FacilityAPI.get(params.facilityId);
-      reqRef.current = req;
-      req
-        .then(res => {
-          console.log(res.body);
-          setFacilityObj(res.body);
-          setLoading(false);
-        })
-        .catch(err => {
-          notification.error({
-            message: 'Facility',
-            description: 'Something went wrong, please try again later'
-          });
-          setLoading(false);
-        });
-    }
-  }, [isEdit, params.facilityId]);
-
   return (
     <>
       <Header fixed>
@@ -98,6 +99,7 @@ export default function FacilityAdd(props) {
           innerRef={formRef}
           onSubmit={onSubmit}
           facility={facilityObj}
+          loading={facilityLoading}
         />
       </Content>
     </>
