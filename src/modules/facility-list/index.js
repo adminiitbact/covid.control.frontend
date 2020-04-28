@@ -26,7 +26,7 @@ export default function FacilityList(props) {
   useEffect(() => {
     setLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList(page, filterConfig);
+    const req = FacilityAPI.getFacilityList(page+1, filterConfig);
     reqRef.current = req;
     req
       .then(
