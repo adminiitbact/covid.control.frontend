@@ -1,0 +1,14 @@
+.nav-box {
+  height: 48px;
+  width: 48px;
+  background-color: #fff;
+  cursor: pointer;
+  color: #007aff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.disabled {
+    cursor: not-allowed;
+    opacity: .4;
+  }
+}

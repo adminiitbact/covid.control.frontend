@@ -44,11 +44,11 @@ export default function Home() {
           <iframe
             title='bi'
             src='https://datastudio.google.com/embed/reporting/b14ec87e-51df-4d9f-9290-4facc967cae8/page/HusNB'
-            frameborder='0'
+            frameBorder='0'
             style={{
               border: 0
             }}
-            allowfullscreen
+            allowFullScreen
             ref={iframeRef}
           ></iframe>
         </div>

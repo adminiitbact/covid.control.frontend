@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux-immutablejs';
 
 import user from 'base/privateHOC/privateHOC-reducer.js';
-import firebase from 'modules/login/login-reducer';
+import login from 'modules/login/login-reducer.js';
+import dashboardBase from 'modules/dashboard-base/dashboard-base-reducer.js';
 
 export default combineReducers({
   user,
-  firebase
+  login,
+  dashboardBase
 });

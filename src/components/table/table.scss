@@ -11,6 +11,9 @@
   .ant-table-row.odd {
     background-color: #fafafa;
   }
+  .ant-table-row.clickable {
+    cursor: pointer;
+  }
   .ant-table-cell {
     height: 52px;
     font-family: Lato;

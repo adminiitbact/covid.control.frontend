@@ -12,12 +12,12 @@ import { Button, notification } from 'antd';
 
 export default function FacilityList(props) {
   const [loading, setLoading] = useState(false);
+  const [hasNext, setHasNext] = useState(true);
   const [page, setPage] = useState(1);
   const location = useLocation();
   const filterConfig = qs.parse(location.search, { ignoreQueryPrefix: true });
   const [data, setData] = useState([]);
   // eslint-disable-next-line no-unused-vars
-  const [hasMore, setHasMore] = useState(true);
   const reqRef = useRef();
   const history = useHistory();
 
@@ -33,8 +33,14 @@ export default function FacilityList(props) {
     req
       .then(
         res => {
-          setData(res.body.data.list);
-          setHasMore(res.body.data.hasMore);
+          if (
+            (res.body.data.list && res.body.data.list.length > 0) ||
+            page === 1
+          ) {
+            setData(res.body.data.list);
+          } else {
+            setHasNext(false);
+          }
           setLoading(false);
         },
         err => {
@@ -55,6 +61,14 @@ export default function FacilityList(props) {
     };
   }, [page, JSON.stringify(filterConfig)]);
 
+  const handleNextClick = () => {
+    setPage(page + 1);
+  };
+
+  const handlePrevClick = () => {
+    setPage(page - 1);
+  };
+
   const goToFacilityAdd = () => {
     history.push('/facility/add');
   };
@@ -70,7 +84,15 @@ export default function FacilityList(props) {
       </Header>
       <Content>
         <FacilityListFilters />
-        <FacilityTable data={data} loading={loading} />
+        <FacilityTable
+          data={data}
+          loading={loading}
+          current={page}
+          hasNext={hasNext}
+          hasPrev={page > 1}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
+        />
       </Content>
     </>
   );

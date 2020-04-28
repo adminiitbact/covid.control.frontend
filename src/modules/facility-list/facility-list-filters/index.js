@@ -2,28 +2,25 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Select } from 'antd';
 import qs from 'qs';
+import { covidFacilityTypes } from 'app-constants';
+import { connect } from 'react-redux';
 
 import './facility-list-filters.scss';
 
-export default function FacilityListFiltes() {
+function FacilityListFiltes({ areaList, loadingAreaList }) {
   const history = useHistory();
   const location = useLocation();
   const filterConfig = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   function onFilterSelect(type) {
     return value => {
-      console.log(
-        qs.stringify(
-          Object.assign(filterConfig, {
+      history.push({
+        pathname: location.pathname,
+        search: qs.stringify(
+          Object.assign({}, filterConfig, {
             [type]: value
           })
         )
-      );
-      history.push({
-        pathname: location.pathname,
-        search: qs.stringify(filterConfig, {
-          [type]: value
-        })
       });
     };
   }
@@ -32,7 +29,7 @@ export default function FacilityListFiltes() {
     <div className='d--f fd--r mb2'>
       <div className='title mr2 fs--0 fg--0 fb--a'>Filters:</div>
       <div className='d--f fd--r fw--w fs--1 fg--1 fb--a'>
-        {/* <div className='select-container mr1 mb1'>
+        <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'
             style={{ width: '125px', height: '100%' }}
@@ -41,12 +38,11 @@ export default function FacilityListFiltes() {
             value={filterConfig.covidFacilityType}
             onChange={onFilterSelect('covidFacilityType')}
           >
-            <Select.Option value='DCH'>DCH</Select.Option>
-            <Select.Option value='DCHC'>DCHC</Select.Option>
-            <Select.Option value='CCC'>CCC</Select.Option>
-            <Select.Option value='-'>-</Select.Option>
+            {covidFacilityTypes.map(el => (
+              <Select.Option value={el.key}>{el.label}</Select.Option>
+            ))}
           </Select>
-        </div> */}
+        </div>
         <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'
@@ -78,7 +74,33 @@ export default function FacilityListFiltes() {
             <Select.Option value='cs'>CS</Select.Option>
           </Select>
         </div>
+        <div className='select-container mr1 mb1'>
+          <Select
+            showSearch
+            allowClear
+            mode='multiple'
+            placeholder='Area'
+            value={filterConfig.areas}
+            style={{ width: '150px', height: '100%' }}
+            loading={loadingAreaList}
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            onChange={onFilterSelect('areas')}
+          >
+            {areaList.map(el => (
+              <Select.Option key={el.area} value={el.area}>
+                {el.area}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
       </div>
     </div>
   );
 }
+
+export default connect(state => ({
+  areaList: state.get('dashboardBase').get('areaList'),
+  loadingAreaList: state.get('dashboardBase').get('loadingAreaList')
+}))(FacilityListFiltes);

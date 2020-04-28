@@ -22,7 +22,6 @@ export default function FacilityLinking(props) {
     req
       .then(
         res => {
-          console.log(res);
           setData(res.body.data);
           setLoading(false);
         },
@@ -48,7 +47,6 @@ export default function FacilityLinking(props) {
     setFilterLinkVal(val);
   };
 
-  // console.log(data);
   const filterData = () => {
     const filteredData = [];
     data.forEach(datum => {
