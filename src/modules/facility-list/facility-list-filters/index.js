@@ -16,9 +16,11 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
     return value => {
       history.push({
         pathname: location.pathname,
-        search: qs.stringify(filterConfig, {
-          [type]: value
-        })
+        search: qs.stringify(
+          Object.assign({}, filterConfig, {
+            [type]: value
+          })
+        )
       });
     };
   }
