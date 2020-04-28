@@ -15,7 +15,8 @@ jobs:
         uses: DamianReeves/write-file-action@v1.0
         with:
           path: '.env.local'
-          contents: 'REACT_APP_API_ENDPOINT=https://api.control.cov2.in/api/\nREACT_APP_FIREBASE_CONFIG={"apiKey":"AIzaSyAtDZfhftwpIpN9rZ5I4GHYijGuCbZbib0","authDomain":"hospital-erp-prod.firebaseapp.com","databaseURL":"https://hospital-erp-prod.firebaseio.com","projectId":"hospital-erp-prod","storageBucket":"hospital-erp-prod.appspot.com","messagingSenderId":"374895034375","appId":"1:374895034375:web:68dac98f0009c12906aaa2","measurementId":"G-FMK8FK9CQ1"}'
+          contents: 'REACT_APP_API_ENDPOINT=https://api.control.cov2.in/api/
+          REACT_APP_FIREBASE_CONFIG={"apiKey":"AIzaSyAtDZfhftwpIpN9rZ5I4GHYijGuCbZbib0","authDomain":"hospital-erp-prod.firebaseapp.com","databaseURL":"https://hospital-erp-prod.firebaseio.com","projectId":"hospital-erp-prod","storageBucket":"hospital-erp-prod.appspot.com","messagingSenderId":"374895034375","appId":"1:374895034375:web:68dac98f0009c12906aaa2","measurementId":"G-FMK8FK9CQ1"}'
           write-mode: 'overwrite'
 
       - name: Read file
