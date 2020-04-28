@@ -118,8 +118,6 @@ function FacilityAddForm({
     return <Skeleton />;
   }
 
-  console.count('render');
-
   return (
     <Formik
       initialValues={initVals}
@@ -128,7 +126,6 @@ function FacilityAddForm({
       onSubmit={onFormSubmit}
     >
       {props => {
-        console.log(props);
         return (
           <Form layout='vertical' className='facility-form'>
             <div className='form-section'>
@@ -271,24 +268,26 @@ function FacilityAddForm({
                   </Form.Item>
                 </Col>
               </Row>
-              <Form.Item name='agreementStatus' label='Agreement Status'>
-                <Select
-                  name='agreementStatus'
-                  placeholder=''
-                  style={{
-                    width: '100%'
-                  }}
-                >
-                  <Select.Option value='signed'>Signed</Select.Option>
-                  <Select.Option value='process_initiated'>
-                    Process Initiated
-                  </Select.Option>
-                  <Select.Option value='process_not_initiated'>
-                    Process Not Initiated
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-
+              {props.values.governmentHospital === 0 && (
+                <Form.Item name='agreementStatus' label='Agreement Status'>
+                  <Select
+                    name='agreementStatus'
+                    placeholder=''
+                    style={{
+                      width: '100%',
+                      maxWidth: '570px'
+                    }}
+                  >
+                    <Select.Option value='signed'>Signed</Select.Option>
+                    <Select.Option value='process_initiated'>
+                      Process Initiated
+                    </Select.Option>
+                    <Select.Option value='process_not_initiated'>
+                      Process Not Initiated
+                    </Select.Option>
+                  </Select>
+                </Form.Item>
+              )}
               {/* <Row
                 gutter={16}
                 style={{

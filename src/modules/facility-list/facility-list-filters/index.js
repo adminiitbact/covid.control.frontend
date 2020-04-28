@@ -14,13 +14,6 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
 
   function onFilterSelect(type) {
     return value => {
-      console.log(
-        qs.stringify(
-          Object.assign(filterConfig, {
-            [type]: value
-          })
-        )
-      );
       history.push({
         pathname: location.pathname,
         search: qs.stringify(filterConfig, {

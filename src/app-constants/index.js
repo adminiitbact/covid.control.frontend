@@ -12,8 +12,8 @@ export const covidFacilityTypes = [
     label: 'DCH'
   },
   {
-    key: 'unassigned',
-    label: 'Unassigned'
+    key: 'UNASSINGNED',
+    label: 'UNASSINGNED'
   }
 ];
 

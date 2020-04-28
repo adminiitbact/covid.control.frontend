@@ -11,9 +11,7 @@ import {
   LogoutOutlined
 } from '@ant-design/icons';
 
-import { 
-  fetchAreaList
-} from './dashboard-base-actions.js'
+import { fetchAreaList } from './dashboard-base-actions.js';
 
 import { logoutUser } from 'modules/login/login-action';
 import ModuleRoutes from './module-routes.js';
@@ -28,9 +26,9 @@ function DashboardBase(props) {
   const history = useHistory();
 
   useEffect(() => {
-    props.fetchAreaList()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    props.fetchAreaList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -101,6 +99,8 @@ function DashboardBase(props) {
     props.logoutUser();
   };
 
+  // todo: handle defaultSelectedKeys for different routes
+  
   return (
     <Layout className='main-layout'>
       <Sider
@@ -126,7 +126,7 @@ function DashboardBase(props) {
           <Menu
             theme='light'
             mode='inline'
-            defaultSelectedKeys={[ModuleRoutes[0].label]}
+            defaultSelectedKeys={[ModuleRoutes[ModuleRoutes.length - 1].label]}
           >
             {renderRoutes(ModuleRoutes)}
           </Menu>
