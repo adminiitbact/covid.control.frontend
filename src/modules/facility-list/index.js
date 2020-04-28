@@ -12,27 +12,29 @@ import { Button, notification } from 'antd';
 
 export default function FacilityList(props) {
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const location = useLocation();
   const filterConfig = qs.parse(location.search, { ignoreQueryPrefix: true });
   const [data, setData] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [hasMore, setHasMore] = useState(true);
   const reqRef = useRef();
   const history = useHistory();
 
   useEffect(() => {
-    setPage(0);
+    setPage(1);
   }, [JSON.stringify(filterConfig)]);
 
   useEffect(() => {
     setLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList(page+1, filterConfig);
+    const req = FacilityAPI.getFacilityList(page, filterConfig);
     reqRef.current = req;
     req
       .then(
         res => {
-          console.log(res);
-          setData(res.body.data);
+          setData(res.body.data.list);
+          setHasMore(res.body.data.hasMore);
           setLoading(false);
         },
         err => {
