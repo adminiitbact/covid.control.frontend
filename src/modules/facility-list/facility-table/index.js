@@ -2,6 +2,8 @@ import React from 'react';
 import Table from 'components/table';
 import { useHistory } from 'react-router';
 
+import InfinitePagination from 'components/infinite-pagination';
+
 const columns = [
   {
     dataIndex: 'name',
@@ -26,23 +28,43 @@ const columns = [
   }
 ];
 
-export default function FacilityTable({ loading, data }) {
-  const history = useHistory()
+export default function FacilityTable({
+  loading,
+  data,
+  current,
+  hasNext,
+  hasPrev,
+  handleNextClick,
+  handlePrevClick
+}) {
+  const history = useHistory();
   const onRow = (record, rowIndex) => {
     return {
       onClick: event => {
-        history.push(`/facility/edit/${record.facilityId}`)
+        history.push(`/facility/edit/${record.facilityId}`);
       }
     };
   };
 
   return (
-    <Table
-      stripped
-      loading={loading}
-      onRow={onRow}
-      columns={columns}
-      dataSource={data}
-    />
+    <div>
+      <Table
+        stripped
+        loading={loading}
+        onRow={onRow}
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+      />
+      <div className='d--f fd--rr mt2'>
+        <InfinitePagination
+          current={current}
+          hasNext={hasNext}
+          hasPrev={hasPrev}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
+        />
+      </div>
+    </div>
   );
 }
