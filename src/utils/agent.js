@@ -8,10 +8,7 @@ import Promise from 'promise';
 function interceptor(next) {
   return function handler(err, response) {
     if (err && err.status === 401) {
-      window.location.href = 'login';
-    } else if (err && err.status === 400) {
-      UserService.logoutUser();
-      window.location.href = 'login';
+      window.location.href = '/login';
     } else {
       next(err, response);
     }
@@ -24,7 +21,7 @@ const defaultSuperAgentWithSession = defaults(promiseAgent);
 const request = {
   init: () =>
     defaultSuperAgentWithSession.set(
-      'token-cov-whateven-fix-this',
+      'authToken',
       UserService.getUserSessionId()
     ),
   delete: url => request.init().delete(url),

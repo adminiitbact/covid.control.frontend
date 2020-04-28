@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 import { Layout, Menu } from 'antd';
 import { Route, Switch, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  LogoutOutlined
+} from '@ant-design/icons';
 
+import { logoutUser } from 'modules/login/login-action';
 import ModuleRoutes from './module-routes.js';
 
 import './dashboard-base.scss';
+import userService from 'services/user-service.js';
 
 const { Sider } = Layout;
 
-export default function DashboardBase() {
+function DashboardBase(props) {
   const [collapsed, setCollapsed] = useState(false);
+  const history = useHistory();
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -24,7 +33,7 @@ export default function DashboardBase() {
         return [
           ...prev,
           <Route
-            exact
+            exact={prop.exact}
             path={prop.path}
             component={prop.component}
             key={prop.path}
@@ -36,7 +45,6 @@ export default function DashboardBase() {
         return prev;
       }
     }, []);
-    console.log(setRoutes);
     return setRoutes;
   }
 
@@ -49,21 +57,39 @@ export default function DashboardBase() {
   };
 
   const renderRoutes = routes => {
-    return routes.map(el => {
-      if (el.children && el.children.length > 0) {
-        return renderGrouped(el);
+    const routesSorted = [...routes].sort((a, b) => {
+      if (
+        Object.hasOwnProperty.call(a, 'sidebarIndex') &&
+        Object.hasOwnProperty.call(b, 'sidebarIndex')
+      ) {
+        return a.sidebarIndex - b.sidebarIndex;
       }
-      return (
-        <Menu.Item key={el.label}>
-          <Link to={el.path}>
-            <div className='d--f ai--c'>
-              {el.icon && React.createElement(el.icon)}
-              {el.label}
-            </div>
-          </Link>
-        </Menu.Item>
-      );
+      return 0;
     });
+
+    return routesSorted
+      .filter(el => el.children || el.label)
+      .map(el => {
+        if (el.children && el.children.length > 0) {
+          return renderGrouped(el);
+        }
+        return (
+          <Menu.Item key={el.label}>
+            <Link to={el.path}>
+              <div className='d--f ai--c'>
+                {el.icon && React.createElement(el.icon)}
+                {el.label}
+              </div>
+            </Link>
+          </Menu.Item>
+        );
+      });
+  };
+
+  const handleLogout = () => {
+    history.push('/login');
+    userService.logoutUser();
+    props.logoutUser();
   };
 
   return (
@@ -75,25 +101,37 @@ export default function DashboardBase() {
         theme='light'
         className='custom-sider'
       >
-        <Link to='/'>
-          <div className='logo'>
-            {!collapsed && (
-              <>
-                <span className='main'>COVID</span>
-                <span>.Control</span>
-              </>
-            )}
-            {collapsed && <span className='main pad-sm'>COV</span>}
-          </div>
-        </Link>
+        <div className='d--f fd--c full-height pb1'>
+          <Link to='/'>
+            <div className='logo'>
+              {!collapsed && (
+                <>
+                  <span className='main'>COVID</span>
+                  <span>.Control</span>
+                </>
+              )}
+              {collapsed && <span className='main pad-sm'>COV</span>}
+            </div>
+          </Link>
 
-        <Menu
-          theme='light'
-          mode='inline'
-          defaultSelectedKeys={[ModuleRoutes[0].label]}
-        >
-          {renderRoutes(ModuleRoutes)}
-        </Menu>
+          <Menu
+            theme='light'
+            mode='inline'
+            defaultSelectedKeys={[ModuleRoutes[0].label]}
+          >
+            {renderRoutes(ModuleRoutes)}
+          </Menu>
+          <div className='sider-bottom-section'>
+            <Menu theme='light' mode='inline'>
+              <Menu.Item key='logout'>
+                <div className='d--f ai--c' onClick={handleLogout}>
+                  <LogoutOutlined />
+                  Logout
+                </div>
+              </Menu.Item>
+            </Menu>
+          </div>
+        </div>
       </Sider>
       <Layout className='site-layout'>
         {React.createElement(
@@ -108,3 +146,7 @@ export default function DashboardBase() {
     </Layout>
   );
 }
+
+export default connect(null, {
+  logoutUser
+})(DashboardBase);
