@@ -28,12 +28,18 @@ export default [
         component: FacilityAdd
       },
       {
-        label: 'Linking',
-        path: '/facility/linking',
-        exact: true,
+        label: '',
+        path: '/facility/edit/:facilityId',
         // icon: VideoCameraOutlined,
-        component: Linking
+        component: FacilityAdd
       }
+      // {
+      //   label: 'Linking',
+      //   path: '/facility/linking',
+      //   exact: true,
+      //   // icon: VideoCameraOutlined,
+      //   component: Linking
+      // }
     ]
   },
   {
