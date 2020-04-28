@@ -15,7 +15,7 @@ jobs:
       uses: DamianReeves/write-file-action@v1.0
       with:
         path: ".env.local"
-        contents: "REACT_APP_API_ENDPOINT=http://api.staging.cov2.in/cc/api/"
+        contents: "REACT_APP_API_ENDPOINT=http://api.staging.control.cov2.in/api/"
         write-mode: "overwrite"
     
     - name: Read file
