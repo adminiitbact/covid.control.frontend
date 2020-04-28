@@ -6,7 +6,7 @@ import UserService from 'services/user-service';
 
 // const base = Constants.baseUrl;
 // const apiVersion = Constants.apiVersionV1;
-const resourcePath = 'facility';
+const resourcePath = 'facilities';
 const serverURL = Constants.url;
 
 const userApi = {
@@ -15,7 +15,7 @@ const userApi = {
       authToken: UserService.getUserSessionId()
     });
     return agent
-      .post(`${serverURL}${resourcePath}/create`)
+      .post(`${serverURL}${resourcePath}/new`)
       .send(payloadWithToken);
   },
   patch: function (id, payload = {}) {
@@ -23,7 +23,7 @@ const userApi = {
       authToken: UserService.getUserSessionId()
     });
     return agent
-      .post(`${serverURL}${resourcePath}/${id}/edit`)
+      .post(`${serverURL}${resourcePath}/${id}/post`)
       .send(payloadWithToken);
   },
   get: function (id, payload = {}) {
@@ -31,7 +31,7 @@ const userApi = {
       authToken: UserService.getUserSessionId()
     });
     return agent
-      .post(`${serverURL}${resourcePath}/${id}`)
+      .post(`${serverURL}${resourcePath}/${id}/get`)
       .send(payloadWithToken);
   },
   getFacilityList: function (pageNo, payload = {}) {
