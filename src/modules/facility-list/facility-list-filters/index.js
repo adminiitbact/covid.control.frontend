@@ -32,7 +32,7 @@ export default function FacilityListFiltes() {
     <div className='d--f fd--r mb2'>
       <div className='title mr2 fs--0 fg--0 fb--a'>Filters:</div>
       <div className='d--f fd--r fw--w fs--1 fg--1 fb--a'>
-        <div className='select-container mr1 mb1'>
+        {/* <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'
             style={{ width: '125px', height: '100%' }}
@@ -46,7 +46,7 @@ export default function FacilityListFiltes() {
             <Select.Option value='CCC'>CCC</Select.Option>
             <Select.Option value='-'>-</Select.Option>
           </Select>
-        </div>
+        </div> */}
         <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'

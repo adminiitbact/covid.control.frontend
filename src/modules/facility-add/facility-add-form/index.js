@@ -19,8 +19,8 @@ function supportBackendTransform(obj) {
     return null;
   }
   let newFacilitySchema = {};
-  if (obj.facility) {
-    newFacilitySchema = Object.assign({}, obj.facility);
+  if (obj.facilityProfile) {
+    newFacilitySchema = Object.assign({}, obj.facilityProfile);
   }
   if (obj.contactDetails) {
     const contactDetails = Object.assign({}, obj.contactDetails);

@@ -7,7 +7,14 @@ import Promise from 'promise';
 
 function interceptor(next) {
   return function handler(err, response) {
+    if (response && response.body && response.body.error) {
+      if (response.body.error.errorCode === 10) {
+        UserService.logoutUser();
+        window.location.href = '/login';
+      }
+    }
     if (err && err.status === 401) {
+      UserService.logoutUser();
       window.location.href = '/login';
     } else {
       next(err, response);

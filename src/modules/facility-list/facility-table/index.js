@@ -1,5 +1,6 @@
 import React from 'react';
 import Table from 'components/table';
+import { useHistory } from 'react-router';
 
 const columns = [
   {
@@ -8,11 +9,11 @@ const columns = [
     width: '30%'
   },
   {
-    dataIndex: 'type',
+    dataIndex: 'covidFacilityType',
     title: 'Type'
   },
   {
-    dataIndex: 'status',
+    dataIndex: 'facilityStatus',
     title: 'Status'
   },
   {
@@ -26,10 +27,11 @@ const columns = [
 ];
 
 export default function FacilityTable({ loading, data }) {
+  const history = useHistory()
   const onRow = (record, rowIndex) => {
     return {
       onClick: event => {
-        console.log('click', record);
+        history.push(`/facility/edit/${record.facilityId}`)
       }
     };
   };
