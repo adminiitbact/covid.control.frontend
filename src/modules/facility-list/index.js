@@ -16,6 +16,7 @@ export default function FacilityList(props) {
   const location = useLocation();
   const filterConfig = qs.parse(location.search, { ignoreQueryPrefix: true });
   const [data, setData] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [hasMore, setHasMore] = useState(true);
   const reqRef = useRef();
   const history = useHistory();
