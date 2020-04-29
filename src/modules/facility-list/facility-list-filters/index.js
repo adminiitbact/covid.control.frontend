@@ -56,7 +56,7 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
             <Select.Option value='mixed'>Mixed</Select.Option>
             <Select.Option value='uc'>Under Consideration(UC)</Select.Option>
             <Select.Option value='non_covid'>Non-COVID</Select.Option>
-            <Select.Option value='unassigned'>Unassigned</Select.Option>
+            <Select.Option value='Unassigned'>Unassigned</Select.Option>
           </Select>
         </div>
         <div className='select-container mr1 mb1'>
