@@ -12,11 +12,11 @@ export const covidFacilityTypes = [
     label: 'DCH'
   },
   {
-    key: 'UNASSINGNED',
-    label: 'UNASSINGNED'
+    key: 'Unassigned',
+    label: 'Unassigned'
   }
 ];
 
 export default {
   covidFacilityTypes
-}
+};
