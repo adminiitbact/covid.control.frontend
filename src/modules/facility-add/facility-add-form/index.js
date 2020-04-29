@@ -17,14 +17,14 @@ const mobRegExp = /^[1-9][0-9]{9}$/;
 
 const defaultFacilityObj = {
   name: '',
-  area: '',
+  area: null,
   address: '',
-  covidFacilityType: undefined,
+  covidFacilityType: null,
   jurisdiction: 'pmc',
   // zone_number: '',
   facilityStatus: 'unassigned',
-  governmentHospital: undefined,
-  agreementStatus: undefined,
+  governmentHospital: null,
+  agreementStatus: null,
   // phase_1: '',
   // phase_2: undefined,
   telephone: '',
@@ -59,16 +59,27 @@ function supportBackendTransform(obj) {
 
 const FacilityFormSchema = Yup.object().shape({
   name: Yup.string().required('Please enter a name for the facility'),
-  area: Yup.string().required('Please enter the locality'),
+  area: Yup.string().required('Please select the locality').nullable(),
   address: Yup.string().required('Please enter the address'),
-  covidFacilityType: Yup.string().required('Please select the facility type'),
-  jurisdiction: Yup.string().required('Please select the jurisdiction'),
+  covidFacilityType: Yup.string()
+    .required('Please select the facility type')
+    .nullable(),
+  jurisdiction: Yup.string().required('Please select the jurisdiction').nullable(),
   // zone_number: Yup.string()
   //   .required('Please enter the zone number')
   //   .matches(zoneReg, 'please enter a valid zone number'),
-  facilityStatus: Yup.string().required('Please select the status'),
-  governmentHospital: Yup.number().required('Please select the ownsership'),
-  agreementStatus: Yup.string().required('Please select the agreement status'),
+  facilityStatus: Yup.string().required('Please select the status').nullable(),
+  governmentHospital: Yup.number()
+    .required('Please select the ownsership')
+    .nullable(),
+  // agreementStatus: Yup.string().required('Please select the agreement status'),
+  agreementStatus: Yup.string().when(['governmentHospital'], {
+    is: governmentHospital => !governmentHospital,
+    then: Yup.string()
+      .required('Please select the agreement status')
+      .nullable(),
+    otherwise: Yup.string().nullable()
+  }),
   // phase_1: Yup.string().required('Please fill the phase number'),
   // phase_2: Yup.string().required('Please fill the phase avaibility'),
   telephone: Yup.string()
