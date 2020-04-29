@@ -29,8 +29,8 @@ jobs:
         with:
           args: install
 
-      - name: npm run build
-        run: npm run build
+      - name: npm run build:staging
+        run: npm run build:staging
 
       - name: Log npm errors
         if: failure()
