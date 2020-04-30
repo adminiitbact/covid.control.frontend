@@ -1,0 +1,15 @@
+.type-item {
+    cursor: pointer;
+    padding: 13px 13px 6px 13px;
+    & h3 {
+        font-size: 15px;
+        color: rgba(0, 0, 0, 0.8);
+    }
+}
+
+.selected {
+    background-color: #007aff;
+    h3 {
+        color: #fff;
+    }
+}

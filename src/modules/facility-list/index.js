@@ -7,6 +7,7 @@ import qs from 'qs';
 import FacilityTable from './facility-table';
 import FacilityAPI from 'api/facility';
 import FacilityListFilters from './facility-list-filters';
+import FacilityType from './../facility-type';
 
 import { Button, notification } from 'antd';
 
@@ -94,6 +95,7 @@ export default function FacilityList(props) {
           handlePrevClick={handlePrevClick}
         />
       </Content>
+      <FacilityType />
     </>
   );
 }
