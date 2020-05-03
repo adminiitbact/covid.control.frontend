@@ -5,7 +5,8 @@ import {
   useRouteMatch,
   Route,
   Switch,
-  useHistory
+  useHistory,
+  useLocation
 } from 'react-router-dom';
 import FacilityAPI from 'api/facility';
 import Tabs from 'components/tabs';
@@ -14,6 +15,7 @@ import FacilityLinking from './facility-linking';
 import FacilityAddForm from '../facility-add/facility-add-form';
 
 export default function FacilityEdit(props) {
+  const location = useLocation();
   const history = useHistory();
   const params = useParams();
   const formRef = useRef();
@@ -130,7 +132,10 @@ export default function FacilityEdit(props) {
     fetchFacilityLinks(params.facilityId);
   };
 
-  const selectedTab = 'edit-form';
+  const showSave = location.pathname.indexOf('link') === -1;
+  const selectedTab = (
+    tabOpts.find(el => location.pathname === `${url}${el.path}`) || tabOpts[0]
+  ).key;
 
   return (
     <>
@@ -144,27 +149,21 @@ export default function FacilityEdit(props) {
             />
           </div>
           <div className='ml-auto'>
-            <Button
-              loading={loading}
-              size='large'
-              onClick={submitForm}
-              type='primary'
-            >
-              SAVE
-            </Button>
+            {showSave && (
+              <Button
+                loading={loading}
+                size='large'
+                onClick={submitForm}
+                type='primary'
+              >
+                SAVE
+              </Button>
+            )}
           </div>
         </div>
       </Header>
       <Content>
         <Switch>
-          <Route exact path={path}>
-            <FacilityAddForm
-              innerRef={formRef}
-              onSubmit={onSubmit}
-              facility={facilityObj}
-              loading={facilityLoading}
-            />
-          </Route>
           <Route exact path={`${path}/link`}>
             <FacilityLinking
               facility={facilityObj}
@@ -173,6 +172,14 @@ export default function FacilityEdit(props) {
               links={facilityLinks}
               linksLoading={linkingLoading}
               onLinkListChange={handleAddLink}
+            />
+          </Route>
+          <Route path={path}>
+            <FacilityAddForm
+              innerRef={formRef}
+              onSubmit={onSubmit}
+              facility={facilityObj}
+              loading={facilityLoading}
             />
           </Route>
         </Switch>

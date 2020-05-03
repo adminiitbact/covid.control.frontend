@@ -1,13 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import qs from 'qs';
-import { notification, Button } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { notification, Select } from 'antd';
+import { useLocation, useHistory } from 'react-router-dom';
+import { DeleteFilled, PlusCircleFilled } from '@ant-design/icons';
 
 import _get from 'lodash/get';
 import _differenceBy from 'lodash/differenceBy';
 import FacilityAPI from 'api/facility';
+import Search from 'components/search';
 import LinkingTable from './linking-table';
+import { covidFacilityTypes } from 'app-constants';
+
+import './facility-linking.scss';
 
 function filterSelf(list, id) {
   return list.filter(el => String(_get(el, 'facilityId')) !== String(id));
@@ -21,6 +26,7 @@ export default function FacilityLinking({
   linksLoading,
   onLinkListChange
 }) {
+  const history = useHistory();
   const [facilityList, setFacilityList] = useState([]);
   const [facilityListLoading, setFacilityListLoading] = useState(true);
   const [hasNext, setHasNext] = useState(true);
@@ -146,6 +152,28 @@ export default function FacilityLinking({
     setPage(page - 1);
   };
 
+  const handleSearch = value => {
+    history.push({
+      pathname: location.pathname,
+      search: qs.stringify(
+        Object.assign({}, filterConfig, {
+          name: value
+        })
+      )
+    });
+  };
+
+  const handleTypeFilter = value => {
+    history.push({
+      pathname: location.pathname,
+      search: qs.stringify(
+        Object.assign({}, filterConfig, {
+          covidFacilityType: [value]
+        })
+      )
+    });
+  };
+
   const facilityListFiltered = filterSelf(
     _differenceBy(facilityList, links, el => el.facilityId),
     facilityId
@@ -154,17 +182,43 @@ export default function FacilityLinking({
   return (
     <div className='facility-linking-wrapper'>
       <div className='title'>{_get(facility, 'facilityProfile.name')}</div>
-      <div className='subtitle'>Ling facilities</div>
-      <div>Search/ filters</div>
+      <div className='subtitle mb1'>Link facilities</div>
+      {/* <div className='d--f mb1'>Search/filters</div> */}
+      <div className='mb2'>
+        <div className='mr2 d--if mb1'>
+          <Search
+            style={{
+              width: '300px'
+            }}
+            value={filterConfig.name}
+            onChange={handleSearch}
+          />
+        </div>
+        <Select
+          style={{ width: '150px' }}
+          allowClear
+          placeholder='Type'
+          value={filterConfig.covidFacilityType}
+          onChange={handleTypeFilter}
+        >
+          {covidFacilityTypes.map(el => (
+            <Select.Option value={el.key}>{el.label}</Select.Option>
+          ))}
+        </Select>
+      </div>
       <div className='table mb3 full-width'>
         <LinkingTable
           data={facilityListFiltered}
           actionCol={{
             key: 'action',
             render: (text, record, index) => (
-              <Button type='primary' onClick={handleAddLink(record, index)}>
-                LINK
-              </Button>
+              <div
+                className='add-action add'
+                onClick={handleAddLink(record, index)}
+              >
+                <PlusCircleFilled />
+                <span className='text'>Link</span>
+              </div>
             )
           }}
           loading={facilityListLoading}
@@ -176,23 +230,29 @@ export default function FacilityLinking({
         />
       </div>
       <div className='table mb3 full-width'>
-        <div>Linked Facilities</div>
+        <div className='heading'>Linked Facilities</div>
         {links.length !== 0 && (
           <LinkingTable
             data={links}
             actionCol={{
               key: 'action',
               render: (text, record, index) => (
-                <Button type='danger' onClick={handleRemoveLink(record, index)}>
-                  Delete
-                </Button>
+                <div
+                  className='add-action remove'
+                  onClick={handleRemoveLink(record, index)}
+                >
+                  <DeleteFilled />
+                  <span className='text'>Remove</span>
+                </div>
               )
             }}
             loading={linksLoading}
             pagination={false}
           />
         )}
-        {links.length === 0 && <div>No facilities linked</div>}
+        {links.length === 0 && (
+          <div className='empty-message'>No facilities linked</div>
+        )}
       </div>
     </div>
   );
