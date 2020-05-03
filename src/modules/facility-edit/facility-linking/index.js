@@ -221,6 +221,7 @@ export default function FacilityLinking({
               </div>
             )
           }}
+          pagination
           loading={facilityListLoading}
           current={page}
           hasNext={hasNext}
