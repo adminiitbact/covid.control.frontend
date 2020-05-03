@@ -22,7 +22,7 @@ const defaultFacilityObj = {
   covidFacilityType: null,
   jurisdiction: 'pmc',
   // zone_number: '',
-  facilityStatus: 'unassigned',
+  facilityStatus: 'Unassigned',
   governmentHospital: null,
   agreementStatus: null,
   // phase_1: '',
@@ -259,7 +259,7 @@ function FacilityAddForm({
                         Under Consideration(UC)
                       </Select.Option>
                       <Select.Option value='non_covid'>Non-COVID</Select.Option>
-                      <Select.Option value='unassigned'>
+                      <Select.Option value='Unassigned'>
                         Unassigned
                       </Select.Option>
                     </Select>
