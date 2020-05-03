@@ -41,7 +41,7 @@ export default function FacilityTable({
   const onRow = (record, rowIndex) => {
     return {
       onClick: event => {
-        history.push(`/facility/${record.facilityId}/edit`);
+        history.push(`/facility/${record.facilityId}/edit/link`);
       }
     };
   };
