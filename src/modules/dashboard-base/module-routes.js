@@ -2,6 +2,7 @@ import { BankOutlined } from '@ant-design/icons';
 import Home from 'modules/home';
 import FacilityAdd from 'modules/facility-add';
 import FacilityList from 'modules/facility-list';
+import PatientDetailList from 'modules/patient-detail-list'
 // import Linking from 'modules/linking';
 // import ICevents from 'assets/icons/ic-events.svg';
 
@@ -42,6 +43,21 @@ export default [
       // }
     ]
   },
+  {
+    sidebarIndex: 2,
+    label: 'Patients',
+    // icon: VideoCameraOutlined,
+    children: [
+      {
+        label: 'Details',
+        path: '/patients/detail-list',
+        exact: true,
+        // icon: VideoCameraOutlined,
+        component: PatientDetailList
+      }
+    ]
+  },
+
   {
     sidebarIndex: 0,
     label: 'Dashboard',
