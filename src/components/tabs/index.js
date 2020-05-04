@@ -6,7 +6,7 @@ function Tab({ option, isSelected, handleClick }) {
   return (
     <div
       onClick={handleClick}
-      className={`tab-item ${isSelected ? 'isSelected' : ''}`}
+      className={`d--f ai--c jc--c tab-item ${isSelected ? 'isSelected' : ''}`}
     >
       {option.label}
     </div>
