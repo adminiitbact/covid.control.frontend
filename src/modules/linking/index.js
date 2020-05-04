@@ -27,7 +27,10 @@ export default function Linking(props) {
   useEffect(() => {
     setLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList(page, filterConfig);
+    const req = FacilityAPI.getFacilityList(page, {
+      ...filterConfig,
+      hasLinks: false
+    });
     reqRef.current = req;
     req
       .then(

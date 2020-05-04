@@ -4,6 +4,8 @@ import { useHistory } from 'react-router';
 
 import InfinitePagination from 'components/infinite-pagination';
 
+import './linking-table.scss';
+
 const columns = [
   {
     dataIndex: 'name',
@@ -25,6 +27,10 @@ const columns = [
   {
     dataIndex: 'area',
     title: 'Area'
+  },
+  {
+    title: '',
+    render: () => <div className='danger-text'>No Link</div>
   }
 ];
 
