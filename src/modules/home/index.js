@@ -54,7 +54,7 @@ export default function Home() {
           ></iframe> */}
           <iframe
             title='power-bi'
-            src='https://app.powerbi.com/reportEmbed?reportId=c9eb8da5-f612-4e4b-bc44-d9c7054bf2f1&autoAuth=true&ctid=cb1627f7-fe0a-4843-af89-c51f3a99d8a9&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWluZGlhLWNlbnRyYWwtYS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9'
+            src='https://app.powerbi.com/reportEmbed?reportId=e1a5692b-b188-4329-ab8f-828b3cde6dfe&autoAuth=true&ctid=cb1627f7-fe0a-4843-af89-c51f3a99d8a9&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWluZGlhLWNlbnRyYWwtYS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9'
             frameborder='0'
             style={{
               border: 0
