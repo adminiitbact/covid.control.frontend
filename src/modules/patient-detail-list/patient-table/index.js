@@ -7,7 +7,7 @@ import InfinitePagination from 'components/infinite-pagination';
 const columns = [
   {
     dataIndex: 'patientId',
-    title: 'ID',
+    title: 'ID'
   },
   {
     dataIndex: 'goiCovidId',
@@ -15,8 +15,7 @@ const columns = [
   },
   {
     dataIndex: 'name',
-    title: 'Name',
-    width: '20%'
+    title: 'Name'
   },
   {
     dataIndex: 'age',
@@ -49,7 +48,7 @@ const columns = [
   {
     dataIndex: 'area',
     title: 'Area',
-    width: '20%'
+    // width: '20%'
   }
 ];
 
@@ -63,20 +62,20 @@ function PatientTable({
   handlePrevClick
 }) {
   const history = useHistory();
-  const onRow = (record, rowIndex) => {
-    return {
-      onClick: event => {
-        history.push(`/facility/edit/${record.facilityId}`);
-      }
-    };
-  };
+  // const onRow = (record, rowIndex) => {
+  //   return {
+  //     onClick: event => {
+  //       history.push(`/facility/edit/${record.facilityId}`);
+  //     }
+  //   };
+  // };
 
   return (
     <div>
       <Table
         stripped
         loading={loading}
-        onRow={onRow}
+        // onRow={onRow}
         columns={columns}
         dataSource={data}
         pagination={false}

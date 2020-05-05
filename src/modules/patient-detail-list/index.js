@@ -72,7 +72,7 @@ export default function PatientDetailList() {
     <>
       <Header fixed>
         <div className='full-height d--f ai--c' style={{ width: '40%' }}>
-          <Input size="large" placeholder="Search Name & ID" prefix={<SearchOutlined />} />
+          {/* <Input size="large" placeholder="Search Name & ID" prefix={<SearchOutlined />} /> */}
         </div>
       </Header>
       <Content>

@@ -7,7 +7,6 @@ import UserService from 'services/user-service';
 // const base = Constants.baseUrl;
 // const apiVersion = Constants.apiVersionV1;
 const resourcePath = 'facilities';
-const patientPath = 'patients';
 const serverURL = Constants.url;
 
 const userApi = {
@@ -43,14 +42,6 @@ const userApi = {
       .post(`${serverURL}${resourcePath}/${pageNo}`)
       .send(payloadWithToken);
     // return stubUtil(stubJson.facilityList);
-  },
-  getPatientList: function (pageNo, payload = {}) {
-    const payloadWithToken = Object.assign({}, payload, {
-      authToken: UserService.getUserSessionId()
-    });
-    return agent
-      .post(`${serverURL}${patientPath}/${pageNo}`)
-      .send(payloadWithToken);
   }
 };
 

@@ -9,7 +9,7 @@ import UserService from 'services/user-service';
 const patientPath = 'patients';
 const serverURL = Constants.url;
 
-const userApi = {
+const patientApi = {
     getPatientList: function (pageNo, payload = {}) {
         const payloadWithToken = Object.assign({}, payload, {
             authToken: UserService.getUserSessionId()
@@ -20,4 +20,4 @@ const userApi = {
     }
 };
 
-export default userApi;
+export default patientApi;
