@@ -52,11 +52,11 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
             value={filterConfig.facilityStatus}
             onChange={onFilterSelect('facilityStatus')}
           >
-            <Select.Option value='covid_only'>COVID Only</Select.Option>
-            <Select.Option value='mixed'>Mixed</Select.Option>
-            <Select.Option value='uc'>Under Consideration(UC)</Select.Option>
-            <Select.Option value='non_covid'>Non-COVID</Select.Option>
-            <Select.Option value='unassigned'>Unassigned</Select.Option>
+            <Select.Option value='COVID Only'>COVID Only</Select.Option>
+            <Select.Option value='Mixed'>Mixed</Select.Option>
+            <Select.Option value='Under Consideration(UC)'>Under Consideration(UC)</Select.Option>
+            <Select.Option value='Non-COVID'>Non-COVID</Select.Option>
+            <Select.Option value='Unassigned'>Unassigned</Select.Option>
           </Select>
         </div>
         <div className='select-container mr1 mb1'>
@@ -68,10 +68,10 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
             value={filterConfig.jurisdictions}
             onChange={onFilterSelect('jurisdictions')}
           >
-            <Select.Option value='pmc'>PMC</Select.Option>
-            <Select.Option value='pcmc'>PCMC</Select.Option>
-            <Select.Option value='dho'>DHO</Select.Option>
-            <Select.Option value='cs'>CS</Select.Option>
+            <Select.Option value='PMC'>PMC</Select.Option>
+            <Select.Option value='PCMC'>PCMC</Select.Option>
+            <Select.Option value='DHO'>DHO</Select.Option>
+            <Select.Option value='CS'>CS</Select.Option>
           </Select>
         </div>
         <div className='select-container mr1 mb1'>

@@ -4,6 +4,8 @@ import { useHistory } from 'react-router';
 
 import InfinitePagination from 'components/infinite-pagination';
 
+import './linking-table.scss';
+
 const columns = [
   {
     dataIndex: 'name',
@@ -25,6 +27,10 @@ const columns = [
   {
     dataIndex: 'area',
     title: 'Area'
+  },
+  {
+    title: '',
+    render: () => <div className='danger-text'>No Link</div>
   }
 ];
 
@@ -41,7 +47,7 @@ export default function FacilityTable({
   const onRow = (record, rowIndex) => {
     return {
       onClick: event => {
-        history.push(`/facility/${record.facilityId}/edit`);
+        history.push(`/facility/${record.facilityId}/edit/link`);
       }
     };
   };

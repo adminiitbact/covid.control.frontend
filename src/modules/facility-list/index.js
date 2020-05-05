@@ -39,6 +39,7 @@ export default function FacilityList(props) {
           ) {
             setData(res.body.data.list);
           } else {
+            setPage(page - 1);
             setHasNext(false);
           }
           setLoading(false);

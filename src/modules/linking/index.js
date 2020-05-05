@@ -1,28 +1,49 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from 'react';
 import { Header, Content } from 'components/layout';
-// import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import qs from 'qs';
 
-import FacilityList from './facility-list';
 import FacilityAPI from 'api/facility';
 
-import { Button, notification, Row } from 'antd';
+import { notification } from 'antd';
+import LinkingTable from './linking-table';
 
-export default function FacilityLinking(props) {
+export default function Linking(props) {
   const [loading, setLoading] = useState(false);
+  const [hasNext, setHasNext] = useState(true);
+  const [page, setPage] = useState(1);
+  const location = useLocation();
+  const filterConfig = qs.parse(location.search, { ignoreQueryPrefix: true });
   const [data, setData] = useState([]);
-  const [filterLinkVal, setFilterLinkVal] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const reqRef = useRef();
   // const history = useHistory();
 
   useEffect(() => {
+    setPage(1);
+  }, [JSON.stringify(filterConfig)]);
+
+  useEffect(() => {
     setLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList();
+    const req = FacilityAPI.getFacilityList(page, {
+      ...filterConfig,
+      hasLinks: false
+    });
     reqRef.current = req;
     req
       .then(
         res => {
-          setData(res.body.data);
+          if (
+            (res.body.data.list && res.body.data.list.length > 0) ||
+            page === 1
+          ) {
+            setData(res.body.data.list);
+          } else {
+            setPage(page - 1);
+            setHasNext(false);
+          }
           setLoading(false);
         },
         err => {
@@ -41,46 +62,31 @@ export default function FacilityLinking(props) {
     return () => {
       reqRef.current && reqRef.current.abort();
     };
-  }, []);
+  }, [page, JSON.stringify(filterConfig)]);
 
-  const filterLink = val => {
-    setFilterLinkVal(val);
+  const handleNextClick = () => {
+    setPage(page + 1);
   };
 
-  const filterData = () => {
-    const filteredData = [];
-    data.forEach(datum => {
-      if (datum.link.includes(filterLinkVal)) {
-        filteredData.push(datum);
-      }
-    });
-    return filteredData;
+  const handlePrevClick = () => {
+    setPage(page - 1);
   };
+
   return (
     <>
-      <Header fixed></Header>
+      <Header fixed>
+        <div className='full-height d--f ai--c jc--fe'></div>
+      </Header>
       <Content>
-        <Row>
-          FILTER:
-          <Button size='large' onClick={() => filterLink('')} type='primary'>
-            All Link Issues
-          </Button>
-          <Button
-            size='large'
-            onClick={() => filterLink('No Link')}
-            type='primary'
-          >
-            No Link
-          </Button>
-          <Button
-            size='large'
-            onClick={() => filterLink('Link Full')}
-            type='primary'
-          >
-            Link Full
-          </Button>
-        </Row>
-        <FacilityList data={filterData()} loading={loading} />
+        <LinkingTable
+          data={data}
+          loading={loading}
+          current={page}
+          hasNext={hasNext}
+          hasPrev={page > 1}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
+        />
       </Content>
     </>
   );

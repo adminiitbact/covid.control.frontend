@@ -20,3 +20,8 @@
     font-size: 14px;
   }
 }
+
+.ant-table-tbody > tr > td {
+  word-break: normal;
+  overflow-wrap: normal;
+}

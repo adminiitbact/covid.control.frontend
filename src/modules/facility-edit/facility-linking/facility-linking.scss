@@ -1,0 +1,45 @@
+.facility-linking-wrapper {
+  .title {
+    font-family: Lato;
+    font-size: 22px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 48px;
+  }
+  .subtitle {
+    opacity: 0.4;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  .add-action {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    &.add {
+      color: #007aff;
+    }
+    &.remove {
+      color: #ff3b30;
+    }
+    .text {
+      margin-left: 4px;
+    }
+  }
+  .table {
+    .heading {
+      font-family: Lato;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.8);
+      margin-bottom: 24px;
+    }
+    .empty-message {
+      opacity: 0.5;
+      font-family: Lato;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+}

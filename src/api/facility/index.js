@@ -14,9 +14,7 @@ const userApi = {
     const payloadWithToken = Object.assign({}, payload, {
       authToken: UserService.getUserSessionId()
     });
-    return agent
-      .post(`${serverURL}${resourcePath}/new`)
-      .send(payloadWithToken);
+    return agent.post(`${serverURL}${resourcePath}/new`).send(payloadWithToken);
   },
   patch: function (id, payload = {}) {
     const payloadWithToken = Object.assign({}, payload, {
@@ -42,6 +40,22 @@ const userApi = {
       .post(`${serverURL}${resourcePath}/${pageNo}`)
       .send(payloadWithToken);
     // return stubUtil(stubJson.facilityList);
+  },
+  getLinks: function (id, payload = {}) {
+    const payloadWithToken = Object.assign({}, payload, {
+      authToken: UserService.getUserSessionId()
+    });
+    return agent
+      .post(`${serverURL}${resourcePath}/${id}/links/get`)
+      .send(payloadWithToken);
+  },
+  saveLink: function (id, payload = {}) {
+    const payloadWithToken = Object.assign({}, payload, {
+      authToken: UserService.getUserSessionId()
+    });
+    return agent
+      .post(`${serverURL}${resourcePath}/${id}/links/post`)
+      .send(payloadWithToken);
   }
 };
 
