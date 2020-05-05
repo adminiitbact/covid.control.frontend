@@ -20,7 +20,7 @@ const defaultFacilityObj = {
   area: null,
   address: '',
   covidFacilityType: null,
-  jurisdiction: 'pmc',
+  jurisdiction: 'PMC',
   // zone_number: '',
   facilityStatus: 'Unassigned',
   governmentHospital: null,
@@ -214,10 +214,10 @@ function FacilityAddForm({
                         width: '100%'
                       }}
                     >
-                      <Select.Option value='pmc'>PMC</Select.Option>
-                      <Select.Option value='pcmc'>PCMC</Select.Option>
-                      <Select.Option value='dho'>DHO</Select.Option>
-                      <Select.Option value='cs'>CS</Select.Option>
+                      <Select.Option value='PMC'>PMC</Select.Option>
+                      <Select.Option value='PCMC'>PCMC</Select.Option>
+                      <Select.Option value='DHO'>DHO</Select.Option>
+                      <Select.Option value='CS'>CS</Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>
