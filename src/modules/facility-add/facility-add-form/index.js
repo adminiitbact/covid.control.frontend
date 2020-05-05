@@ -251,14 +251,14 @@ function FacilityAddForm({
                         width: '100%'
                       }}
                     >
-                      <Select.Option value='covid_only'>
+                      <Select.Option value='COVID Only'>
                         COVID Only
                       </Select.Option>
-                      <Select.Option value='mixed'>Mixed</Select.Option>
-                      <Select.Option value='uc'>
+                      <Select.Option value='Mixed'>Mixed</Select.Option>
+                      <Select.Option value='Under Consideration(UC)'>
                         Under Consideration(UC)
                       </Select.Option>
-                      <Select.Option value='non_covid'>Non-COVID</Select.Option>
+                      <Select.Option value='Non-COVID'>Non-COVID</Select.Option>
                       <Select.Option value='Unassigned'>
                         Unassigned
                       </Select.Option>

@@ -52,10 +52,10 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
             value={filterConfig.facilityStatus}
             onChange={onFilterSelect('facilityStatus')}
           >
-            <Select.Option value='covid_only'>COVID Only</Select.Option>
-            <Select.Option value='mixed'>Mixed</Select.Option>
-            <Select.Option value='uc'>Under Consideration(UC)</Select.Option>
-            <Select.Option value='non_covid'>Non-COVID</Select.Option>
+            <Select.Option value='COVID Only'>COVID Only</Select.Option>
+            <Select.Option value='Mixed'>Mixed</Select.Option>
+            <Select.Option value='Under Consideration(UC)'>Under Consideration(UC)</Select.Option>
+            <Select.Option value='Non-COVID'>Non-COVID</Select.Option>
             <Select.Option value='Unassigned'>Unassigned</Select.Option>
           </Select>
         </div>
