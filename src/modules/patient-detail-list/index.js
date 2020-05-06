@@ -1,13 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Header, Content } from 'components/layout';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Input, notification } from 'antd';
+import { useLocation } from 'react-router-dom';
+import { notification } from 'antd';
 import qs from 'qs';
 import PatientAPI from 'api/patient';
-import PatientListFilter from './patient-list-filters'
-import PatientTable from './patient-table'
 
-import { SearchOutlined } from '@ant-design/icons';
+import PatientListFilter from './patient-list-filters';
+import PatientTable from './patient-table';
 
 export default function PatientDetailList() {
   const [loading, setLoading] = useState(false);
@@ -18,10 +17,11 @@ export default function PatientDetailList() {
   const [data, setData] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const reqRef = useRef();
-  const history = useHistory();
+  // const history = useHistory();
 
   useEffect(() => {
     setPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(filterConfig)]);
 
   useEffect(() => {
@@ -58,6 +58,7 @@ export default function PatientDetailList() {
     return () => {
       reqRef.current && reqRef.current.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, JSON.stringify(filterConfig)]);
 
   const handleNextClick = () => {
@@ -88,5 +89,5 @@ export default function PatientDetailList() {
         />
       </Content>
     </>
-  )
+  );
 }

@@ -21,7 +21,7 @@
   }
 }
 
-.ant-table-tbody > tr > td {
+.ant-table-tbody > tr > td, .ant-table-thead > tr > th {
   word-break: normal;
   overflow-wrap: normal;
 }
