@@ -1,21 +1,10 @@
 import React from 'react';
 import Table from 'components/table';
+import AvailabilityStatus from 'components/avaibility-status';
 
 import './linking-table.scss';
 
 import InfinitePagination from 'components/infinite-pagination';
-
-function AvailabilityStatus({ label, occupied, total, available }) {
-  return (
-    <div className='d--f availibility-status mt2'>
-      <span className='mr1'>{label}</span>
-      <div className='d--f fw--n mr1 bold'>
-        <span>{occupied}</span>/<span>{total}</span>
-      </div>
-      <div className='green'>({available})</div>
-    </div>
-  );
-}
 
 const columns = [
   {

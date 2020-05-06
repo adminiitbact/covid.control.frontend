@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from 'components/table';
-import { useHistory } from 'react-router';
+// import { useHistory } from 'react-router';
 
 import InfinitePagination from 'components/infinite-pagination';
 
@@ -47,7 +47,7 @@ const columns = [
   },
   {
     dataIndex: 'area',
-    title: 'Area',
+    title: 'Area'
     // width: '20%'
   }
 ];
@@ -61,7 +61,6 @@ function PatientTable({
   handleNextClick,
   handlePrevClick
 }) {
-  const history = useHistory();
   // const onRow = (record, rowIndex) => {
   //   return {
   //     onClick: event => {
@@ -90,7 +89,7 @@ function PatientTable({
         />
       </div>
     </div>
-  )
+  );
 }
 
 export default PatientTable;

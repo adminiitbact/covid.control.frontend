@@ -2,29 +2,113 @@ import React from 'react';
 import Table from 'components/table';
 import { useHistory } from 'react-router';
 
+import AvailabilityStatus from 'components/avaibility-status';
 import InfinitePagination from 'components/infinite-pagination';
+
+import './facility-table.scss';
 
 const columns = [
   {
     dataIndex: 'name',
     title: 'Name of the Facility',
-    width: '30%'
+    width: '30%',
+    render: text => (
+      <div>
+        {text}
+        <div className='mt2 placeholder' />
+      </div>
+    )
   },
   {
     dataIndex: 'covidFacilityType',
-    title: 'Type'
+    title: 'Type',
+    render: text => (
+      <div>
+        {text}
+        <div className='mt2 placeholder' />
+      </div>
+    )
   },
   {
     dataIndex: 'facilityStatus',
-    title: 'Status'
+    title: 'Status',
+    render: (text, record, index) => {
+      // return null;
+      const mildObj = record.availabilityStatusList.find(
+        el => el.severity === 'MILD'
+      );
+      let statusCom = <div className='mt2 placeholder' />;
+      if (mildObj) {
+        statusCom = (
+          <AvailabilityStatus
+            label='Mild'
+            occupied={mildObj.totalBeds - mildObj.availableBeds}
+            total={mildObj.totalBeds}
+            available={mildObj.availableBeds}
+          />
+        );
+      }
+      return (
+        <div className='d--f fd--c jc--sb'>
+          <div>{text}</div>
+          {statusCom}
+        </div>
+      );
+    }
   },
   {
     dataIndex: 'jurisdiction',
-    title: 'Jurisdiction'
+    title: 'Jurisdiction',
+    render: (text, record, index) => {
+      // return null;
+      const mildObj = record.availabilityStatusList.find(
+        el => el.severity === 'MODERATE'
+      );
+      let statusCom = <div className='mt2 placeholder' />;
+      if (mildObj) {
+        statusCom = (
+          <AvailabilityStatus
+            label='Moderate'
+            occupied={mildObj.totalBeds - mildObj.availableBeds}
+            total={mildObj.totalBeds}
+            available={mildObj.availableBeds}
+          />
+        );
+      }
+      return (
+        <div className='d--f fd--c jc--sb'>
+          <div>{text}</div>
+          {statusCom}
+        </div>
+      );
+    }
   },
   {
     dataIndex: 'area',
-    title: 'Area'
+    title: 'Area',
+    render: (text, record, index) => {
+      // return null;
+      const mildObj = record.availabilityStatusList.find(
+        el => el.severity === 'SEVERE'
+      );
+      let statusCom = <div className='mt2 placeholder' />;
+      if (mildObj) {
+        statusCom = (
+          <AvailabilityStatus
+            label='Severe'
+            occupied={mildObj.totalBeds - mildObj.availableBeds}
+            total={mildObj.totalBeds}
+            available={mildObj.availableBeds}
+          />
+        );
+      }
+      return (
+        <div className='d--f fd--c jc--sb'>
+          <div>{text}</div>
+          {statusCom}
+        </div>
+      );
+    }
   }
 ];
 
