@@ -132,6 +132,11 @@ function DashboardBase(props) {
           </Menu>
           <div className='sider-bottom-section'>
             <Menu theme='light' mode='inline'>
+              <Menu.Item key="reports">
+                <Link to="/reports">
+                  <div>Reports</div>
+                </Link>                
+              </Menu.Item>              
               <Menu.Item key='logout'>
                 <div className='d--f ai--c' onClick={handleLogout}>
                   <LogoutOutlined />
