@@ -5,6 +5,7 @@ import FacilityList from 'modules/facility-list';
 import FacilityEdit from 'modules/facility-edit';
 import Linking from 'modules/linking';
 import PatientDetailList from 'modules/patient-detail-list'
+import Reports from 'modules/reports';
 // import ICevents from 'assets/icons/ic-events.svg';
 // import DashboardIcon from 'assets/icons/dashboard.svg';
 
@@ -47,6 +48,12 @@ export default [
         path: '/facility/:facilityId/edit',
         // icon: VideoCameraOutlined,
         component: FacilityEdit
+      },
+      {
+        label: '',
+        exact: true,
+        path: '/reports',
+        component: Reports
       }
     ]
   },
