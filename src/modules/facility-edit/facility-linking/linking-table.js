@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from 'components/table';
-import AvailabilityStatus from 'components/avaibility-status';
+import AvailabilityStatus from 'components/table-components/avaibility-status';
 
 import './linking-table.scss';
 

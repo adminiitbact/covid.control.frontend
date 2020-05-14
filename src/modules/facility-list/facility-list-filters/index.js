@@ -27,9 +27,11 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
 
   return (
     <div className='d--f fd--r mb2'>
-      <div className='title mr2 fs--0 fg--0 fb--a'>Filters:</div>
+      <div className='title mr2 fs--0 fg--0 fb--a'>
+        <div className='text'>Filters </div>
+      </div>
       <div className='d--f fd--r fw--w fs--1 fg--1 fb--a'>
-        <div className='select-container mr1 mb1'>
+        {/* <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'
             style={{ width: '125px', height: '100%' }}
@@ -42,8 +44,8 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
               <Select.Option value={el.key}>{el.label}</Select.Option>
             ))}
           </Select>
-        </div>
-        <div className='select-container mr1 mb1'>
+        </div> */}
+        {/* <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'
             style={{ width: '150px' }}
@@ -54,9 +56,23 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
           >
             <Select.Option value='COVID Only'>COVID Only</Select.Option>
             <Select.Option value='Mixed'>Mixed</Select.Option>
-            <Select.Option value='Under Consideration(UC)'>Under Consideration(UC)</Select.Option>
+            <Select.Option value='Under Consideration(UC)'>
+              Under Consideration(UC)
+            </Select.Option>
             <Select.Option value='Non-COVID'>Non-COVID</Select.Option>
             <Select.Option value='Unassigned'>Unassigned</Select.Option>
+          </Select>
+        </div> */}
+        <div className='select-container mr1 mb1'>
+          <Select
+            style={{ width: '150px' }}
+            allowClear
+            placeholder='Operating Status'
+            value={filterConfig.isOperational}
+            onChange={onFilterSelect('isOperational')}
+          >
+            <Select.Option value='true'>Yes</Select.Option>
+            <Select.Option value='false'>No</Select.Option>
           </Select>
         </div>
         <div className='select-container mr1 mb1'>

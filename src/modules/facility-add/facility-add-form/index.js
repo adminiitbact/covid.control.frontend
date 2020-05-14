@@ -107,10 +107,11 @@ const FacilityFormSchema = Yup.object().shape({
   operatingStatus: Yup.boolean().required()
 });
 
-function FormItemLabel({ label, isRequired }) {
+function FormItemLabel({ label, isRequired, subLabel }) {
   return (
     <>
       <span>{label}</span>
+      {subLabel && <span className='subtext'>{subLabel}</span>}
       {isRequired && <span className='required'>*</span>}
     </>
   );
@@ -270,7 +271,8 @@ function FacilityAddForm({
                 <Select
                   name='governmentHospital'
                   style={{
-                    width: '100%'
+                    width: '100%',
+                    maxWidth: '570px'
                   }}
                 >
                   <Select.Option value={1}>Government</Select.Option>
@@ -401,7 +403,13 @@ function FacilityAddForm({
               </Form.Item>
               <Form.Item
                 name='primary_contact_person_email'
-                label={<FormItemLabel label='Email ID' isRequired />}
+                label={
+                  <FormItemLabel
+                    label='Email ID'
+                    isRequired
+                    subLabel='(Credentials will be sent this email)'
+                  />
+                }
               >
                 <Input
                   name='primary_contact_person_email'
@@ -447,7 +455,8 @@ function FacilityAddForm({
                     <Select
                       name='facilityStatus'
                       style={{
-                        width: '100%'
+                        width: '100%',
+                        maxWidth: '570px'
                       }}
                     >
                       <Select.Option value='COVID Only'>

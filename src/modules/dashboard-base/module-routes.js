@@ -16,7 +16,7 @@ export default [
     // icon: VideoCameraOutlined,
     children: [
       {
-        label: 'Profiles',
+        label: 'Onboarding',
         path: '/facility/list',
         exact: true,
         // icon: VideoCameraOutlined,
@@ -30,9 +30,9 @@ export default [
         component: FacilityAdd
       },
       {
-        label: 'Linking',
+        label: 'Profiles',
         exact: true,
-        path: '/facility/linking',
+        path: '/facility/profiles',
         // icon: VideoCameraOutlined,
         component: Linking
       },
@@ -71,7 +71,6 @@ export default [
       }
     ]
   },
-
   {
     sidebarIndex: 0,
     label: 'Dashboard',

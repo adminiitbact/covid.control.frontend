@@ -61,17 +61,20 @@ export default function FacilityAdd(props) {
   return (
     <>
       <Header fixed>
-        <div className='full-height d--f ai--c jc--fe'>
-          <Button
-            loading={loading}
-            size='large'
-            onClick={submitForm}
-            // disabled={}
-            type='primary'
-            className={!isValidForm ? 'disabled' : ''}
-          >
-            SUBMIT
-          </Button>
+        <div className='full-height d--f ai--c'>
+          <div className='heading'>Add New Facility</div>
+          <div className='ml-auto'>
+            <Button
+              loading={loading}
+              size='large'
+              onClick={submitForm}
+              // disabled={}
+              type='primary'
+              className={!isValidForm ? 'disabled' : ''}
+            >
+              SUBMIT
+            </Button>
+          </div>
         </div>
       </Header>
       <Content>

@@ -5,6 +5,7 @@
     color: rgba(0, 0, 0, 0.8);
     min-width: 100px;
     border-bottom: 8px solid transparent;
+    cursor: pointer;
     &.isSelected {
       font-weight: bold;
       border-bottom: 8px solid rgba(0, 0, 0, 0.8);

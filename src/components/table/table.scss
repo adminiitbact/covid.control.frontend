@@ -8,6 +8,9 @@
 }
 
 .ant-table-tbody {
+  .ant-table-row {
+    background-color: #fff;
+  }
   .ant-table-row.odd {
     background-color: #fafafa;
   }
@@ -21,7 +24,12 @@
   }
 }
 
-.ant-table-tbody > tr > td, .ant-table-thead > tr > th {
+.ant-table-tbody > tr > td,
+.ant-table-thead > tr > th {
   word-break: normal;
   overflow-wrap: normal;
+}
+
+.td-center-align {
+  text-align: center;
 }
