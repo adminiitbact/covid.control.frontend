@@ -1,4 +1,17 @@
 .facility-form {
+  .required-field {
+    font-family: Lato;
+    font-size: 14px;
+    color: #ff2b1f;
+    margin-bottom: 24px;
+  }
+
+  .required {
+    margin-left: 4px;
+    font-family: Lato;
+    color: #ff2b1f;
+  }
+
   .section-title {
     text-transform: uppercase;
     opacity: 0.4;

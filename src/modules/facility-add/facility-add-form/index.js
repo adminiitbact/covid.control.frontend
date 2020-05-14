@@ -5,9 +5,10 @@ import * as Yup from 'yup';
 import { connect } from 'react-redux';
 
 import { Formik } from 'formik';
-import { Form, Input, Select } from 'formik-antd';
+import { Form, Input, Select, Switch } from 'formik-antd';
 import ErrorFocus from 'components/error-focus';
 import { covidFacilityTypes } from 'app-constants';
+
 import './facility-add-form.scss';
 
 // const zoneReg = /^[0-9]+$/;
@@ -22,7 +23,7 @@ const defaultFacilityObj = {
   covidFacilityType: null,
   jurisdiction: 'PMC',
   // zone_number: '',
-  facilityStatus: 'Unassigned',
+  facilityStatus: null,
   governmentHospital: null,
   agreementStatus: null,
   // phase_1: '',
@@ -31,7 +32,8 @@ const defaultFacilityObj = {
   email: '',
   primary_contact_person_name: '',
   primary_contact_person_mobile: '',
-  primary_contact_person_email: ''
+  primary_contact_person_email: '',
+  operatingStatus: false
 };
 
 function supportBackendTransform(obj) {
@@ -61,18 +63,25 @@ const FacilityFormSchema = Yup.object().shape({
   name: Yup.string().required('Please enter a name for the facility'),
   area: Yup.string().required('Please select the locality').nullable(),
   address: Yup.string().required('Please enter the address'),
-  covidFacilityType: Yup.string()
-    .required('Please select the facility type')
+  covidFacilityType: Yup.string().when(['operatingStatus'], {
+    is: operatingStatus => operatingStatus,
+    then: Yup.string().required('Please select the facility type').nullable(),
+    otherwise: Yup.string().nullable()
+  }),
+  jurisdiction: Yup.string()
+    .required('Please select the jurisdiction')
     .nullable(),
-  jurisdiction: Yup.string().required('Please select the jurisdiction').nullable(),
   // zone_number: Yup.string()
   //   .required('Please enter the zone number')
-  //   .matches(zoneReg, 'please enter a valid zone number'),
-  facilityStatus: Yup.string().required('Please select the status').nullable(),
+  //   .matches(zoneReg, 'Please enter a valid zone number'),
+  facilityStatus: Yup.string().when(['operatingStatus'], {
+    is: operatingStatus => operatingStatus,
+    then: Yup.string().required('Please select the status').nullable(),
+    otherwise: Yup.string().nullable()
+  }),
   governmentHospital: Yup.number()
     .required('Please select the ownsership')
     .nullable(),
-  // agreementStatus: Yup.string().required('Please select the agreement status'),
   agreementStatus: Yup.string().when(['governmentHospital'], {
     is: governmentHospital => !governmentHospital,
     then: Yup.string()
@@ -84,18 +93,28 @@ const FacilityFormSchema = Yup.object().shape({
   // phase_2: Yup.string().required('Please fill the phase avaibility'),
   telephone: Yup.string()
     .required('Please enter the phone number')
-    .matches(phoneRegExp, 'please enter a valid phone number'),
+    .matches(phoneRegExp, 'Please enter a valid phone number'),
   email: Yup.string()
     .required('Please enter the email')
-    .matches(emailRegExp, 'please enter a valid email address'),
+    .matches(emailRegExp, 'Please enter a valid email address'),
   primary_contact_person_name: Yup.string().required('Please enter the name'),
   primary_contact_person_mobile: Yup.string()
     .required('Please enter the phone number')
-    .matches(mobRegExp, 'please enter a valid mobile number'),
+    .matches(mobRegExp, 'Please enter a valid mobile number'),
   primary_contact_person_email: Yup.string()
     .required('Please enter the email')
-    .matches(emailRegExp, 'please enter a valid email address')
+    .matches(emailRegExp, 'Please enter a valid email address'),
+  operatingStatus: Yup.boolean().required()
 });
+
+function FormItemLabel({ label, isRequired }) {
+  return (
+    <>
+      <span>{label}</span>
+      {isRequired && <span className='required'>*</span>}
+    </>
+  );
+}
 
 function FacilityAddForm({
   onSubmit,
@@ -103,7 +122,8 @@ function FacilityAddForm({
   facility,
   loading,
   areaList,
-  loadingAreaList
+  loadingAreaList,
+  formStateCallBack
 }) {
   const onFormSubmit = (values, actions) => {
     const newValues = {};
@@ -137,11 +157,23 @@ function FacilityAddForm({
       onSubmit={onFormSubmit}
     >
       {props => {
+        console.log(props);
+        formStateCallBack &&
+          formStateCallBack({
+            isValid: props.isValid,
+            dirty: props.dirty
+          });
         return (
           <Form layout='vertical' className='facility-form'>
+            <div className='required-field'>Required *</div>
             <div className='form-section'>
               <div className='section-title'>Basic details</div>
-              <Form.Item name='name' label='Name of the Facility'>
+              <Form.Item
+                name='name'
+                label={
+                  <FormItemLabel label='Name of the Facility' isRequired />
+                }
+              >
                 <Input
                   name='name'
                   placeholder=''
@@ -151,7 +183,10 @@ function FacilityAddForm({
                   }}
                 />
               </Form.Item>
-              <Form.Item name='area' label='Area/Locality'>
+              <Form.Item
+                name='area'
+                label={<FormItemLabel label='Area / Locality' isRequired />}
+              >
                 <Select
                   showSearch
                   name='area'
@@ -174,7 +209,10 @@ function FacilityAddForm({
                   ))}
                 </Select>
               </Form.Item>
-              <Form.Item name='address' label='Address'>
+              <Form.Item
+                name='address'
+                label={<FormItemLabel label='Address' isRequired />}
+              >
                 <Input.TextArea
                   name='address'
                   placeholder=''
@@ -184,20 +222,6 @@ function FacilityAddForm({
                   }}
                 />
               </Form.Item>
-              <Form.Item name='covidFacilityType' label='Facility Type'>
-                <Select
-                  name='covidFacilityType'
-                  placeholder=''
-                  style={{
-                    width: '100%',
-                    maxWidth: '570px'
-                  }}
-                >
-                  {covidFacilityTypes.map(el => (
-                    <Select.Option value={el.key}>{el.label}</Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
               <Row
                 gutter={16}
                 style={{
@@ -206,7 +230,10 @@ function FacilityAddForm({
                 }}
               >
                 <Col span={12}>
-                  <Form.Item name='jurisdiction' label='Jurisdiction'>
+                  <Form.Item
+                    name='jurisdiction'
+                    label={<FormItemLabel label='Jurisdiction' isRequired />}
+                  >
                     <Select
                       name='jurisdiction'
                       placeholder=''
@@ -236,51 +263,25 @@ function FacilityAddForm({
             </div>
             <div className='form-section'>
               <div className='section-title'>Facility Details</div>
-              <Row
-                gutter={16}
-                style={{
-                  width: '100%',
-                  maxWidth: '586px'
-                }}
+              <Form.Item
+                name='governmentHospital'
+                label={<FormItemLabel label='Ownership' isRequired />}
               >
-                <Col span={12}>
-                  <Form.Item name='facilityStatus' label='Facility Status'>
-                    <Select
-                      name='facilityStatus'
-                      style={{
-                        width: '100%'
-                      }}
-                    >
-                      <Select.Option value='COVID Only'>
-                        COVID Only
-                      </Select.Option>
-                      <Select.Option value='Mixed'>Mixed</Select.Option>
-                      <Select.Option value='Under Consideration(UC)'>
-                        Under Consideration(UC)
-                      </Select.Option>
-                      <Select.Option value='Non-COVID'>Non-COVID</Select.Option>
-                      <Select.Option value='Unassigned'>
-                        Unassigned
-                      </Select.Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item name='governmentHospital' label='Ownership'>
-                    <Select
-                      name='governmentHospital'
-                      style={{
-                        width: '100%'
-                      }}
-                    >
-                      <Select.Option value={1}>Government</Select.Option>
-                      <Select.Option value={0}>Private</Select.Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
+                <Select
+                  name='governmentHospital'
+                  style={{
+                    width: '100%'
+                  }}
+                >
+                  <Select.Option value={1}>Government</Select.Option>
+                  <Select.Option value={0}>Private</Select.Option>
+                </Select>
+              </Form.Item>
               {props.values.governmentHospital === 0 && (
-                <Form.Item name='agreementStatus' label='Agreement Status'>
+                <Form.Item
+                  name='agreementStatus'
+                  label={<FormItemLabel label='Agreement Status' isRequired />}
+                >
                   <Select
                     name='agreementStatus'
                     placeholder=''
@@ -336,7 +337,15 @@ function FacilityAddForm({
             </div>
             <div className='form-section'>
               <div className='section-title'>Organization details</div>
-              <Form.Item name='telephone' label='Organisation Telephone Number'>
+              <Form.Item
+                name='telephone'
+                label={
+                  <FormItemLabel
+                    label='Organisation Telephone Number'
+                    isRequired
+                  />
+                }
+              >
                 <Input
                   name='telephone'
                   placeholder=''
@@ -346,7 +355,12 @@ function FacilityAddForm({
                   }}
                 />
               </Form.Item>
-              <Form.Item name='email' label='Organisation Email ID'>
+              <Form.Item
+                name='email'
+                label={
+                  <FormItemLabel label='Organisation Email ID' isRequired />
+                }
+              >
                 <Input
                   name='email'
                   placeholder=''
@@ -359,7 +373,10 @@ function FacilityAddForm({
             </div>
             <div className='form-section'>
               <div className='section-title'>Contact Person Details</div>
-              <Form.Item name='primary_contact_person_name' label='Name'>
+              <Form.Item
+                name='primary_contact_person_name'
+                label={<FormItemLabel label='Name' isRequired />}
+              >
                 <Input
                   name='primary_contact_person_name'
                   placeholder='Full name'
@@ -371,7 +388,7 @@ function FacilityAddForm({
               </Form.Item>
               <Form.Item
                 name='primary_contact_person_mobile'
-                label='Mobile Number'
+                label={<FormItemLabel label='Mobile Number' isRequired />}
               >
                 <Input
                   name='primary_contact_person_mobile'
@@ -382,7 +399,10 @@ function FacilityAddForm({
                   }}
                 />
               </Form.Item>
-              <Form.Item name='primary_contact_person_email' label='Email ID'>
+              <Form.Item
+                name='primary_contact_person_email'
+                label={<FormItemLabel label='Email ID' isRequired />}
+              >
                 <Input
                   name='primary_contact_person_email'
                   placeholder=''
@@ -392,6 +412,59 @@ function FacilityAddForm({
                   }}
                 />
               </Form.Item>
+            </div>
+            <div className='form-section'>
+              <div className='section-title'>Operational Details</div>
+              <Form.Item
+                name='operatingStatus'
+                label={<FormItemLabel label='Operational Status' />}
+              >
+                <Switch name='operatingStatus' />
+              </Form.Item>
+              {props.values.operatingStatus && (
+                <>
+                  <Form.Item
+                    name='covidFacilityType'
+                    label={<FormItemLabel label='Facility Type' isRequired />}
+                  >
+                    <Select
+                      name='covidFacilityType'
+                      placeholder=''
+                      style={{
+                        width: '100%',
+                        maxWidth: '570px'
+                      }}
+                    >
+                      {covidFacilityTypes.map(el => (
+                        <Select.Option value={el.key}>{el.label}</Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    name='facilityStatus'
+                    label={<FormItemLabel label='Facility Status' isRequired />}
+                  >
+                    <Select
+                      name='facilityStatus'
+                      style={{
+                        width: '100%'
+                      }}
+                    >
+                      <Select.Option value='COVID Only'>
+                        COVID Only
+                      </Select.Option>
+                      <Select.Option value='Mixed'>Mixed</Select.Option>
+                      <Select.Option value='Under Consideration(UC)'>
+                        Under Consideration(UC)
+                      </Select.Option>
+                      <Select.Option value='Non-COVID'>Non-COVID</Select.Option>
+                      <Select.Option value='Unassigned'>
+                        Unassigned
+                      </Select.Option>
+                    </Select>
+                  </Form.Item>
+                </>
+              )}
             </div>
             <ErrorFocus />
           </Form>
