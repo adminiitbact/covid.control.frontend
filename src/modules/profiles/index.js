@@ -29,7 +29,7 @@ export default function Profiles(props) {
     reqRef.current && reqRef.current.abort();
     const req = FacilityAPI.getFacilityList(page, {
       ...filterConfig,
-      hasLinks: false
+      operatingStatus: true
     });
     reqRef.current = req;
     req

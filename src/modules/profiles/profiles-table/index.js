@@ -1,6 +1,8 @@
 import React from 'react';
 import Table from 'components/table';
+// import _get from 'lodash/get';
 import { useHistory } from 'react-router';
+import FacilityName from 'components/table-components/facility-name';
 
 import InfinitePagination from 'components/infinite-pagination';
 
@@ -9,8 +11,20 @@ import './profiles-table.scss';
 const columns = [
   {
     dataIndex: 'name',
-    title: 'Name of the Facility',
-    width: '30%'
+    title: (
+      <div>
+        <div>Facility Name</div>
+        <div>Area (Jurisdiction)</div>
+      </div>
+    ),
+    width: '30%',
+    render: (text, record) => (
+      <FacilityName
+        name={text}
+        area={record.area}
+        jurisdiction={record.jurisdiction}
+      />
+    )
   },
   {
     dataIndex: 'covidFacilityType',
@@ -21,16 +35,17 @@ const columns = [
     title: 'Status'
   },
   {
-    dataIndex: 'jurisdiction',
-    title: 'Jurisdiction'
+    title: 'Linking Status',
+    render: (text, record) =>
+      record.hasLinks ? 'Complete' : <div className='danger-text'>No Link</div>
   },
   {
-    dataIndex: 'area',
-    title: 'Area'
+    title: 'Linked DHC',
+    render: (text, record) => 'NA'
   },
   {
-    title: '',
-    render: () => <div className='danger-text'>No Link</div>
+    title: 'Linked DCHC',
+    render: () => 'NA'
   }
 ];
 
@@ -61,6 +76,7 @@ export default function ProfilesTable({
         columns={columns}
         dataSource={data}
         pagination={false}
+        bordered
       />
       <div className='d--f fd--rr mt2'>
         <InfinitePagination
