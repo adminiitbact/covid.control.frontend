@@ -18,6 +18,17 @@ function filterSelf(list, id) {
   return list.filter(el => String(_get(el, 'facilityId')) !== String(id));
 }
 
+function getAllowedFacilityTypeFilters(facility) {
+  console.log(facility);
+  if (facility.facilityProfile.covidFacilityType === 'CCC') {
+    return ['DCH', 'DCHC'];
+  }
+  if (facility.facilityProfile.covidFacilityType === 'DCHC') {
+    return ['DCH'];
+  }
+  return [];
+}
+
 function FacilityTypeTableComponent({ heading, data, loading, handleClick }) {
   return (
     <div className='table mb3 full-width'>
@@ -67,23 +78,41 @@ export default function FacilityLinking({
   const reqRef = useRef();
   const addReqRef = useRef();
 
+  const allowedFacilityTypeFilters =
+    facility && facility.facilityProfile
+      ? getAllowedFacilityTypeFilters(facility)
+      : [];
+
   useEffect(() => {
     setPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [facilityId, JSON.stringify(filterConfig)]);
 
   useEffect(() => {
-    fetchLinkOptions(page, filterConfig, facilityId);
+    if (facility && facility.facilityProfile) {
+      fetchLinkOptions(page, filterConfig, facilityId, facility);
+    }
     return () => {
       reqRef.current && reqRef.current.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, facilityId, JSON.stringify(filterConfig)]);
+  }, [
+    page,
+    facilityId,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(filterConfig),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(facility)
+  ]);
 
-  const fetchLinkOptions = (page, filterConfig, facilityId) => {
+  const fetchLinkOptions = (page, filterConfig, facilityId, facility) => {
     setFacilityListLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList(page, filterConfig);
+    let newFilterConfig = { ...filterConfig };
+    if (!filterConfig.covidFacilityType) {
+      newFilterConfig.covidFacilityType = allowedFacilityTypeFilters;
+    }
+    const req = FacilityAPI.getFacilityList(page, newFilterConfig);
     reqRef.current = req;
     req
       .then(
@@ -227,58 +256,68 @@ export default function FacilityLinking({
 
   facilityListFiltered = filterSelf(facilityListFiltered, facilityId);
 
-  console.log(facilityListFiltered)
+  console.log(allowedFacilityTypeFilters);
+
   return (
     <div className='facility-linking-wrapper'>
       <div className='title'>{_get(facility, 'facilityProfile.name')}</div>
-      <div className='subtitle mb1'>Link facilities</div>
       {/* <div className='d--f mb1'>Search/filters</div> */}
-      <div className='mb2'>
-        <div className='mr2 d--if mb1'>
-          <Search
-            style={{
-              width: '300px'
-            }}
-            value={filterConfig.name}
-            onChange={handleSearch}
-          />
-        </div>
-        <Select
-          style={{ width: '150px' }}
-          allowClear
-          placeholder='Type'
-          value={filterConfig.covidFacilityType}
-          onChange={handleTypeFilter}
-        >
-          {covidFacilityTypes.map(el => (
-            <Select.Option value={el.key}>{el.label}</Select.Option>
-          ))}
-        </Select>
-      </div>
-      <div className='table mb3 full-width'>
-        <LinkingTable
-          data={facilityListFiltered}
-          actionCol={{
-            key: 'action',
-            render: (text, record, index) => (
-              <div
-                className='add-action add'
-                onClick={handleAddLink(record, index)}
-              >
-                <PlusCircleFilled />
-                <span className='text'>Link</span>
-              </div>
-            )
-          }}
-          pagination
-          loading={facilityListLoading}
-          current={page}
-          hasNext={hasNext}
-          hasPrev={page > 1}
-          handleNextClick={handleNextClick}
-          handlePrevClick={handlePrevClick}
-        />
-      </div>
+      {_get(facility, 'facilityProfile.covidFacilityType') !== 'DCH' && (
+        <>
+          <div className='subtitle mb1'>Link facilities</div>
+          <div className='mb2'>
+            <div className='mr2 d--if mb1'>
+              <Search
+                style={{
+                  width: '300px'
+                }}
+                value={filterConfig.name}
+                onChange={handleSearch}
+              />
+            </div>
+            <Select
+              style={{ width: '150px' }}
+              allowClear
+              placeholder='Type'
+              value={filterConfig.covidFacilityType}
+              onChange={handleTypeFilter}
+            >
+              {covidFacilityTypes.map(el => (
+                <Select.Option
+                  value={el.key}
+                  disabled={allowedFacilityTypeFilters.indexOf(el.key) === -1}
+                >
+                  {el.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          <div className='table mb3 full-width'>
+            <LinkingTable
+              data={facilityListFiltered}
+              actionCol={{
+                key: 'action',
+                render: (text, record, index) => (
+                  <div
+                    className='add-action add'
+                    onClick={handleAddLink(record, index)}
+                  >
+                    <PlusCircleFilled />
+                    <span className='text'>Link</span>
+                  </div>
+                )
+              }}
+              pagination
+              loading={facilityListLoading}
+              current={page}
+              hasNext={hasNext}
+              hasPrev={page > 1}
+              handleNextClick={handleNextClick}
+              handlePrevClick={handlePrevClick}
+            />
+          </div>
+        </>
+      )}
       <FacilityTypeTableComponent
         loading={linksLoading}
         data={dchfacilities}

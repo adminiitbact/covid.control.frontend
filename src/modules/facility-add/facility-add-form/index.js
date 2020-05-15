@@ -158,7 +158,6 @@ function FacilityAddForm({
       onSubmit={onFormSubmit}
     >
       {props => {
-        console.log(props);
         formStateCallBack &&
           formStateCallBack({
             isValid: props.isValid,

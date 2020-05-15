@@ -56,8 +56,6 @@ export default function FacilityAdd(props) {
     }
   };
 
-  console.log(isValidForm);
-
   return (
     <>
       <Header fixed>
