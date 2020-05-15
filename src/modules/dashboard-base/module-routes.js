@@ -3,7 +3,7 @@ import Home from 'modules/home';
 import FacilityAdd from 'modules/facility-add';
 import FacilityList from 'modules/facility-list';
 import FacilityEdit from 'modules/facility-edit';
-import Linking from 'modules/linking';
+import Profiles from 'modules/profiles';
 import PatientDetailList from 'modules/patient-detail-list'
 import Reports from 'modules/reports';
 // import ICevents from 'assets/icons/ic-events.svg';
@@ -34,7 +34,7 @@ export default [
         exact: true,
         path: '/facility/profiles',
         // icon: VideoCameraOutlined,
-        component: Linking
+        component: Profiles
       },
       {
         label: '',

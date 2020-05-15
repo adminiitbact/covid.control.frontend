@@ -25,7 +25,7 @@ export default function FacilityEdit(props) {
 
   const [loading, setLoading] = useState(false);
   const [facilityObj, setFacilityObj] = useState({});
-  const [facilityLinks, setFacilityLinks] = useState([]);
+  const [facilityLinks, setFacilityLinks] = useState({});
   const [facilityLoading, setFacilityLoading] = useState(true);
   const [linkingLoading, setLinkingLoading] = useState(false);
 
@@ -82,7 +82,7 @@ export default function FacilityEdit(props) {
     linkReqRef.current = linkReq;
     linkReq
       .then(res => {
-        setFacilityLinks(res.body.data.list);
+        setFacilityLinks(res.body.data.success);
         setLinkingLoading(false);
       })
       .catch(err => {

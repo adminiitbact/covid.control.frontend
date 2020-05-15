@@ -20,18 +20,8 @@ const columns = [
   },
   {
     key: 'covidFacilityType',
+    title: 'covidFacilityType',
     dataIndex: 'covidFacilityType',
-    render: text => (
-      <div>
-        {text}
-        <div className='mt2 placeholder' />
-      </div>
-    )
-  },
-  {
-    key: 'facilityStatus',
-    title: 'Status',
-    dataIndex: 'facilityStatus',
     render: (text, record, index) => {
       // return null;
       const mildObj = record.availabilityStatusList.find(
@@ -57,9 +47,9 @@ const columns = [
     }
   },
   {
-    key: 'jurisdiction',
+    key: 'facilityStatus',
     title: 'Jurisdiction',
-    dataIndex: 'jurisdiction',
+    dataIndex: 'facilityStatus',
     render: (text, record, index) => {
       // return null;
       const mildObj = record.availabilityStatusList.find(
@@ -106,7 +96,7 @@ const columns = [
       }
       return (
         <div className='d--f fd--c jc--sb'>
-          <div>{text}</div>
+          <div>{text}, {record.jurisdiction}</div>
           {statusCom}
         </div>
       );

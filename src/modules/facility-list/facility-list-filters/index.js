@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Select } from 'antd';
 import qs from 'qs';
-import { covidFacilityTypes } from 'app-constants';
+// import { covidFacilityTypes } from 'app-constants';
 import { connect } from 'react-redux';
 
 import './facility-list-filters.scss';
@@ -68,8 +68,8 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
             style={{ width: '150px' }}
             allowClear
             placeholder='Operating Status'
-            value={filterConfig.isOperational}
-            onChange={onFilterSelect('isOperational')}
+            value={filterConfig.operatingStatus}
+            onChange={onFilterSelect('operatingStatus')}
           >
             <Select.Option value='true'>Yes</Select.Option>
             <Select.Option value='false'>No</Select.Option>

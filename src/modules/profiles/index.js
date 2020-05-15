@@ -7,9 +7,9 @@ import qs from 'qs';
 import FacilityAPI from 'api/facility';
 
 import { notification } from 'antd';
-import LinkingTable from './linking-table';
+import ProfilesTable from './profiles-table';
 
-export default function Linking(props) {
+export default function Profiles(props) {
   const [loading, setLoading] = useState(false);
   const [hasNext, setHasNext] = useState(true);
   const [page, setPage] = useState(1);
@@ -78,7 +78,7 @@ export default function Linking(props) {
         <div className='full-height d--f ai--c jc--fe'></div>
       </Header>
       <Content>
-        <LinkingTable
+        <ProfilesTable
           data={data}
           loading={loading}
           current={page}

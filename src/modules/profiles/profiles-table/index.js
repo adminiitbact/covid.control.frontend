@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 import InfinitePagination from 'components/infinite-pagination';
 
-import './linking-table.scss';
+import './profiles-table.scss';
 
 const columns = [
   {
@@ -34,7 +34,7 @@ const columns = [
   }
 ];
 
-export default function FacilityTable({
+export default function ProfilesTable({
   loading,
   data,
   current,

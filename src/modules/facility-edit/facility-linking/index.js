@@ -18,6 +18,36 @@ function filterSelf(list, id) {
   return list.filter(el => String(_get(el, 'facilityId')) !== String(id));
 }
 
+function FacilityTypeTableComponent({ heading, data, loading, handleClick }) {
+  return (
+    <div className='table mb3 full-width'>
+      <div className='heading'>{heading}</div>
+      {data.length !== 0 && (
+        <LinkingTable
+          data={data}
+          actionCol={{
+            key: 'action',
+            render: (text, record, index) => (
+              <div
+                className='add-action remove'
+                onClick={handleClick(record, index)}
+              >
+                <DeleteFilled />
+                <span className='text'>Remove</span>
+              </div>
+            )
+          }}
+          loading={loading}
+          pagination={false}
+        />
+      )}
+      {data.length === 0 && (
+        <div className='empty-message'>No facilities linked</div>
+      )}
+    </div>
+  );
+}
+
 export default function FacilityLinking({
   facility,
   facilityId,
@@ -174,11 +204,30 @@ export default function FacilityLinking({
     });
   };
 
-  const facilityListFiltered = filterSelf(
-    _differenceBy(facilityList, links, el => el.facilityId),
-    facilityId
+  const dchfacilities = links.dchfacilities || [];
+  const dchcfacilities = links.dchcfacilities || [];
+  const cccfacilities = links.cccfacilities || [];
+
+  let facilityListFiltered = [];
+  facilityListFiltered = _differenceBy(
+    facilityList,
+    dchfacilities,
+    el => el.facilityId
+  );
+  facilityListFiltered = _differenceBy(
+    facilityListFiltered,
+    dchcfacilities,
+    el => el.facilityId
+  );
+  facilityListFiltered = _differenceBy(
+    facilityListFiltered,
+    cccfacilities,
+    el => el.facilityId
   );
 
+  facilityListFiltered = filterSelf(facilityListFiltered, facilityId);
+
+  console.log(facilityListFiltered)
   return (
     <div className='facility-linking-wrapper'>
       <div className='title'>{_get(facility, 'facilityProfile.name')}</div>
@@ -230,31 +279,24 @@ export default function FacilityLinking({
           handlePrevClick={handlePrevClick}
         />
       </div>
-      <div className='table mb3 full-width'>
-        <div className='heading'>Linked Facilities</div>
-        {links.length !== 0 && (
-          <LinkingTable
-            data={links}
-            actionCol={{
-              key: 'action',
-              render: (text, record, index) => (
-                <div
-                  className='add-action remove'
-                  onClick={handleRemoveLink(record, index)}
-                >
-                  <DeleteFilled />
-                  <span className='text'>Remove</span>
-                </div>
-              )
-            }}
-            loading={linksLoading}
-            pagination={false}
-          />
-        )}
-        {links.length === 0 && (
-          <div className='empty-message'>No facilities linked</div>
-        )}
-      </div>
+      <FacilityTypeTableComponent
+        loading={linksLoading}
+        data={dchfacilities}
+        heading='DCH Linked Facilities'
+        handleClick={handleRemoveLink}
+      />
+      <FacilityTypeTableComponent
+        loading={linksLoading}
+        data={dchcfacilities}
+        heading='DCHC Linked Facilities'
+        handleClick={handleRemoveLink}
+      />
+      <FacilityTypeTableComponent
+        loading={linksLoading}
+        data={cccfacilities}
+        heading='CCC Linked Facilities'
+        handleClick={handleRemoveLink}
+      />
     </div>
   );
 }

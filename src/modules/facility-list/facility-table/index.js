@@ -11,7 +11,7 @@ import './facility-table.scss';
 
 const columns = [
   {
-    dataIndex: 'isOperational',
+    dataIndex: 'operatingStatus',
     title: 'Op. Stat.',
     className: 'td-center-align',
     render: (text, record) => <OperationalStatus operational={text} />
@@ -36,43 +36,27 @@ const columns = [
   {
     key: 'beds',
     title: 'Beds Capacity',
-    render: (text, record, index) => {
-      // return null;
-      const totalBeds = record.availabilityStatusList.reduce((prev, el) => {
-        return prev + el.totalBeds;
-      }, 0);
-      return totalBeds;
-    }
+    render: (text, record, index) => _get(record, 'facilityAssets.data.total_beds', '-')
   },
   {
     key: 'icu',
     title: 'ICU Capacity',
-    render: (text, record, index) => {
-      // return null;
-      const severeObj = record.availabilityStatusList.find(
-        el => el.severity === 'SEVERE'
-      );
-      return _get(severeObj, 'totalBeds', '-');
-    }
+    render: (text, record, index) => _get(record, 'facilityAssets.data.total_icu_beds', '-')
   },
   {
     key: 'vent',
     title: 'Vent. Capacity',
-    render: (text, record, index) => {
-      // return null;
-      const moderateObj = record.availabilityStatusList.find(
-        el => el.severity === 'MODERATE'
-      );
-      return _get(moderateObj, 'totalBeds', '-');
-    }
+    render: (text, record, index) => _get(record, 'facilityAssets.data.total_ventilators', '-')
   },
   {
     dataIndex: 'doctors',
-    title: 'Doctors'
+    title: 'Doctors',
+    render: (text, record, index) => _get(record, 'facilityMedstaff.data.total_doctors', '-')
   },
   {
     dataIndex: 'checklist_score',
-    title: 'Checklist Score'
+    title: 'Checklist Score',
+    render: (text, record, index) => 'NA'
   },
   {
     key: 'owner',
