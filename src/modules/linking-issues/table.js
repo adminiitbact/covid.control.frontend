@@ -6,7 +6,7 @@ import FacilityName from 'components/table-components/facility-name';
 
 import InfinitePagination from 'components/infinite-pagination';
 
-import './profiles-table.scss';
+import './table.scss';
 
 const columns = [
   {
@@ -35,33 +35,21 @@ const columns = [
     title: 'Status'
   },
   {
-    key: 'maxCapacity',
-    title: 'Max Capacity',
-    render: (text, record) => _get(record, 'facilityAssets.data.total_beds')
-  },
-  {
-    key: 'covidCapacity',
-    title: 'COVID Capacity',
-    render: (text, record) =>
-      _get(record, 'facilityAssets.data.total_covid_beds')
-  },
-  {
-    key: 'covidVacancy',
-    title: 'COVID Vacancy',
-    render: (text, record) =>
-      record.availabilityStatusList.reduce(
-        (prev, el) => prev + el.availableBeds,
-        0
-      )
-  },
-  {
     title: 'Linking Status',
     render: (text, record) =>
       record.hasLinks ? 'Complete' : <div className='danger-text'>No Link</div>
+  },
+  {
+    title: 'Linked DCH',
+    render: (text, record) => _get(record, 'linkCount.dchLinkCount', '-')
+  },
+  {
+    title: 'Linked DCHC',
+    render: (text, record) => _get(record, 'linkCount.dchcLinkCount', '-')
   }
 ];
 
-export default function ProfilesTable({
+export default function LinkingIssuesTable({
   loading,
   data,
   current,

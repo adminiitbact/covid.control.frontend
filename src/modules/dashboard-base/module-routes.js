@@ -6,6 +6,7 @@ import FacilityEdit from 'modules/facility-edit';
 import Profiles from 'modules/profiles';
 import PatientDetailList from 'modules/patient-detail-list'
 import Reports from 'modules/reports';
+import LinkingIssues from 'modules/linking-issues';
 // import ICevents from 'assets/icons/ic-events.svg';
 // import DashboardIcon from 'assets/icons/dashboard.svg';
 
@@ -35,6 +36,13 @@ export default [
         path: '/facility/profiles',
         // icon: VideoCameraOutlined,
         component: Profiles
+      },
+      {
+        label: '',
+        exact: true,
+        path: '/facility/profiles/linking-issues',
+        // icon: VideoCameraOutlined,
+        component: LinkingIssues
       },
       {
         label: '',

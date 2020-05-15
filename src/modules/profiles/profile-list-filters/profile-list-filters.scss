@@ -1,0 +1,14 @@
+.select-container {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.title {
+  font-family: Lato;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.54);
+  text-transform: uppercase;
+  .text {
+    margin-top: 12px;
+  }
+}
