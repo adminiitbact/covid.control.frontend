@@ -1,16 +1,30 @@
 import React from 'react';
 import Table from 'components/table';
+import _get from 'lodash/get';
 import { useHistory } from 'react-router';
+import FacilityName from 'components/table-components/facility-name';
 
 import InfinitePagination from 'components/infinite-pagination';
 
-import './linking-table.scss';
+import './profiles-table.scss';
 
 const columns = [
   {
     dataIndex: 'name',
-    title: 'Name of the Facility',
-    width: '30%'
+    title: (
+      <div>
+        <div>Facility Name</div>
+        <div>Area (Jurisdiction)</div>
+      </div>
+    ),
+    width: '30%',
+    render: (text, record) => (
+      <FacilityName
+        name={text}
+        area={record.area}
+        jurisdiction={record.jurisdiction}
+      />
+    )
   },
   {
     dataIndex: 'covidFacilityType',
@@ -21,20 +35,33 @@ const columns = [
     title: 'Status'
   },
   {
-    dataIndex: 'jurisdiction',
-    title: 'Jurisdiction'
+    key: 'maxCapacity',
+    title: 'Max Capacity',
+    render: (text, record) => _get(record, 'facilityAssets.data.total_beds')
   },
   {
-    dataIndex: 'area',
-    title: 'Area'
+    key: 'covidCapacity',
+    title: 'COVID Capacity',
+    render: (text, record) =>
+      _get(record, 'facilityAssets.data.total_covid_beds')
   },
   {
-    title: '',
-    render: () => <div className='danger-text'>No Link</div>
+    key: 'covidVacancy',
+    title: 'COVID Vacancy',
+    render: (text, record) =>
+      record.availabilityStatusList.reduce(
+        (prev, el) => prev + el.availableBeds,
+        0
+      )
+  },
+  {
+    title: 'Linking Status',
+    render: (text, record) =>
+      record.hasLinks ? 'Complete' : <div className='danger-text'>No Link</div>
   }
 ];
 
-export default function FacilityTable({
+export default function ProfilesTable({
   loading,
   data,
   current,
@@ -61,6 +88,7 @@ export default function FacilityTable({
         columns={columns}
         dataSource={data}
         pagination={false}
+        bordered
       />
       <div className='d--f fd--rr mt2'>
         <InfinitePagination

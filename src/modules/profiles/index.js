@@ -1,15 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from 'react';
 import { Header, Content } from 'components/layout';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link, useHistory } from 'react-router-dom';
+
 import qs from 'qs';
 
 import FacilityAPI from 'api/facility';
+import Search from 'components/search';
 
-import { notification } from 'antd';
-import LinkingTable from './linking-table';
+import { notification, Button } from 'antd';
+import ProfilesTable from './profiles-table';
+import ProfileListFilters from './profile-list-filters'
 
-export default function Linking(props) {
+export default function Profiles(props) {
   const [loading, setLoading] = useState(false);
   const [hasNext, setHasNext] = useState(true);
   const [page, setPage] = useState(1);
@@ -18,7 +21,7 @@ export default function Linking(props) {
   const [data, setData] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const reqRef = useRef();
-  // const history = useHistory();
+  const history = useHistory();
 
   useEffect(() => {
     setPage(1);
@@ -29,7 +32,7 @@ export default function Linking(props) {
     reqRef.current && reqRef.current.abort();
     const req = FacilityAPI.getFacilityList(page, {
       ...filterConfig,
-      hasLinks: false
+      operatingStatus: true
     });
     reqRef.current = req;
     req
@@ -72,13 +75,38 @@ export default function Linking(props) {
     setPage(page - 1);
   };
 
+  const handleSearch = value => {
+    history.push({
+      pathname: location.pathname,
+      search: qs.stringify(
+        Object.assign({}, filterConfig, {
+          name: value
+        })
+      )
+    });
+  };
+
   return (
     <>
       <Header fixed>
-        <div className='full-height d--f ai--c jc--fe'></div>
+        <div className='full-height d--f ai--c'>
+          <Search
+            style={{
+              width: '300px'
+            }}
+            value={filterConfig.name}
+            onChange={handleSearch}
+          />
+          <div className='ml-auto'>
+            <Link to='/facility/profiles/linking-issues'>
+              <Button type='danger'>Linking Issues</Button>
+            </Link>
+          </div>
+        </div>
       </Header>
       <Content>
-        <LinkingTable
+        <ProfileListFilters />
+        <ProfilesTable
           data={data}
           loading={loading}
           current={page}

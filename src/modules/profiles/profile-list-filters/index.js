@@ -2,12 +2,12 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Select } from 'antd';
 import qs from 'qs';
-// import { covidFacilityTypes } from 'app-constants';
+import { covidFacilityTypes } from 'app-constants';
 import { connect } from 'react-redux';
 
-import './facility-list-filters.scss';
+import './profile-list-filters.scss';
 
-function FacilityListFiltes({ areaList, loadingAreaList }) {
+function ProfileListFilters({ areaList, loadingAreaList }) {
   const history = useHistory();
   const location = useLocation();
   const filterConfig = qs.parse(location.search, { ignoreQueryPrefix: true });
@@ -31,7 +31,7 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
         <div className='text'>Filters </div>
       </div>
       <div className='d--f fd--r fw--w fs--1 fg--1 fb--a'>
-        {/* <div className='select-container mr1 mb1'>
+        <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'
             style={{ width: '125px', height: '100%' }}
@@ -44,8 +44,8 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
               <Select.Option value={el.key}>{el.label}</Select.Option>
             ))}
           </Select>
-        </div> */}
-        {/* <div className='select-container mr1 mb1'>
+        </div>
+        <div className='select-container mr1 mb1'>
           <Select
             mode='multiple'
             style={{ width: '150px' }}
@@ -61,18 +61,6 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
             </Select.Option>
             <Select.Option value='Non-COVID'>Non-COVID</Select.Option>
             <Select.Option value='Unassigned'>Unassigned</Select.Option>
-          </Select>
-        </div> */}
-        <div className='select-container mr1 mb1'>
-          <Select
-            style={{ width: '150px' }}
-            allowClear
-            placeholder='Operating Status'
-            value={filterConfig.operatingStatus}
-            onChange={onFilterSelect('operatingStatus')}
-          >
-            <Select.Option value='true'>Yes</Select.Option>
-            <Select.Option value='false'>No</Select.Option>
           </Select>
         </div>
         <div className='select-container mr1 mb1'>
@@ -119,4 +107,4 @@ function FacilityListFiltes({ areaList, loadingAreaList }) {
 export default connect(state => ({
   areaList: state.get('dashboardBase').get('areaList'),
   loadingAreaList: state.get('dashboardBase').get('loadingAreaList')
-}))(FacilityListFiltes);
+}))(ProfileListFilters);

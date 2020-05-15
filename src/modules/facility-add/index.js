@@ -7,7 +7,7 @@ import { Button, notification } from 'antd';
 
 export default function FacilityAdd(props) {
   const [loading, setLoading] = useState(false);
-
+  const [isValidForm, setIsValidForm] = useState(false);
   const formRef = useRef();
   const reqRef = useRef();
 
@@ -36,6 +36,7 @@ export default function FacilityAdd(props) {
         });
         actions.setSubmitting(false);
         setLoading(false);
+        actions.resetForm();
       })
       .catch(err => {
         notification.error({
@@ -47,22 +48,39 @@ export default function FacilityAdd(props) {
       });
   };
 
+  const formStateCallBack = opts => {
+    if (opts.isValid && opts.dirty) {
+      setIsValidForm(true);
+    } else {
+      setIsValidForm(false);
+    }
+  };
+
   return (
     <>
       <Header fixed>
-        <div className='full-height d--f ai--c jc--fe'>
-          <Button
-            loading={loading}
-            size='large'
-            onClick={submitForm}
-            type='primary'
-          >
-            SUBMIT
-          </Button>
+        <div className='full-height d--f ai--c'>
+          <div className='heading'>Add New Facility</div>
+          <div className='ml-auto'>
+            <Button
+              loading={loading}
+              size='large'
+              onClick={submitForm}
+              // disabled={}
+              type='primary'
+              className={!isValidForm ? 'disabled' : ''}
+            >
+              SUBMIT
+            </Button>
+          </div>
         </div>
       </Header>
       <Content>
-        <FacilityAddForm innerRef={formRef} onSubmit={onSubmit} />
+        <FacilityAddForm
+          innerRef={formRef}
+          onSubmit={onSubmit}
+          formStateCallBack={formStateCallBack}
+        />
       </Content>
     </>
   );

@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from 'react';
 import { Header, Content } from 'components/layout';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import qs from 'qs';
-import Search from 'components/search';
-import FacilityTable from './facility-table';
+
 import FacilityAPI from 'api/facility';
-import FacilityListFilters from './facility-list-filters';
 
-import { Button, notification } from 'antd';
+import { notification } from 'antd';
+import LinkingIssuesTable from './table';
 
-export default function FacilityList(props) {
+export default function Profiles(props) {
   const [loading, setLoading] = useState(false);
   const [hasNext, setHasNext] = useState(true);
   const [page, setPage] = useState(1);
@@ -19,7 +18,7 @@ export default function FacilityList(props) {
   const [data, setData] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const reqRef = useRef();
-  const history = useHistory();
+  // const history = useHistory();
 
   useEffect(() => {
     setPage(1);
@@ -28,7 +27,11 @@ export default function FacilityList(props) {
   useEffect(() => {
     setLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList(page, filterConfig);
+    const req = FacilityAPI.getFacilityList(page, {
+      ...filterConfig,
+      hasLinks: false,
+      operatingStatus: true
+    });
     reqRef.current = req;
     req
       .then(
@@ -70,42 +73,13 @@ export default function FacilityList(props) {
     setPage(page - 1);
   };
 
-  const goToFacilityAdd = () => {
-    history.push('/facility/add');
-  };
-
-  const handleSearch = value => {
-    history.push({
-      pathname: location.pathname,
-      search: qs.stringify(
-        Object.assign({}, filterConfig, {
-          name: value
-        })
-      )
-    });
-  };
-
   return (
     <>
       <Header fixed>
-        <div className='full-height d--f ai--c'>
-          <Search
-            style={{
-              width: '300px'
-            }}
-            value={filterConfig.name}
-            onChange={handleSearch}
-          />
-          <div className='ml-auto'>
-            <Button size='large' onClick={goToFacilityAdd} type='primary'>
-              + ADD NEW
-            </Button>
-          </div>
-        </div>
+        <div className='full-height d--f ai--c jc--fe'></div>
       </Header>
       <Content>
-        <FacilityListFilters />
-        <FacilityTable
+        <LinkingIssuesTable
           data={data}
           loading={loading}
           current={page}

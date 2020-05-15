@@ -18,6 +18,47 @@ function filterSelf(list, id) {
   return list.filter(el => String(_get(el, 'facilityId')) !== String(id));
 }
 
+function getAllowedFacilityTypeFilters(facility) {
+  console.log(facility);
+  if (facility.facilityProfile.covidFacilityType === 'CCC') {
+    return ['DCH', 'DCHC'];
+  }
+  if (facility.facilityProfile.covidFacilityType === 'DCHC') {
+    return ['DCH'];
+  }
+  return [];
+}
+
+function FacilityTypeTableComponent({ heading, data, loading, handleClick }) {
+  return (
+    <div className='table mb3 full-width'>
+      <div className='heading'>{heading}</div>
+      {data.length !== 0 && (
+        <LinkingTable
+          data={data}
+          actionCol={{
+            key: 'action',
+            render: (text, record, index) => (
+              <div
+                className='add-action remove'
+                onClick={handleClick(record, index)}
+              >
+                <DeleteFilled />
+                <span className='text'>Remove</span>
+              </div>
+            )
+          }}
+          loading={loading}
+          pagination={false}
+        />
+      )}
+      {data.length === 0 && (
+        <div className='empty-message'>No facilities linked</div>
+      )}
+    </div>
+  );
+}
+
 export default function FacilityLinking({
   facility,
   facilityId,
@@ -37,23 +78,41 @@ export default function FacilityLinking({
   const reqRef = useRef();
   const addReqRef = useRef();
 
+  const allowedFacilityTypeFilters =
+    facility && facility.facilityProfile
+      ? getAllowedFacilityTypeFilters(facility)
+      : [];
+
   useEffect(() => {
     setPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [facilityId, JSON.stringify(filterConfig)]);
 
   useEffect(() => {
-    fetchLinkOptions(page, filterConfig, facilityId);
+    if (facility && facility.facilityProfile) {
+      fetchLinkOptions(page, filterConfig, facilityId, facility);
+    }
     return () => {
       reqRef.current && reqRef.current.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, facilityId, JSON.stringify(filterConfig)]);
+  }, [
+    page,
+    facilityId,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(filterConfig),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(facility)
+  ]);
 
-  const fetchLinkOptions = (page, filterConfig, facilityId) => {
+  const fetchLinkOptions = (page, filterConfig, facilityId, facility) => {
     setFacilityListLoading(true);
     reqRef.current && reqRef.current.abort();
-    const req = FacilityAPI.getFacilityList(page, filterConfig);
+    let newFilterConfig = { ...filterConfig };
+    if (!filterConfig.covidFacilityType) {
+      newFilterConfig.covidFacilityType = allowedFacilityTypeFilters;
+    }
+    const req = FacilityAPI.getFacilityList(page, newFilterConfig);
     reqRef.current = req;
     req
       .then(
@@ -174,87 +233,109 @@ export default function FacilityLinking({
     });
   };
 
-  const facilityListFiltered = filterSelf(
-    _differenceBy(facilityList, links, el => el.facilityId),
-    facilityId
+  const dchfacilities = links.dchfacilities || [];
+  const dchcfacilities = links.dchcfacilities || [];
+  const cccfacilities = links.cccfacilities || [];
+
+  let facilityListFiltered = [];
+  facilityListFiltered = _differenceBy(
+    facilityList,
+    dchfacilities,
+    el => el.facilityId
   );
+  facilityListFiltered = _differenceBy(
+    facilityListFiltered,
+    dchcfacilities,
+    el => el.facilityId
+  );
+  facilityListFiltered = _differenceBy(
+    facilityListFiltered,
+    cccfacilities,
+    el => el.facilityId
+  );
+
+  facilityListFiltered = filterSelf(facilityListFiltered, facilityId);
+
+  console.log(allowedFacilityTypeFilters);
 
   return (
     <div className='facility-linking-wrapper'>
       <div className='title'>{_get(facility, 'facilityProfile.name')}</div>
-      <div className='subtitle mb1'>Link facilities</div>
       {/* <div className='d--f mb1'>Search/filters</div> */}
-      <div className='mb2'>
-        <div className='mr2 d--if mb1'>
-          <Search
-            style={{
-              width: '300px'
-            }}
-            value={filterConfig.name}
-            onChange={handleSearch}
-          />
-        </div>
-        <Select
-          style={{ width: '150px' }}
-          allowClear
-          placeholder='Type'
-          value={filterConfig.covidFacilityType}
-          onChange={handleTypeFilter}
-        >
-          {covidFacilityTypes.map(el => (
-            <Select.Option value={el.key}>{el.label}</Select.Option>
-          ))}
-        </Select>
-      </div>
-      <div className='table mb3 full-width'>
-        <LinkingTable
-          data={facilityListFiltered}
-          actionCol={{
-            key: 'action',
-            render: (text, record, index) => (
-              <div
-                className='add-action add'
-                onClick={handleAddLink(record, index)}
-              >
-                <PlusCircleFilled />
-                <span className='text'>Link</span>
-              </div>
-            )
-          }}
-          pagination
-          loading={facilityListLoading}
-          current={page}
-          hasNext={hasNext}
-          hasPrev={page > 1}
-          handleNextClick={handleNextClick}
-          handlePrevClick={handlePrevClick}
-        />
-      </div>
-      <div className='table mb3 full-width'>
-        <div className='heading'>Linked Facilities</div>
-        {links.length !== 0 && (
-          <LinkingTable
-            data={links}
-            actionCol={{
-              key: 'action',
-              render: (text, record, index) => (
-                <div
-                  className='add-action remove'
-                  onClick={handleRemoveLink(record, index)}
+      {_get(facility, 'facilityProfile.covidFacilityType') !== 'DCH' && (
+        <>
+          <div className='subtitle mb1'>Link facilities</div>
+          <div className='mb2'>
+            <div className='mr2 d--if mb1'>
+              <Search
+                style={{
+                  width: '300px'
+                }}
+                value={filterConfig.name}
+                onChange={handleSearch}
+              />
+            </div>
+            <Select
+              style={{ width: '150px' }}
+              allowClear
+              placeholder='Type'
+              value={filterConfig.covidFacilityType}
+              onChange={handleTypeFilter}
+            >
+              {covidFacilityTypes.map(el => (
+                <Select.Option
+                  value={el.key}
+                  disabled={allowedFacilityTypeFilters.indexOf(el.key) === -1}
                 >
-                  <DeleteFilled />
-                  <span className='text'>Remove</span>
-                </div>
-              )
-            }}
-            loading={linksLoading}
-            pagination={false}
-          />
-        )}
-        {links.length === 0 && (
-          <div className='empty-message'>No facilities linked</div>
-        )}
-      </div>
+                  {el.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          <div className='table mb3 full-width'>
+            <LinkingTable
+              data={facilityListFiltered}
+              actionCol={{
+                key: 'action',
+                render: (text, record, index) => (
+                  <div
+                    className='add-action add'
+                    onClick={handleAddLink(record, index)}
+                  >
+                    <PlusCircleFilled />
+                    <span className='text'>Link</span>
+                  </div>
+                )
+              }}
+              pagination
+              loading={facilityListLoading}
+              current={page}
+              hasNext={hasNext}
+              hasPrev={page > 1}
+              handleNextClick={handleNextClick}
+              handlePrevClick={handlePrevClick}
+            />
+          </div>
+        </>
+      )}
+      <FacilityTypeTableComponent
+        loading={linksLoading}
+        data={dchfacilities}
+        heading='DCH Linked Facilities'
+        handleClick={handleRemoveLink}
+      />
+      <FacilityTypeTableComponent
+        loading={linksLoading}
+        data={dchcfacilities}
+        heading='DCHC Linked Facilities'
+        handleClick={handleRemoveLink}
+      />
+      <FacilityTypeTableComponent
+        loading={linksLoading}
+        data={cccfacilities}
+        heading='CCC Linked Facilities'
+        handleClick={handleRemoveLink}
+      />
     </div>
   );
 }

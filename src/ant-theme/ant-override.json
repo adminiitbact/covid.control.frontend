@@ -13,5 +13,8 @@
   "@btn-font-weight": "500",
   "@table-header-color": "rgba(0, 0, 0, 0.8)",
   "@table-padding-vertical": "8px",
-  "@table-header-bg": "#fff"
+  "@table-header-bg": "#fff",
+  "@btn-disable-color": "fff",
+  "@btn-disable-bg": "#aaaab6",
+  "@btn-disable-border": "#aaaab6"
 }
