@@ -102,51 +102,55 @@ function DashboardBase(props) {
   // todo: handle defaultSelectedKeys for different routes
   
   return (
-    <Layout className='main-layout'>
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        theme='light'
-        className='custom-sider'
-      >
-        <div className='d--f fd--c full-height pb1'>
-          <Link to='/'>
-            <div className='logo'>
-              {!collapsed && (
-                <>
-                  <span className='main'>COVID</span>
-                  <span>.Control</span>
-                </>
-              )}
-              {collapsed && <span className='main pad-sm'>COV</span>}
-            </div>
-          </Link>
-
-          <Menu
-            theme='light'
-            mode='inline'
-            defaultSelectedKeys={[ModuleRoutes[ModuleRoutes.length - 1].label]}
-          >
-            {renderRoutes(ModuleRoutes)}
-          </Menu>
-          <div className='sider-bottom-section'>
-            <Menu theme='light' mode='inline'>
-              <Menu.Item key="reports">
-                <Link to="/reports">
-                  <div>Reports</div>
-                </Link>                
-              </Menu.Item>              
-              <Menu.Item key='logout'>
-                <div className='d--f ai--c' onClick={handleLogout}>
-                  <LogoutOutlined />
-                  Logout
-                </div>
-              </Menu.Item>
+    <Layout className='main-layout' style = {{width:'200px !important'}}>
+      {
+        !collapsed 
+          ? <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          theme='light'
+          className='custom-sider'
+        >
+          <div className='d--f fd--c full-height pb1'>
+            <Link to='/'>
+              <div className='logo'>
+                {!collapsed && (
+                  <>
+                    <span className='main'>COVID</span>
+                    <span>.Control</span>
+                  </>
+                )}
+                {collapsed && <span className='main pad-sm'>COV</span>}
+              </div>
+            </Link>
+  
+            <Menu
+              theme='light'
+              mode='inline'
+              defaultSelectedKeys={[ModuleRoutes[ModuleRoutes.length - 1].label]}
+            >
+              {renderRoutes(ModuleRoutes)}
             </Menu>
+            <div className='sider-bottom-section'>
+              <Menu theme='light' mode='inline'>
+                <Menu.Item key="reports">
+                  <Link to="/reports">
+                    <div>Reports</div>
+                  </Link>                
+                </Menu.Item>              
+                <Menu.Item key='logout'>
+                  <div className='d--f ai--c' onClick={handleLogout}>
+                    <LogoutOutlined />
+                    Logout
+                  </div>
+                </Menu.Item>
+              </Menu>
+            </div>
           </div>
-        </div>
-      </Sider>
+        </Sider>
+        : null
+      }
       <Layout className='site-layout'>
         {React.createElement(
           collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
