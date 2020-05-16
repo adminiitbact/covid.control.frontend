@@ -20,7 +20,6 @@ function filterSelf(list, id) {
 }
 
 function getAllowedFacilityTypeFilters(facility) {
-  console.log(facility);
   if (facility.facilityProfile.covidFacilityType === 'CCC') {
     return ['DCH', 'DCHC'];
   }
@@ -197,8 +196,6 @@ export default function FacilityLinking({
   );
 
   facilityListFiltered = filterSelf(facilityListFiltered, facilityId);
-
-  console.log(allowedFacilityTypeFilters);
 
   return (
     <div className='facility-linking-wrapper'>

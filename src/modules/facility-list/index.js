@@ -35,7 +35,6 @@ export default function FacilityList(props) {
       )
     });
   };
-  console.log(paginationData);
   
   return (
     <>
