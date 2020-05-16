@@ -96,7 +96,9 @@ const columns = [
       }
       return (
         <div className='d--f fd--c jc--sb'>
-          <div>{text}, {record.jurisdiction}</div>
+          <div>
+            {text}, {record.jurisdiction}
+          </div>
           {statusCom}
         </div>
       );
@@ -109,6 +111,8 @@ export default function LinkingTable({
   actionCol,
   data,
   current,
+  limit,
+  total,
   hasNext,
   hasPrev,
   pagination,
@@ -130,6 +134,8 @@ export default function LinkingTable({
           <InfinitePagination
             disabled={loading}
             current={current}
+            limit={limit}
+            total={total}
             hasNext={hasNext}
             hasPrev={hasPrev}
             handleNextClick={handleNextClick}

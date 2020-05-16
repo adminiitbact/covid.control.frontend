@@ -65,6 +65,8 @@ export default function ProfilesTable({
   loading,
   data,
   current,
+  limit,
+  total,
   hasNext,
   hasPrev,
   handleNextClick,
@@ -94,6 +96,8 @@ export default function ProfilesTable({
         <InfinitePagination
           disabled={loading}
           current={current}
+          limit={limit}
+          total={total}
           hasNext={hasNext}
           hasPrev={hasPrev}
           handleNextClick={handleNextClick}

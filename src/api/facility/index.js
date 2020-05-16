@@ -32,12 +32,12 @@ const userApi = {
       .post(`${serverURL}${resourcePath}/${id}/get`)
       .send(payloadWithToken);
   },
-  getFacilityList: function (pageNo, payload = {}) {
+  getFacilityList: function (offset, limit, payload = {}) {
     const payloadWithToken = Object.assign({}, payload, {
       authToken: UserService.getUserSessionId()
     });
     return agent
-      .post(`${serverURL}${resourcePath}/${pageNo}`)
+      .post(`${serverURL}${resourcePath}/${offset}/${limit}`)
       .send(payloadWithToken);
     // return stubUtil(stubJson.facilityList);
   },

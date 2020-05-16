@@ -53,6 +53,8 @@ export default function LinkingIssuesTable({
   loading,
   data,
   current,
+  limit,
+  total,
   hasNext,
   hasPrev,
   handleNextClick,
@@ -82,6 +84,8 @@ export default function LinkingIssuesTable({
         <InfinitePagination
           disabled={loading}
           current={current}
+          limit={limit}
+          total={total}
           hasNext={hasNext}
           hasPrev={hasPrev}
           handleNextClick={handleNextClick}
