@@ -21,9 +21,13 @@ export default function InfinitePagination({
       >
         <CaretLeftOutlined />
       </div>
-      <div className='text'>
-        {current * limit + 1}-{Math.min((current + 1) * limit, total)} / {total}
-      </div>
+      {limit && total && (
+        <div className='text'>
+          {current * limit + 1}-{Math.min((current + 1) * limit, total)} /{' '}
+          {total}
+        </div>
+      )}
+      {!limit && !total && <div className='text'>{current}</div>}
       <div
         className={`nav-box ml2 ${!hasNext && 'disabled'}`}
         onClick={hasNext && !disabled ? handleNextClick : () => {}}
