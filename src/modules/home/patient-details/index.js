@@ -7,40 +7,6 @@ import './patient-details.scss';
 const ageChartXaxisData = ['0 - 17','18 - 44','45 - 64','65 - 75', '75+'];
 const genderChartXaxisData = ['Male','Female','Others'];
 
-const ageDataList  = [{
-    name: 'Mid',
-    data: [49, 71, 106, 129, 144],
-    color:'#FFC107'
-
-}, {
-    name: 'Moderate',
-    data: [83, 78, 98, 93, 106],
-    color:'#FF9800'
-
-}, {
-    name: 'Severe',
-    data: [48, 38, 39.3, 41, 47],
-    color:'#F44336'
-
-}];
-
-const GenderDataList  = [{
-    name: 'Mid',
-    data: [49, 71, 106],
-    color:'#FFC107'
-
-}, {
-    name: 'Moderate',
-    data: [83, 78, 98],
-    color:'#FF9800'
-
-}, {
-    name: 'Severe',
-    data: [48, 38, 39],
-    color:'#F44336'
-
-}];
-
 const CovidPatientChart = (props) => {
     const options = {
         chart: { type: 'column' },
@@ -119,11 +85,24 @@ const PatientDetails = (props) => {
         }
     }
 
+    const getGenderObj = (severity, data) => {
+        const cases = data.filter(x => x.severity.toUpperCase() === severity);
+        return {
+            name: severity, 
+            data: [
+                cases.filter(f => f.gender.toUpperCase() === 'MALE').length,
+                cases.filter(f => f.gender.toUpperCase() === 'FEMALE').length,
+                cases.filter(f => f.gender.toUpperCase() !== 'FEMALE' && f.gender.toUpperCase() !== 'MALE').length
+            ],
+            color: getColor(severity)
+        };
+    }
+
     useEffect(() => {
         const req1 = PatientAPI.getPatientAgeStats();
         const req2 = PatientAPI.getPatientGenderStats();
-        req1.then(resp => {            
-            const ageStats = resp.body.map(x => {
+        req1.then(resp => {                        
+            const ageStats = resp.body.data.list.map(x => {
                 return {
                     name: x.severity,
                     data: [x.countLT18, x.count18TO44, x.count45TO64, x.count65TO74, x.countGT74],
@@ -135,28 +114,17 @@ const PatientDetails = (props) => {
             console.log(error);
         });
         req2.then(resp => {
-
+            console.log(resp);
+            const genderStats = [
+                getGenderObj('MILD', resp.body.data.list),
+                getGenderObj('MODERATE', resp.body.data.list),
+                getGenderObj('SEVERE', resp.body.data.list)
+            ]; 
+            setGenderData(genderStats);
         }, error => {
             console.log(error);
         });
     }, []);
-
-    const ageDataList  = [{
-        name: 'Mid',
-        data: [49, 71, 106, 129, 144],
-        color:'#FFC107'
-    
-    }, {
-        name: 'Moderate',
-        data: [83, 78, 98, 93, 106],
-        color:'#FF9800'
-    
-    }, {
-        name: 'Severe',
-        data: [48, 38, 39.3, 41, 47],
-        color:'#F44336'
-    
-    }];    
 
     return (
         <div className='patientFlowpage'>
@@ -165,8 +133,8 @@ const PatientDetails = (props) => {
             </div>
      
             <CovidPatientChart></CovidPatientChart>
-            <SeverityChart title = 'Age & Severity' categories = {ageChartXaxisData} data = {ageDataList}></SeverityChart>
-            <SeverityChart title = 'Gender & Severity' categories = {genderChartXaxisData}  data = {GenderDataList}>></SeverityChart>
+            <SeverityChart title = 'Age & Severity' categories = {ageChartXaxisData} data = {ageData}></SeverityChart>
+            <SeverityChart title = 'Gender & Severity' categories = {genderChartXaxisData}  data = {genderData}></SeverityChart>
         </div>
     )
 }

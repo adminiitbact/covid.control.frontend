@@ -5,6 +5,7 @@ import ProgressBar from '../progress-bar';
 import bedImg from '../../../assets/img/bed.png';
 
 import FacilityAPI from '../../../api/facility';
+import PatientAPI from '../../../api/patient';
 
 import './facility-dashboard.scss';
 
@@ -29,6 +30,7 @@ const options = {
 const FacilityDashbord = (props) => {
     const [selectedFacility, setSelectedFacility] = useState(null);
     const [facilityList, setFacilityList] = useState([]);
+    const [totalPatients, setTotalPatients] = useState(0);
     useEffect(() => {
         FacilityAPI.getFacilityListNew(0, 100).then(resp => {
             setFacilityList(resp.body.data.page.elements);
@@ -36,6 +38,18 @@ const FacilityDashbord = (props) => {
             console.log('Error when faetching facility list -> ', error)
         })
     }, []);
+
+    useEffect(() => {
+        if(selectedFacility) {
+            PatientAPI.getPatientStats(selectedFacility.facilityId).then(resp => {                
+                //console.log(resp);
+                //console.log(resp.body.data.list[0].number);
+                setTotalPatients(resp.body.data.list[0].number);
+            }, error => {
+                console.log(error);
+            })
+        }
+    }, [selectedFacility])
 
     const onFacilityChange = value => {
         const filteredFacility = facilityList.find(f => f.facilityId == value);
@@ -161,13 +175,13 @@ const FacilityDashbord = (props) => {
             <div className='facilityTile shadow ratio'>
               <div className="totalbeds">
                 <div className='tileLabel'>Doctors to patient Ratio</div>
-                <div className='Count'>2:1 <sub className='subTexttextColor'>Poor</sub></div>
+                <div className='Count'>1:{totalPatients / (selectedFacility?.facilityMedstaff?.data?.total_doctors ?? 1)} <sub className='subTexttextColor'>Poor</sub></div>
               </div>
             </div>
             <div className='facilityTile shadow ratio' style={{ "marginLeft": "4%" }}>
               <div className="totalbeds">
                 <div className='tileLabel'>Nurse to patient Ratio</div>
-                <div className='Count'>1:2 <sub className='subTexttextColor'>Average</sub></div>
+                <div className='Count'>1:{totalPatients / (selectedFacility?.facilityMedstaff?.data?.nurses ?? 1)} <sub className='subTexttextColor'>Average</sub></div>
               </div>
             </div>
             <div className='facilityTile shadow'>
