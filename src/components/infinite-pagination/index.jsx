@@ -6,6 +6,8 @@ import './infinite-pagination.scss';
 export default function InfinitePagination({
   disabled,
   current,
+  limit,
+  total,
   hasNext,
   hasPrev,
   handleNextClick,
@@ -19,7 +21,9 @@ export default function InfinitePagination({
       >
         <CaretLeftOutlined />
       </div>
-      <div className='text'>{current}</div>
+      <div className='text'>
+        {current * limit + 1}-{Math.min((current + 1) * limit, total)} / {total}
+      </div>
       <div
         className={`nav-box ml2 ${!hasNext && 'disabled'}`}
         onClick={hasNext && !disabled ? handleNextClick : () => {}}

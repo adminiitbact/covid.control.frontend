@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import qs from 'qs';
 import { notification, Select } from 'antd';
 import { useLocation, useHistory } from 'react-router-dom';
 import { DeleteFilled, PlusCircleFilled } from '@ant-design/icons';
+import useFacilityListData from 'hooks/use-facility-list-data';
 
 import _get from 'lodash/get';
 import _differenceBy from 'lodash/differenceBy';
@@ -68,14 +69,9 @@ export default function FacilityLinking({
   onLinkListChange
 }) {
   const history = useHistory();
-  const [facilityList, setFacilityList] = useState([]);
-  const [facilityListLoading, setFacilityListLoading] = useState(true);
-  const [hasNext, setHasNext] = useState(true);
-  const [page, setPage] = useState(1);
   const location = useLocation();
-
+  const [saving, setSaving] = useState(false);
   const filterConfig = qs.parse(location.search, { ignoreQueryPrefix: true });
-  const reqRef = useRef();
   const addReqRef = useRef();
 
   const allowedFacilityTypeFilters =
@@ -83,68 +79,22 @@ export default function FacilityLinking({
       ? getAllowedFacilityTypeFilters(facility)
       : [];
 
-  useEffect(() => {
-    setPage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [facilityId, JSON.stringify(filterConfig)]);
-
-  useEffect(() => {
-    if (facility && facility.facilityProfile) {
-      fetchLinkOptions(page, filterConfig, facilityId, facility);
-    }
-    return () => {
-      reqRef.current && reqRef.current.abort();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    page,
-    facilityId,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(filterConfig),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(facility)
-  ]);
-
-  const fetchLinkOptions = (page, filterConfig, facilityId, facility) => {
-    setFacilityListLoading(true);
-    reqRef.current && reqRef.current.abort();
-    let newFilterConfig = { ...filterConfig };
-    if (!filterConfig.covidFacilityType) {
-      newFilterConfig.covidFacilityType = allowedFacilityTypeFilters;
-    }
-    const req = FacilityAPI.getFacilityList(page, newFilterConfig);
-    reqRef.current = req;
-    req
-      .then(
-        res => {
-          if (
-            (res.body.data.list && res.body.data.list.length > 0) ||
-            page === 1
-          ) {
-            setFacilityList(filterSelf(res.body.data.list, facilityId));
-          } else {
-            setHasNext(false);
-            setPage(page - 1);
-          }
-          setFacilityListLoading(false);
-        },
-        err => {
-          setFacilityList([]);
-          setFacilityListLoading(false);
-        }
-      )
-      .catch(err => {
-        notification.error({
-          message: 'Facility list',
-          description: 'Something went wrong, please try again later'
-        });
-        setFacilityList([]);
-        setFacilityListLoading(false);
-      });
-  };
+  let newFilterConfig = { ...filterConfig };
+  if (!filterConfig.covidFacilityType) {
+    newFilterConfig.covidFacilityType = allowedFacilityTypeFilters;
+  }
+  const [
+    facilityList,
+    facilityListLoading,
+    paginationData,
+    handleReset
+  ] = useFacilityListData({
+    filterConfig: newFilterConfig,
+    fetch: facility && facility.facilityProfile
+  });
 
   const saveLinks = (facilityId, links, item, changeType) => {
-    setFacilityListLoading(true);
+    setSaving(true);
     addReqRef.current && addReqRef.current.abort();
     const addReq = FacilityAPI.saveLink(facilityId, {
       facilityLinks: links
@@ -156,8 +106,8 @@ export default function FacilityLinking({
         res => {
           // this use of filterconfig as this filterconfig might be stale if updated,
           // might be buggy
-          setPage(1);
-          fetchLinkOptions(1, filterConfig, facilityId);
+          handleReset();
+          setSaving(false);
           onLinkListChange(item, changeType);
         },
         e => {
@@ -165,8 +115,8 @@ export default function FacilityLinking({
             message: 'Facility Links',
             description: 'Something went wrong, please try again later'
           });
-          setPage(1);
-          fetchLinkOptions(1, filterConfig, facilityId);
+          setSaving(false);
+          handleReset();
           onLinkListChange(item, changeType);
         }
       )
@@ -201,14 +151,6 @@ export default function FacilityLinking({
       ];
       saveLinks(facilityId, newLinks, record, 'add');
     };
-  };
-
-  const handleNextClick = () => {
-    setPage(page + 1);
-  };
-
-  const handlePrevClick = () => {
-    setPage(page - 1);
   };
 
   const handleSearch = value => {
@@ -308,12 +250,14 @@ export default function FacilityLinking({
                 )
               }}
               pagination
-              loading={facilityListLoading}
-              current={page}
-              hasNext={hasNext}
-              hasPrev={page > 1}
-              handleNextClick={handleNextClick}
-              handlePrevClick={handlePrevClick}
+              loading={saving || facilityListLoading}
+              current={paginationData.offset}
+              limit={paginationData.limit}
+              total={paginationData.total}
+              hasNext={paginationData.hasNext}
+              hasPrev={paginationData.offset > 0}
+              handleNextClick={paginationData.handleNextClick}
+              handlePrevClick={paginationData.handlePrevClick}
             />
           </div>
         </>
