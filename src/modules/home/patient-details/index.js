@@ -70,6 +70,77 @@ const SeverityChart = (props) => {
     )
 }
 
+const DonoughtChart = (props) => {
+    const options = {
+        chart: { type: 'pie' },
+        title: { text: 'Preexisting Conditions' },
+        subtitle: { text: '450 patients' },      
+        accessibility: {
+            announceNewData: { enabled: true },
+            point: { valueSuffix: '%' }
+        },      
+        plotOptions: {
+            series: {
+                dataLabels: { enabled: true, format: '{point.name}: {point.y:.1f}%' }
+            }
+        },      
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        },      
+        series: [
+            {
+                name: "Patients",
+                colorByPoint: true,
+                data: [
+                    { name: "Kidney Disease", y: 10 },
+                    { name: "Severe Obesity", y: 10.57 },
+                    { name: "Diabetes", y:20 },
+                    { name: "Moderate or Severe Asthama", y: 10 },
+                    { name: "Chronic Lung Disease", y: 10 },
+                    { name: "Chronic Liver Disease", y: 20 },
+                    { name: "Hypertension", y: 10 },
+                    { name: "Immunino Compromised", y:10 }
+                ]
+            }
+        ]
+      };
+
+      return (
+        <div>
+            <div className='facilityTile shadow'>
+                <HighchartsReact highcharts={Highcharts} options={options} />
+            </div>
+        </div>
+    )      
+}
+
+const CustomChart = (props) => {
+    const options = [
+        { name:"Kidney Disease", values:[30,30,60] },
+        { name:"Severe Obesity", values:[30,60,30] },
+        { name:"Diabetes", values:[60,30,30] }
+      ];
+
+    return (
+        <div className='facilityTile shadow'>
+            <div className='f5-head'>Preexisting Conditions and Severity</div>            
+            <div className="f5-content">
+                {
+                    options.map(x => <div className="f5-row">
+                        <div className="f5-g-name">{x.name}</div>
+                        <div className="f5-graph">
+                            <div className="f5-severe" style={{width:x.values[0]+'%'}}> </div>
+                            <div className="f5-moderate" style={{width:x.values[1]+'%'}}> </div>
+                            <div className="f5-mild" style={{width:x.values[2]+'%'}}> </div>
+                        </div>
+                    </div>)
+                }
+            </div>
+        </div>
+    )  
+}
+
 const PatientDetails = (props) => {    
     const [ageData, setAgeData] = useState([]);
     const [genderData, setGenderData] = useState([]);
@@ -135,6 +206,8 @@ const PatientDetails = (props) => {
             <CovidPatientChart></CovidPatientChart>
             <SeverityChart title = 'Age & Severity' categories = {ageChartXaxisData} data = {ageData}></SeverityChart>
             <SeverityChart title = 'Gender & Severity' categories = {genderChartXaxisData}  data = {genderData}></SeverityChart>
+            <DonoughtChart></DonoughtChart>
+            <CustomChart></CustomChart>
         </div>
     )
 }

@@ -11,7 +11,7 @@ import './facility-dashboard.scss';
 
 const imageStyle = { height: '40px', width: '50px', float: 'right', marginBottom: '15px' };
 
-const options = {
+const optionBedTotalOccupiedTimeline = {
     chart: { type: 'column' },    
     title: { text: 'Beds Total and Occupied Timeline' },
     xAxis: { categories: ['March', 'Apr', 'May','June','July','Aug','Sept','Oct'] },
@@ -26,6 +26,46 @@ const options = {
         { name: 'Occupied', data: [8,34,45,70,60,20,30], stack: 'male', color: 'rgb(121, 159, 202)' }
     ]
 }
+
+const optionFacilityOwnershipAndSeverity = {
+    chart: { type: 'bar' },
+    title: { text: 'Facility Ownership Vs Severity' }, 
+    xAxis: {
+        categories: ['Govt', 'Private' ],
+        title: { text: null }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Population', align: 'high'
+        },
+        labels: { overflow: 'justify' }
+    },
+    tooltip: { valueSuffix: '' },
+    plotOptions: {
+        bar: {
+            dataLabels: { enabled: true }
+        }
+    },
+    colors: ["#F5DC39","#F29020","#F25120"],
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: { enabled: false },
+    series: [
+        { name: 'Mild', data: [107, 31 ] }, 
+        { name: 'Moderate', data: [133, 156 ] }, 
+        { name: 'Severity', data: [814, 841] } 
+    ]
+  };
 
 const FacilityDashbord = (props) => {
     const [selectedFacility, setSelectedFacility] = useState(null);
@@ -187,8 +227,11 @@ const FacilityDashbord = (props) => {
             <div className='facilityTile shadow'>
               <HighchartsReact
                 highcharts={Highcharts}
-                options={options}
+                options={optionBedTotalOccupiedTimeline}
               />
+            </div>
+            <div className='facilityTile shadow'>
+                <HighchartsReact highcharts={Highcharts} options={optionFacilityOwnershipAndSeverity} />
             </div>
           </div>
         </>
