@@ -56,6 +56,14 @@ const userApi = {
     return agent
       .post(`${serverURL}${resourcePath}/${id}/links/post`)
       .send(payloadWithToken);
+  },
+  getFacilityListNew: function(offset, limit, payload = {}) {
+    const payloadWithToken = Object.assign({}, payload, {
+      authToken: UserService.getUserSessionId()
+    });
+    return agent
+      .post(`${serverURL}${resourcePath}/${offset}/${limit}`)
+      .send(payloadWithToken);
   }
 };
 
