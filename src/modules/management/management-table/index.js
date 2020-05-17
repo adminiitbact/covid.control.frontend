@@ -113,7 +113,7 @@ function managementOrgArr(rec) {
     const address = rec.address ? rec.address : ""; 
     const area = rec.area ? rec.area : ""; 
     const jurisdiction = rec.jurisdiction ? rec.jurisdiction : ""; 
-    const facilityName =  address+" "+area+" "+jurisdiction;
+    const facilityName =  rec.name +" "+area+" "+jurisdiction;
 
     const covidFacilityType = rec.covidFacilityType  ? rec.covidFacilityType : ""; 
     const facilityStatus = rec.facilityStatus  ? rec.facilityStatus  : ""; 
