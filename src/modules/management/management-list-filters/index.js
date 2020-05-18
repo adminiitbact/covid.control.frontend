@@ -1,15 +1,10 @@
 import React from 'react';
-import { Input } from 'antd';
+import Search from '../../../components/search';
 
 function ManagmentListFilters(props) {
-  const { Search } = Input;
 
   return (
-    <Search
-      placeholder="Search"
-      onSearch={value => props.searchText(value)}
-      style={{ width: 350 }}
-    />
+    <Search onChange={value => props.searchText(value)}></Search>
   );
 }
 

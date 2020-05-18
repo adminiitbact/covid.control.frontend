@@ -1,5 +1,8 @@
 import React from 'react';
 import Table from 'components/table';
+import FacilityName from 'components/table-components/facility-name'
+import _ from 'lodash';
+import InfinitePagination from 'components/infinite-pagination';
 
 const columns = [
   {
@@ -9,6 +12,7 @@ const columns = [
     sorter: (a, b) => a.facilityName.localeCompare(b.facilityName),
     sortDirections: ['descend', 'ascend'],
     defaultSortOrder: 'descend',
+    render: (text, record) => <FacilityName name={record.name} area={record.area} jurisdiction={record.jurisdiction}></FacilityName>
   },
   {
     dataIndex: 'typeStatus',
@@ -111,37 +115,40 @@ const columns = [
 
 function managementOrgArr(rec) {     
     const address = rec.address ? rec.address : ""; 
+    const name = rec.name ? rec.name : "";
     const area = rec.area ? rec.area : ""; 
     const jurisdiction = rec.jurisdiction ? rec.jurisdiction : ""; 
-    const facilityName =  rec.name +" "+area+" "+jurisdiction;
+    const facilityName =  name +" "+area+" "+jurisdiction;
 
     const covidFacilityType = rec.covidFacilityType  ? rec.covidFacilityType : ""; 
     const facilityStatus = rec.facilityStatus  ? rec.facilityStatus  : ""; 
     const typeStatus = covidFacilityType+" "+facilityStatus;
 
     const ownerType = rec.institutionType  ? rec.institutionType : ""; 
+  
+    const totalBeds = _.get(rec, 'rec.facilityAssets.data.total_beds', '');
 
-    const totalBeds = rec.facilityAssets ? (rec.facilityAssets.data ? (rec.facilityAssets.data.total_beds  ? rec.facilityAssets.data.total_beds : "") : "") : ""; 
-
-    const covidBeds = rec.facilityAssets ? (rec.facilityAssets.data ? (rec.facilityAssets.data.total_covid_beds  ? rec.facilityAssets.data.total_covid_beds : "") : "") : ""; 
-
+    const covidBeds = _.get(rec, 'rec.facilityAssets.data.total_covid_beds', '');
     let availabilityStatusList = rec.availabilityStatusList && rec.availabilityStatusList.length ? rec.availabilityStatusList : null;
     
     let severeBeds = availabilityStatusList ? checkBySeverity(availabilityStatusList.filter(listRec => listRec.severity === "SEVERE")) : "";
     let moderateBeds = availabilityStatusList ? checkBySeverity(availabilityStatusList.filter(listRec => listRec.severity === "MODERATE")) : "";
     let mildBeds = availabilityStatusList ? checkBySeverity(availabilityStatusList.filter(listRec => listRec.severity === "MILD")) : "";
     
-    const icuBeds = rec.facilityAssets ? (rec.facilityAssets.data ? (rec.facilityAssets.data.total_icu_beds  ? rec.facilityAssets.data.total_icu_beds : "") : "") : ""; 
+    const icuBeds = _.get(rec, 'rec.facilityAssets.data.total_icu_beds', '');
 
-    const totalVenti = rec.facilityAssets ? (rec.facilityAssets.data ? (rec.facilityAssets.data.total_ventilators  ? rec.facilityAssets.data.total_ventilators : "") : "") : ""; 
+    const totalVenti = _.get(rec, 'rec.facilityAssets.data.total_ventilators', '');
 
-    const covidVenti = rec.facilityAssets ? (rec.facilityAssets.data ? (rec.facilityAssets.data.ventilators_allocated_covid  ? rec.facilityAssets.data.ventilators_allocated_covid : "") : "") : ""; 
+    const covidVenti = _.get(rec, 'rec.facilityAssets.data.ventilators_allocated_covid');
 
-    const doctors = rec.facilityMedstaff ? (rec.facilityMedstaff.data ? (rec.facilityMedstaff.data.ayush_doctors && rec.facilityMedstaff.data.tota_doctors ? (parseInt(rec.facilityMedstaff.data.ayush_doctors) + parseInt(rec.facilityMedstaff.data.tota_doctors)) : "") : "") : ""; 
-
-    const nurse = rec.facilityMedstaff ? (rec.facilityMedstaff.data ? (rec.facilityMedstaff.data.nurses  ? rec.facilityMedstaff.data.nurses : "") : "") : ""; 
+    const doctors = rec.facilityMedstaff ? (rec.facilityMedstaff.data ? (rec.facilityMedstaff.data.ayush_doctors && rec.facilityMedstaff.data.tota_doctors ? (parseInt(rec.facilityMedstaff.data.ayush_doctors) + parseInt(rec.facilityMedstaff.data.total_doctors)) : "") : "") : ""; 
+    
+    const nurse = _.get(rec, 'rec.facilityMedstaff.data.nurses'); 
 
   return {
+    "name": name,
+    "area": area,
+    "jurisdiction": jurisdiction,
     "facilityName": facilityName,
     "typeStatus": typeStatus,
     "ownerType": ownerType,
@@ -167,41 +174,39 @@ function checkBySeverity(listRec) {
   else return "";}
 }
 
-function filterTable(searchVal, list) {
-var results = [];
-var pushRec = false;
-
-if(!searchVal) return list;
-
-for (var i=0 ; i < list.length ; i++)
-{
-    for (let key in list[i]) {
-      if(list[i][key])
-      if(list[i][key].toString().includes(searchVal)) pushRec = true;
-    }
-    
-    if(pushRec) results.push(list[i]);
-    pushRec = false;
-}
-return results;
-}
-
 function managementTable({
   loading,
   data,
-  pagination,
+  current,
+  hasNext,
+  hasPrev,
+  limit,
+  total,
+  handleNextClick,
+  handlePrevClick,
   searchVal
 }) {
 
   return (
     <div>
+      <div className='d--f fd--rr mt2'>
+        <InfinitePagination
+          disabled={loading}
+          current={current}
+          limit={limit}
+          total={total}
+          hasNext={hasNext}
+          hasPrev={hasPrev}
+          handleNextClick={handleNextClick}
+          handlePrevClick={handlePrevClick}
+        />
+      </div>            
       <Table
         stripped
         loading={loading}
-        // onRow={onRow}
         columns={columns}
-        dataSource={filterTable(searchVal,data.map(managementOrgArr))}
-        pagination={pagination}
+        dataSource={data.map(managementOrgArr)}
+        pagination={false}
       />
       
     </div>
