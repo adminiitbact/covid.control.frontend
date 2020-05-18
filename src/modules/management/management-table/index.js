@@ -183,8 +183,7 @@ function managementTable({
   limit,
   total,
   handleNextClick,
-  handlePrevClick,
-  searchVal
+  handlePrevClick
 }) {
 
   return (
