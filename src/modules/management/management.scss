@@ -1,0 +1,16 @@
+.table-view-dropdown {
+    position: absolute;
+    margin: 16px 0;
+    z-index:1;
+}
+
+.ant-table-column-sorters {
+    padding: 8px 8px !important;
+}
+
+.ant-table-thead .ant-table-cell,
+.ant-table-tbody .ant-table-cell,
+.table-view-dropdown label span,
+.table-view-dropdown .ant-select-item {
+    font-size: 12px !important;
+}
