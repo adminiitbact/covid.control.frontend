@@ -34,3 +34,10 @@ export const fetchAreaList = () => dispatch => {
     }
   );
 };
+
+export const setViewportType = (payload) => dispatch => {
+  dispatch({
+    type: ActionConstants.SET_VIEWPORT_TYPE,
+    payload
+  });
+};

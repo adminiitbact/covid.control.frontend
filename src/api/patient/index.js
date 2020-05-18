@@ -23,7 +23,7 @@ const patientApi = {
             authToken: UserService.getUserSessionId()
         });
         return agent
-            .post(`http://638831f6.ngrok.io/api/${patientPath}/stats/age/`)
+            .post(`${serverURL}${patientPath}/stats/age/`)
             .send(payloadWithToken);
     },
     getPatientGenderStats: function(payload = {}) {
@@ -31,7 +31,7 @@ const patientApi = {
             authToken: UserService.getUserSessionId()
         });
         return agent
-            .post(`http://638831f6.ngrok.io/api/${patientPath}/stats/gender/`)
+            .post(`${serverURL}${patientPath}/stats/gender/`)
             .send(payloadWithToken);
     },
     getPatientStats: function(facilityId, payload = {}) {
@@ -39,7 +39,7 @@ const patientApi = {
             authToken: UserService.getUserSessionId()
         });
         return agent
-            .post(`http://638831f6.ngrok.io/api/${patientPath}/stats/${facilityId}`)
+            .post(`${serverURL}${patientPath}/stats/${facilityId}`)
             .send(payloadWithToken);        
     }    
 };

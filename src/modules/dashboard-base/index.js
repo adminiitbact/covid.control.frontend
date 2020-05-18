@@ -5,13 +5,16 @@ import { Layout, Menu } from 'antd';
 import { Route, Switch, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+import HomeDesk from 'modules/home-desk';
+import home from 'modules/home';
+
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   LogoutOutlined
 } from '@ant-design/icons';
 
-import { fetchAreaList } from './dashboard-base-actions.js';
+import { fetchAreaList, setViewportType } from './dashboard-base-actions.js';
 
 import { logoutUser } from 'modules/login/login-action';
 import ModuleRoutes from './module-routes.js';
@@ -26,9 +29,16 @@ function DashboardBase(props) {
   const history = useHistory();
 
   useEffect(() => {
+    updatePredicate();
+    window.addEventListener("resize", updatePredicate);
     props.fetchAreaList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function updatePredicate() {
+    //setIsDesktop(window.innerWidth > 1024);
+    props.setViewportType(window.innerWidth > 1024);
+  }
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -42,7 +52,7 @@ function DashboardBase(props) {
           <Route
             exact={prop.exact}
             path={prop.path}
-            component={prop.component}
+            component={(prop.label === "Dashboard" && props.isDesktop) ? HomeDesk : prop.component}
             key={prop.path}
           />
         ];
@@ -110,7 +120,7 @@ function DashboardBase(props) {
           collapsible
           collapsed={collapsed}
           theme='light'
-          className='custom-sider'
+          className={props.isDesktop ? '' : 'custom-sider' }
         >
           <div className='d--f fd--c full-height pb1'>
             <Link to='/'>
@@ -165,7 +175,11 @@ function DashboardBase(props) {
   );
 }
 
-export default connect(null, {
+export default connect(state => ({
+  isDesktop: state.get('dashboardBase').get('isDesktop')
+}),
+{
   logoutUser,
-  fetchAreaList
+  fetchAreaList,
+  setViewportType
 })(DashboardBase);

@@ -46,7 +46,7 @@ function Reports(props) {
                                     <Select.Option value='DAILY_PATIENT_DISCHARGE_LIST'>Daily Patient Discharge List</Select.Option>
                                     <Select.Option value='DAILY_PATIENT_DEATH_LIST'>Daily Patient Death List</Select.Option>
                                     <Select.Option value='COVID Facilities Details'>COVID Facilities Details</Select.Option>
-                                    <Select.Option value='COVID Facilities Summary'>COVID Facilities Summary</Select.Option>
+                                    <Select.Option value='COVID_FACILITIES_SUMMARY'>COVID Facilities Summary</Select.Option>
                                 </Select>
                             </Form.Item>                        
                         </Col>

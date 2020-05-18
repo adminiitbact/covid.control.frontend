@@ -64,6 +64,22 @@ const userApi = {
     return agent
       .post(`${serverURL}${resourcePath}/${offset}/${limit}`)
       .send(payloadWithToken);
+  },
+  getBedStats: function(payload = {}) {
+    const payloadWithToken = Object.assign({}, payload, {
+      authToken: UserService.getUserSessionId()
+    });
+    return agent
+      .post(`${serverURL}${resourcePath}/stats/beds/`)
+      .send(payloadWithToken);    
+  },
+  getBedStatsOverview: function(payload = {}) {
+    const payloadWithToken = Object.assign({}, payload, {
+      authToken: UserService.getUserSessionId()
+    });
+    return agent
+    .post(`${serverURL}${resourcePath}/stats/beds/overview/`)
+    .send(payloadWithToken);    
   }
 };
 
