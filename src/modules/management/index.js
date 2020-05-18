@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Header, Content } from 'components/layout';
 import { useLocation } from 'react-router-dom';
-import { Select } from 'antd';
 import './management.scss';
 
 import ManagementTable from './management-table';
@@ -14,13 +13,13 @@ import useFacilityListData from 'hooks/use-facility-list-data';
 export default function Management() {
   //const [loading, setLoading] = useState(false);
   //const [hasNext, setHasNext] = useState(true);
-  const [searchVal, setSearchVal] = useState();
+  //const [searchVal, setSearchVal] = useState();
   //const [page, setPage] = useState(1);
   const location = useLocation();
   const [filterConfig, setFilterConfig] = useState(qs.parse(location.search, { ignoreQueryPrefix: true }));
   //const [data, setData] = useState([]);
   //const reqRef = useRef();
-  const { Option } = Select;
+  //const { Option } = Select;
   console.log('filter config', filterConfig);
 
   const [data, loading, paginationData] = useFacilityListData({
@@ -64,7 +63,6 @@ export default function Management() {
           handlePrevClick={paginationData.handlePrevClick}
           limit={paginationData.limit}
           total={paginationData.total}
-          searchVal={searchVal} 
         />
       </Content>
     </div>
