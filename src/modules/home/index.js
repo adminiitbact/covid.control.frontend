@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Header, Content } from 'components/layout';
 import FacilityDashbord from './facility-dashboard';
 import BedDetails from './bed-details';
@@ -13,7 +13,7 @@ export default function Home() {
   // const [loading, setloading] = useState(false);
   const [isDisplayBeds,setIsDisplayBeds] = useState(false);
   const [isDisplayPatients,setIsDisplayPatients] = useState(false);
-  const [facility, setFacility] = useState({});
+  //const [facility, setFacility] = useState({});
   
   const toggleBeds = () => {
     setIsDisplayPatients(false);

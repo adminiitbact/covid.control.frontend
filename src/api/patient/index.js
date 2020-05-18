@@ -42,6 +42,7 @@ const patientApi = {
             .post(`${serverURL}${patientPath}/stats/${facilityId}`)
             .send(payloadWithToken);        
     }    
+    
 };
 
 export default patientApi;

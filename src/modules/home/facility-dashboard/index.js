@@ -92,15 +92,17 @@ const FacilityDashbord = (props) => {
     }, [selectedFacility])
 
     const onFacilityChange = value => {
-        const filteredFacility = facilityList.find(f => f.facilityId == value);
+        const filteredFacility = facilityList.find(f => f.facilityId === parseInt(value));
+        //console.log(filteredFacility);
         setSelectedFacility(filteredFacility);
     }
 
     const countAvailableBeds = () => {
         let count = 0;
-        if(selectedFacility !== null) {
+        if(selectedFacility !== null && selectedFacility !== undefined) {
             selectedFacility.availabilityStatusList.map(x => {
                 count += x.availableBeds;
+                return null;
             })            
         }
         return count;
@@ -108,9 +110,10 @@ const FacilityDashbord = (props) => {
 
     const countOccupiedVents = () => {
         let count = 0;
-        if(selectedFacility !== null) {
+        if(selectedFacility !== null && selectedFacility !== undefined) {
             selectedFacility.availabilityStatusList.map(x => {
                 count += x.ventilatorsOccupied;
+                return null;
             })
         }
         return count;

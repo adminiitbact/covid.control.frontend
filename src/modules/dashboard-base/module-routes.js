@@ -7,6 +7,7 @@ import Profiles from 'modules/profiles';
 import PatientDetailList from 'modules/patient-detail-list'
 import Reports from 'modules/reports';
 import LinkingIssues from 'modules/linking-issues';
+import Management from 'modules/management';
 // import ICevents from 'assets/icons/ic-events.svg';
 // import DashboardIcon from 'assets/icons/dashboard.svg';
 
@@ -37,6 +38,13 @@ export default [
         // icon: VideoCameraOutlined,
         component: Profiles
       },
+      {
+        label: 'Management',
+        exact: true,
+        path: '/management',
+        // icon: VideoCameraOutlined,
+        component: Management
+      },      
       {
         label: '',
         exact: true,

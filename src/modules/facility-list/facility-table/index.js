@@ -156,6 +156,8 @@ export default function FacilityTable({
   current,
   hasNext,
   hasPrev,
+  limit,
+  total,
   handleNextClick,
   handlePrevClick
 }) {
@@ -183,6 +185,8 @@ export default function FacilityTable({
         <InfinitePagination
           disabled={loading}
           current={current}
+          limit={limit}
+          total={total}
           hasNext={hasNext}
           hasPrev={hasPrev}
           handleNextClick={handleNextClick}

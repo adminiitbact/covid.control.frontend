@@ -141,7 +141,7 @@ const CustomChart = (props) => {
     )  
 }
 
-const PatientDetails = (props) => {    
+const PatientDetails = (props) => {
     const [ageData, setAgeData] = useState([]);
     const [genderData, setGenderData] = useState([]);
 
@@ -153,23 +153,25 @@ const PatientDetails = (props) => {
                 return '#FF9800';
             case 'MILD':
                 return '#FFC107';    
+            default:
+                return '';
         }
     }
 
-    const getGenderObj = (severity, data) => {
-        const cases = data.filter(x => x.severity.toUpperCase() === severity);
-        return {
-            name: severity, 
-            data: [
-                cases.filter(f => f.gender.toUpperCase() === 'MALE').length,
-                cases.filter(f => f.gender.toUpperCase() === 'FEMALE').length,
-                cases.filter(f => f.gender.toUpperCase() !== 'FEMALE' && f.gender.toUpperCase() !== 'MALE').length
-            ],
-            color: getColor(severity)
-        };
-    }
-
     useEffect(() => {
+        const getGenderObj = (severity, data) => {
+            const cases = data.filter(x => x.severity.toUpperCase() === severity);
+            return {
+                name: severity, 
+                data: [
+                    cases.filter(f => f.gender.toUpperCase() === 'MALE').length,
+                    cases.filter(f => f.gender.toUpperCase() === 'FEMALE').length,
+                    cases.filter(f => f.gender.toUpperCase() !== 'FEMALE' && f.gender.toUpperCase() !== 'MALE').length
+                ],
+                color: getColor(severity)
+            };
+        }
+
         const req1 = PatientAPI.getPatientAgeStats();
         const req2 = PatientAPI.getPatientGenderStats();
         req1.then(resp => {                        

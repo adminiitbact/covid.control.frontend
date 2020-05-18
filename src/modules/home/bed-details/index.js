@@ -14,6 +14,7 @@ const Tile = (props) => {
         let total = 0;
         data.map(x => {
             total += (x.numberTotalCovidBeds ?? 0);
+            return null;
         })
         return total;
     }
@@ -22,6 +23,7 @@ const Tile = (props) => {
         let total = 0;
         data.map(x => {
             total += (x.numberAvailableCovidBeds ?? 0);
+            return null;
         })
         return total;
     }
@@ -67,10 +69,6 @@ const Tile = (props) => {
 }
 
 const BedDetails = (props) => {
-    const totalBeds = 20000;
-    const usedBeds = 9999;
-    const usedBedsToday = 3000;
-
     const [bedStats, setBedStats] = useState([]);
     const [totalBedCapacity, setTotalBedCapacity] = useState(0);
     const [totalCovidBedCapacity, setTotalCovidBedCapacity] = useState(0);
@@ -90,6 +88,7 @@ const BedDetails = (props) => {
             resp.body.data.list.map(x => {
                 totalBeds += x.numberTotalBeds;
                 totalCovidBeds += x.numberTotalCovidBeds;
+                return null;
             })
             setTotalBedCapacity(totalBeds);
             setTotalCovidBedCapacity(totalCovidBeds);

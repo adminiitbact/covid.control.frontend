@@ -7,7 +7,7 @@ class extendPromise extends Promise {
   }
 
   abort() {
-    console.log('aborted')
+    console.log('aborted');
   }
 }
 

@@ -6,7 +6,6 @@ import { Route, Switch, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 import HomeDesk from 'modules/home-desk';
-import home from 'modules/home';
 
 import {
   MenuUnfoldOutlined,

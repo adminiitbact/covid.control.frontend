@@ -38,9 +38,9 @@ function Login(props) {
 
   return (
     <>
-      <div class='loginPageForm'>
-        <div class='loginOverlay'></div>
-        <div class='loginControls'>
+      <div className='loginPageForm'>
+        <div className='loginOverlay'></div>
+        <div className='loginControls'>
         <div className='message'>
             <div>Manage.   Control.   Save. </div>           
           </div>
