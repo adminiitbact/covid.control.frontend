@@ -114,7 +114,7 @@ const columns = [
 ];
 
 function managementOrgArr(rec) {     
-    const address = rec.address ? rec.address : ""; 
+    //const address = rec.address ? rec.address : ""; 
     const name = rec.name ? rec.name : "";
     const area = rec.area ? rec.area : ""; 
     const jurisdiction = rec.jurisdiction ? rec.jurisdiction : ""; 
