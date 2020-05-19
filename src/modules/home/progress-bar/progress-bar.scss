@@ -1,0 +1,25 @@
+.customProgress{
+    float: left;
+    width: 100%;
+    height: 10px;
+    background-color: #ccc;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  
+  }
+
+  .innerProgress{
+    position: absolute;
+    width: 25%;
+    left: 0px;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .innerProgress1{   
+     position: absolute;
+    left: 0px;
+    height: 100%;
+    opacity: 0.5;
+    }

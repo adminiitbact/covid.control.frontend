@@ -11,6 +11,8 @@
     "firebase": "^7.14.1",
     "formik": "^2.1.4",
     "formik-antd": "^2.0.1",
+    "highcharts": "^8.1.0",
+    "highcharts-react-official": "^3.0.0",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
     "qs": "^6.9.3",

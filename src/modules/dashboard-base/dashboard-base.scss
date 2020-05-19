@@ -8,7 +8,6 @@
   transition: color 0.3s;
 }
 
-
 .trigger:hover {
   color: #1890ff;
 }
@@ -22,6 +21,21 @@
   box-shadow: 1px 0 10px 0 rgba(0, 0, 0, 0.1);
   ul {
     border: none;
+  }
+}
+
+.custom-sider-mobile {
+  z-index: 4;
+  box-shadow: 1px 0 1px 0 rgba(0, 0, 0, 0.1);
+  position: fixed;
+  left: 0;
+  height: 100%;
+  width: 200px !important;
+  min-width: 0px !important;
+
+  ul {
+    border: none;
+    width: 100%;
   }
 }
 
@@ -48,4 +62,9 @@
 
 .sider-bottom-section {
   margin-top: auto;
+}
+
+.ant-layout-sider {
+  max-width: 200px !important;
+  min-width: 0px !important;
 }

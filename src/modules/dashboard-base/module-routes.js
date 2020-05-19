@@ -4,7 +4,7 @@ import FacilityAdd from 'modules/facility-add';
 import FacilityList from 'modules/facility-list';
 import FacilityEdit from 'modules/facility-edit';
 import Profiles from 'modules/profiles';
-import PatientDetailList from 'modules/patient-detail-list'
+import PatientDetailList from 'modules/patient-detail-list';
 import Reports from 'modules/reports';
 import LinkingIssues from 'modules/linking-issues';
 import Management from 'modules/management';
@@ -44,7 +44,7 @@ export default [
         path: '/management',
         // icon: VideoCameraOutlined,
         component: Management
-      },      
+      },
       {
         label: '',
         exact: true,
@@ -64,12 +64,6 @@ export default [
         path: '/facility/:facilityId/edit',
         // icon: VideoCameraOutlined,
         component: FacilityEdit
-      },
-      {
-        label: '',
-        exact: true,
-        path: '/reports',
-        component: Reports
       }
     ]
   },
@@ -86,6 +80,13 @@ export default [
         component: PatientDetailList
       }
     ]
+  },
+  {
+    sidebarIndex: 3,
+    label: '',
+    exact: true,
+    path: '/reports',
+    component: Reports
   },
   {
     sidebarIndex: 0,

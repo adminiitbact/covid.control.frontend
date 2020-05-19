@@ -5,13 +5,15 @@ import { Layout, Menu } from 'antd';
 import { Route, Switch, Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+import HomeDesk from 'modules/home-desk';
+
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   LogoutOutlined
 } from '@ant-design/icons';
 
-import { fetchAreaList } from './dashboard-base-actions.js';
+import { fetchAreaList, setViewportType } from './dashboard-base-actions.js';
 
 import { logoutUser } from 'modules/login/login-action';
 import ModuleRoutes from './module-routes.js';
@@ -26,9 +28,16 @@ function DashboardBase(props) {
   const history = useHistory();
 
   useEffect(() => {
+    updatePredicate();
+    window.addEventListener('resize', updatePredicate);
     props.fetchAreaList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function updatePredicate() {
+    //setIsDesktop(window.innerWidth > 1024);
+    props.setViewportType(window.innerWidth > 1024);
+  }
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -42,7 +51,11 @@ function DashboardBase(props) {
           <Route
             exact={prop.exact}
             path={prop.path}
-            component={prop.component}
+            component={
+              prop.label === 'Dashboard' && props.isDesktop
+                ? HomeDesk
+                : prop.component
+            }
             key={prop.path}
           />
         ];
@@ -100,53 +113,60 @@ function DashboardBase(props) {
   };
 
   // todo: handle defaultSelectedKeys for different routes
-  
+
   return (
     <Layout className='main-layout'>
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        theme='light'
-        className='custom-sider'
-      >
-        <div className='d--f fd--c full-height pb1'>
-          <Link to='/'>
-            <div className='logo'>
-              {!collapsed && (
-                <>
-                  <span className='main'>COVID</span>
-                  <span>.Control</span>
-                </>
-              )}
-              {collapsed && <span className='main pad-sm'>COV</span>}
-            </div>
-          </Link>
+      {
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          theme='light'
+          className={props.isDesktop ? 'custom-sider' : 'custom-sider-mobile'}
+          style={{
+            visibility: !props.isDesktop && !collapsed ? 'hidden' : 'visible'
+          }}
+        >
+          <div className='d--f fd--c full-height pb1'>
+            <Link to='/'>
+              <div className='logo'>
+                {!collapsed && (
+                  <>
+                    <span className='main'>COVID</span>
+                    <span>.Control</span>
+                  </>
+                )}
+                {collapsed && <span className='main pad-sm'>COV</span>}
+              </div>
+            </Link>
 
-          <Menu
-            theme='light'
-            mode='inline'
-            defaultSelectedKeys={[ModuleRoutes[ModuleRoutes.length - 1].label]}
-          >
-            {renderRoutes(ModuleRoutes)}
-          </Menu>
-          <div className='sider-bottom-section'>
-            <Menu theme='light' mode='inline'>
-              <Menu.Item key="reports">
-                <Link to="/reports">
-                  <div>Reports</div>
-                </Link>                
-              </Menu.Item>              
-              <Menu.Item key='logout'>
-                <div className='d--f ai--c' onClick={handleLogout}>
-                  <LogoutOutlined />
-                  Logout
-                </div>
-              </Menu.Item>
+            <Menu
+              theme='light'
+              mode='inline'
+              defaultSelectedKeys={[
+                ModuleRoutes[ModuleRoutes.length - 1].label
+              ]}
+            >
+              {renderRoutes(ModuleRoutes)}
             </Menu>
+            <div className='sider-bottom-section'>
+              <Menu theme='light' mode='inline'>
+                <Menu.Item key='reports'>
+                  <Link to='/reports'>
+                    <div>Reports</div>
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key='logout'>
+                  <div className='d--f ai--c' onClick={handleLogout}>
+                    <LogoutOutlined />
+                    Logout
+                  </div>
+                </Menu.Item>
+              </Menu>
+            </div>
           </div>
-        </div>
-      </Sider>
+        </Sider>
+      }
       <Layout className='site-layout'>
         {React.createElement(
           collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
@@ -161,7 +181,13 @@ function DashboardBase(props) {
   );
 }
 
-export default connect(null, {
-  logoutUser,
-  fetchAreaList
-})(DashboardBase);
+export default connect(
+  state => ({
+    isDesktop: state.get('dashboardBase').get('isDesktop')
+  }),
+  {
+    logoutUser,
+    fetchAreaList,
+    setViewportType
+  }
+)(DashboardBase);

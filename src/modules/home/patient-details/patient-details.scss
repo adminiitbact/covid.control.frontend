@@ -1,0 +1,46 @@
+.patientFlowpage{
+    float: left;
+    width: 100%;
+  padding: 20px;
+  height: 90vh;
+  overflow-y: auto;
+
+}
+
+.f5-head{
+    color: #333333;
+    font-size: 20px;
+    fill: #333333;
+}
+.f5-row{
+padding-top: 10px;
+}
+.f5-content{
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+.f5-g-name{
+    color: #333333;
+    font-size: 14px;
+    fill: #333333;
+}
+.f5-graph{
+display: flex;
+width: 100%;
+} 
+.f5-severe{
+height: 15px;
+background-color:#F25120 ;
+float: left;
+}
+.f5-moderate{
+    float: left;
+    height: 15px;
+    background-color: #F29020;
+}
+.f5-mild{
+    float: left;
+height: 15px;
+background-color: #F5DC39;
+
+}

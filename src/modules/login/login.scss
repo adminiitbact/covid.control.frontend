@@ -29,3 +29,51 @@
     color: rgba(0, 0, 0, 0.8);
   }
 }
+
+
+.loginPageForm{
+  float: left;
+  width: 100%;
+  height: 100%;
+  /* background-color: red; */
+  background-image: url(/static/media/login.1c548840.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+}
+.loginControls{
+  position: fixed;
+  right: 0;
+  top: 20%;
+  right: 5%;
+  z-index: 9;
+  width: 300px;
+  /* padding: 30px; */
+  background: #0e04041f;
+  min-width: 339px;
+  height: 368px;
+  padding: 20px;
+  border-radius: 16px;
+}
+.ant-input{
+  width: 300px !important;
+}
+.loginOverlay{
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 8;
+  background-color: #000000d1;
+}
+.welcome{
+  font-size: 2rem;
+    color: #fff;
+}
+.message{
+  font-size: 20px;
+ 
+  color: #fff;
+  margin-bottom: 15px;
+}

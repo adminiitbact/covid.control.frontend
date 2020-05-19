@@ -4,15 +4,15 @@ import FacilityAPI from 'api/facility';
 import { notification } from 'antd';
 import _get from 'lodash/get';
 
-export default function useFacilityApiData({ filterConfig, fetch = true }) {
+export default function useFacilityApiData({ filterConfig, fetch = true, initialOffset = 0, initialLimit = 30 }) {
   const [loading, setLoading] = useState(false);
   const [hasNext, setHasNext] = useState(true);
   const [data, setData] = useState([]);
   const reqRef = useRef();
 
   const [offset, limit, total, setOffset, setLimit, setTotal] = usePagination(
-    0,
-    30,
+    initialOffset,
+    initialLimit,
     [JSON.stringify(filterConfig)]
   );
 
