@@ -4,7 +4,9 @@ import HighchartsReact from 'highcharts-react-official';
 import ProgressBar from '../progress-bar';
 import bedImg from '../../../assets/img/bed.png';
 
-import FacilityAPI from '../../../api/facility';
+import useFacilityApiData from 'hooks/use-facility-list-data';
+
+//import FacilityAPI from '../../../api/facility';
 import PatientAPI from '../../../api/patient';
 
 import './facility-dashboard.scss';
@@ -69,17 +71,24 @@ const optionFacilityOwnershipAndSeverity = {
 
 const FacilityDashbord = (props) => {
     const [selectedFacility, setSelectedFacility] = useState(null);
-    const [facilityList, setFacilityList] = useState([]);
+    //const [facilityList, setFacilityList] = useState([]);
     const [totalPatients, setTotalPatients] = useState(0);
-    useEffect(() => {
-        FacilityAPI.getFacilityListNew(0, 100).then(resp => {
-            setFacilityList(resp.body.data.page.elements);
-        }, error => {
-            console.log('Error when faetching facility list -> ', error)
-        })
-    }, []);
 
-    useEffect(() => {
+    const [facilityList, loading, paginationData] = useFacilityApiData({
+        filterConfig: {},
+        initialOffset: 0,
+        initialLimit: 10000
+    });
+    console.log(loading, paginationData);
+    // useEffect(() => {
+    //     FacilityAPI.getFacilityListNew(0, 100).then(resp => {
+    //         setFacilityList(resp.body.data.page.elements);
+    //     }, error => {
+    //         console.log('Error when faetching facility list -> ', error)
+    //     })
+    // }, []);
+
+    useEffect(() => {        
         if(selectedFacility) {
             PatientAPI.getPatientStats(selectedFacility.facilityId).then(resp => {                
                 //console.log(resp);
