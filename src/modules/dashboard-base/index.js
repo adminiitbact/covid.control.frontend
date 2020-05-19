@@ -29,7 +29,7 @@ function DashboardBase(props) {
 
   useEffect(() => {
     updatePredicate();
-    window.addEventListener("resize", updatePredicate);
+    window.addEventListener('resize', updatePredicate);
     props.fetchAreaList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,7 +51,11 @@ function DashboardBase(props) {
           <Route
             exact={prop.exact}
             path={prop.path}
-            component={(prop.label === "Dashboard" && props.isDesktop) ? HomeDesk : prop.component}
+            component={
+              prop.label === 'Dashboard' && props.isDesktop
+                ? HomeDesk
+                : prop.component
+            }
             key={prop.path}
           />
         ];
@@ -109,17 +113,19 @@ function DashboardBase(props) {
   };
 
   // todo: handle defaultSelectedKeys for different routes
-  
+
   return (
-    <Layout className='main-layout' style = {{width:'200px !important'}}>
+    <Layout className='main-layout'>
       {
         <Sider
           trigger={null}
           collapsible
           collapsed={collapsed}
           theme='light'
-          className={props.isDesktop ? 'custom-sider' : 'custom-sider-mobile' }
-          style={{ visibility: !props.isDesktop && !collapsed ? 'hidden' : 'visible' }}
+          className={props.isDesktop ? 'custom-sider' : 'custom-sider-mobile'}
+          style={{
+            visibility: !props.isDesktop && !collapsed ? 'hidden' : 'visible'
+          }}
         >
           <div className='d--f fd--c full-height pb1'>
             <Link to='/'>
@@ -133,21 +139,23 @@ function DashboardBase(props) {
                 {collapsed && <span className='main pad-sm'>COV</span>}
               </div>
             </Link>
-  
+
             <Menu
               theme='light'
               mode='inline'
-              defaultSelectedKeys={[ModuleRoutes[ModuleRoutes.length - 1].label]}
+              defaultSelectedKeys={[
+                ModuleRoutes[ModuleRoutes.length - 1].label
+              ]}
             >
               {renderRoutes(ModuleRoutes)}
             </Menu>
             <div className='sider-bottom-section'>
               <Menu theme='light' mode='inline'>
-                <Menu.Item key="reports">
-                  <Link to="/reports">
+                <Menu.Item key='reports'>
+                  <Link to='/reports'>
                     <div>Reports</div>
-                  </Link>                
-                </Menu.Item>              
+                  </Link>
+                </Menu.Item>
                 <Menu.Item key='logout'>
                   <div className='d--f ai--c' onClick={handleLogout}>
                     <LogoutOutlined />
@@ -173,11 +181,13 @@ function DashboardBase(props) {
   );
 }
 
-export default connect(state => ({
-  isDesktop: state.get('dashboardBase').get('isDesktop')
-}),
-{
-  logoutUser,
-  fetchAreaList,
-  setViewportType
-})(DashboardBase);
+export default connect(
+  state => ({
+    isDesktop: state.get('dashboardBase').get('isDesktop')
+  }),
+  {
+    logoutUser,
+    fetchAreaList,
+    setViewportType
+  }
+)(DashboardBase);
