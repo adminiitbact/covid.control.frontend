@@ -19,6 +19,14 @@
 
 .custom-sider {
   z-index: 4;
+  box-shadow: 1px 0 10px 0 rgba(0, 0, 0, 0.1);
+  ul {
+    border: none;
+  }
+}
+
+.custom-sider-mobile {
+  z-index: 4;
   box-shadow: 1px 0 1px 0 rgba(0, 0, 0, 0.1);
   position: fixed;
   left: 0;

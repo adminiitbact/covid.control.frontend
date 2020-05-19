@@ -113,13 +113,13 @@ function DashboardBase(props) {
   return (
     <Layout className='main-layout' style = {{width:'200px !important'}}>
       {
-        !collapsed 
-          ? <Sider
+        <Sider
           trigger={null}
           collapsible
           collapsed={collapsed}
           theme='light'
-          className={props.isDesktop ? '' : 'custom-sider' }
+          className={props.isDesktop ? 'custom-sider' : 'custom-sider-mobile' }
+          style={{ visibility: !props.isDesktop && !collapsed ? 'hidden' : 'visible' }}
         >
           <div className='d--f fd--c full-height pb1'>
             <Link to='/'>
@@ -158,7 +158,6 @@ function DashboardBase(props) {
             </div>
           </div>
         </Sider>
-        : null
       }
       <Layout className='site-layout'>
         {React.createElement(
