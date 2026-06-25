@@ -15,7 +15,7 @@
     "highcharts-react-official": "^3.0.0",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
-    "qs": "^6.9.3",
+    "qs": "^6.9.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
